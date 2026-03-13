@@ -1,0 +1,94 @@
+{
+  "version": "1.0.0",
+  "repository": "https://github.com/cycleuser/Skills",
+  "install_url": "https://raw.githubusercontent.com/cycleuser/Skills/main",
+  "skills": [
+    {
+      "name": "skill-manager",
+      "version": "1.0.0",
+      "description": "Central skill registry and management system",
+      "auto_load": true,
+      "priority": 0,
+      "rules": ["registry.md"]
+    },
+    {
+      "name": "master-architect",
+      "version": "1.0.0",
+      "description": "Top-tier software architect agent for complex multi-stage development",
+      "auto_load": false,
+      "priority": 100,
+      "rules": [
+        "requirement-analysis.md",
+        "architecture-design.md",
+        "task-decomposition.md",
+        "iteration-protocol.md",
+        "quality-gates.md"
+      ]
+    },
+    {
+      "name": "python-project-developer",
+      "version": "1.0.0",
+      "description": "Complete Python multi-project development specification for CLI/GUI tools",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "project-structure.md",
+        "cli-flags.md",
+        "api-pattern.md",
+        "tools-integration.md",
+        "testing-guide.md"
+      ]
+    },
+    {
+      "name": "software-planner",
+      "version": "1.0.0",
+      "description": "Comprehensive software development planning for Python projects",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "pre-development.md",
+        "interface-design.md",
+        "documentation.md",
+        "sample-data.md"
+      ]
+    },
+    {
+      "name": "coding-agent-patterns",
+      "version": "1.0.0",
+      "description": "Core patterns for AI coding agents",
+      "auto_load": false,
+      "priority": 40,
+      "rules": [
+        "context-management.md",
+        "tool-safety.md",
+        "multi-provider.md",
+        "memory-systems.md"
+      ]
+    },
+    {
+      "name": "iteration-manager",
+      "version": "1.0.0",
+      "description": "Iterative testing and improvement supervisor",
+      "auto_load": false,
+      "priority": 30,
+      "rules": [
+        "testing-protocol.md",
+        "quality-metrics.md",
+        "iteration-workflow.md"
+      ]
+    },
+    {
+      "name": "academic-writer",
+      "version": "1.0.0",
+      "description": "Academic paper writing assistant for top-tier conferences",
+      "auto_load": false,
+      "priority": 20,
+      "rules": [
+        "literature-search.md",
+        "citation-format.md",
+        "paper-structure.md",
+        "writing-style.md"
+      ]
+    }
+  ]
+}
