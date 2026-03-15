@@ -2,52 +2,121 @@
 
 A collection of specialized skills for AI coding agents. These skills provide structured workflows, templates, and guidelines for various software development tasks.
 
+## Features
+
+- **7 Production-Ready Skills** - Covering architecture, development, testing, and writing
+- **OpenCode Compatible** - Native support for OpenCode's skill system
+- **Auto-Discovery** - Skills are automatically loaded based on context
+- **Modular Design** - Each skill is self-contained with rules and templates
+- **Cross-Platform** - Works on macOS, Linux, and Windows
+
 ## Skills Overview
 
-| Skill | Description | Install Command |
-|-------|-------------|-----------------|
+| Skill | Description | Use Case |
+|-------|-------------|----------|
 | **skill-manager** | Central skill registry and management | Auto-loaded |
-| **master-architect** | Top-tier software architect agent | `/skill master-architect` |
-| **python-project-developer** | Python CLI/GUI development | `/skill python-project-developer` |
-| **software-planner** | Multi-interface software planning | `/skill software-planner` |
-| **coding-agent-patterns** | AI coding agent patterns | `/skill coding-agent-patterns` |
-| **iteration-manager** | Iterative testing and improvement | `/skill iteration-manager` |
-| **academic-writer** | Academic paper writing | `/skill academic-writer` |
+| **master-architect** | Top-tier software architect agent | Architecture design |
+| **python-project-developer** | Python CLI/GUI development | Python projects |
+| **software-planner** | Multi-interface software planning | Project planning |
+| **coding-agent-patterns** | AI coding agent patterns | Development patterns |
+| **iteration-manager** | Iterative testing and improvement | Quality assurance |
+| **academic-writer** | Academic paper writing | Research writing |
 
 ## Installation
 
-### Method 1: Clone and Install (Recommended)
+### Quick Install for OpenCode (Recommended)
 
 ```bash
-# Clone the repository
+# One-line installation
+curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install-opencode.sh | bash
+```
+
+### Python Installer
+
+```bash
+# Install from GitHub
+curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/install-opencode.py | python3 install
+
+# Or clone and install locally
 git clone https://github.com/cycleuser/Skills.git
 cd Skills
-
-# Run the installation script
-python install.py
+python3 install-opencode.py install --source .
 ```
 
-### Method 2: Direct URL Install
+### Platform-Specific Commands
 
+**macOS / Linux:**
 ```bash
-# Download and run installer in one command
-curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/install.py | python
+curl -fsSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install-opencode.sh | bash
 ```
 
-### Method 3: Manual Install
-
-```bash
-# Clone to your workspace
-git clone https://github.com/cycleuser/Skills.git ~/.opencode/skills
-
-# Or copy specific skills
-cp -r Skills/skills/skill-manager ~/.opencode/skills/
+**Windows (PowerShell):**
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/cycleuser/Skills/main/install-opencode.py" -OutFile "install-opencode.py"
+python install-opencode.py install
 ```
 
-### Method 4: pip Install (Coming Soon)
+**Windows (WSL):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install-opencode.sh | bash
+```
+
+## Verification
 
 ```bash
-pip install cycleuser-skills
+# List installed skills
+python3 install-opencode.py list
+
+# Show skill details
+python3 install-opencode.py info --skills master-architect
+
+# Check installation directory
+ls ~/.config/opencode/skills/
+```
+
+## Usage Examples
+
+### Example 1: Architecture Design
+
+In OpenCode, describe your project:
+
+```
+I need to design a text mining system with CLI and GUI interfaces,
+capable of processing large-scale text data and generating visual reports.
+Please help me plan the complete architecture.
+```
+
+OpenCode will automatically load the `master-architect` skill and provide:
+- Requirement analysis
+- Architecture design
+- Module decomposition
+- Iterative development plan
+
+### Example 2: Python Project Development
+
+```
+Create a Python CLI tool for analyzing CSV files and generating statistical reports.
+It should support JSON output and verbose logging mode.
+```
+
+The skill provides:
+- Project structure template
+- CLI standardized flags
+- ToolResult API pattern
+- Test case templates
+
+### Example 3: Iterative Improvement
+
+```
+Run the test suite, analyze coverage, and provide improvement suggestions.
+Target is 90%+ code coverage.
+```
+
+### Example 4: Academic Writing
+
+```
+Help me write a paper about deep learning in natural language processing,
+targeting AAAI 2024.
 ```
 
 ## Skill Categories
@@ -79,23 +148,23 @@ pip install cycleuser-skills
 |-------|---------|
 | academic-writer | Academic paper writing (AAAI/IJCAI/IEEE) |
 
-## Quick Start
+## CLI Management
 
 ```bash
-# List all available skills
-/skills
+# List all installed skills
+python3 install-opencode.py list
 
-# Load a specific skill
-/skill python-project-developer
+# Show skill information
+python3 install-opencode.py info --skills <skill-name>
 
-# Get help for a skill
-/skill help master-architect
+# Install specific skills
+python3 install-opencode.py install --skills master-architect python-project-developer
 
-# Start architecture design
-/architect design "Build a text mining system"
+# Install to project directory (instead of global)
+python3 install-opencode.py install --local
 
-# Run iterative development
-/iterate 5
+# Uninstall skills
+python3 install-opencode.py uninstall --skills <skill-name>
 ```
 
 ## Skill Structure
@@ -104,17 +173,46 @@ Each skill follows a standard structure:
 
 ```
 skill-name/
-├── SKILL.md              # Main skill definition
-│   ├── frontmatter       # Metadata (name, version, triggers)
-│   └── content           # Skill instructions and templates
+├── SKILL.md              # Main skill definition with frontmatter
 └── rules/
     ├── rule1.md          # Detailed rules and patterns
     └── rule2.md
 ```
 
-## Creating Custom Skills
+### SKILL.md Format
 
-To create a new skill:
+```yaml
+---
+name: skill-name
+description: Brief description of the skill
+license: MIT
+compatibility: opencode
+metadata:
+  version: "1.0.0"
+  author: cycleuser
+---
+
+# Skill Title
+
+Detailed skill instructions and templates...
+```
+
+## Integration with AGENTS.md
+
+Create an `AGENTS.md` file in your project root:
+
+```markdown
+# Project Instructions
+
+This project uses cycleuser/Skills specifications.
+
+## Development Standards
+- Follow python-project-developer CLI flag standards
+- Use ToolResult pattern for API return types
+- Require 80%+ test coverage
+```
+
+## Creating Custom Skills
 
 ```bash
 # Create skill directory
@@ -124,20 +222,49 @@ mkdir -p skills/my-skill/rules
 cat > skills/my-skill/SKILL.md << 'EOF'
 ---
 name: my-skill
-version: "1.0.0"
-description: |
-  Description of what this skill does.
-  
-  **Triggers when:**
-  - Condition 1
-  - Condition 2
+description: Description of what this skill does
+license: MIT
+compatibility: opencode
 ---
 
 # My Skill
 
 Detailed instructions here.
 EOF
+
+# Add rules
+echo "# Rule Title\n\nRule content..." > skills/my-skill/rules/my-rule.md
+
+# Install the skill
+python3 install-opencode.py install --source .
 ```
+
+## Troubleshooting
+
+### Skills Not Loading
+
+1. Verify installation directory: `~/.config/opencode/skills/`
+2. Check SKILL.md file exists
+3. Validate frontmatter format
+
+### Permission Denied
+
+```bash
+chmod +x quick-install-opencode.sh
+```
+
+### Reinstall
+
+```bash
+python3 install-opencode.py uninstall --skills <skill-name>
+python3 install-opencode.py install
+```
+
+## Documentation
+
+- [OpenCode Usage Guide](OPENCODE_USAGE.md) - Detailed usage examples
+- [Skills Specification](skills.json) - Skill registry
+- [OpenCode Docs](https://opencode.ai/docs/skills/) - Official documentation
 
 ## Contributing
 
@@ -152,8 +279,9 @@ Contributions are welcome! Please:
 
 MIT License - See [LICENSE](LICENSE) for details.
 
-## Repository
+## Links
 
 - **GitHub**: https://github.com/cycleuser/Skills
 - **Issues**: https://github.com/cycleuser/Skills/issues
 - **Releases**: https://github.com/cycleuser/Skills/releases
+- **OpenCode**: https://opencode.ai
