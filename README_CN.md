@@ -73,6 +73,38 @@ python3 install-opencode.py info --skills master-architect
 ls ~/.config/opencode/skills/
 ```
 
+## 快速命令
+
+安装后，在 OpenCode 中使用以下命令：
+
+| 命令 | 描述 |
+|-----|------|
+| `/architect <任务>` | 系统架构设计 |
+| `/python-dev <任务>` | Python 项目开发 |
+| `/plan <任务>` | 软件规划 |
+| `/iterate <任务>` | 迭代测试 |
+| `/academic <任务>` | 学术写作 |
+| `/skills` | 列出所有技能 |
+
+### 命令示例
+
+```bash
+# 架构设计
+/architect 构建一个文本挖掘系统
+
+# Python 开发
+/python-dev 创建一个 CSV 分析工具
+
+# 软件规划
+/plan 设计一个多平台应用
+
+# 迭代测试
+/iterate 提高测试覆盖率到 90%
+
+# 学术写作
+/academic 撰写一篇关于深度学习的论文
+```
+
 ## 使用示例
 
 ### 示例 1：架构设计

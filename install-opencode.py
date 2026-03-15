@@ -22,6 +22,8 @@ RAW_URL = "https://raw.githubusercontent.com/cycleuser/Skills/main"
 
 OPENCODE_GLOBAL_DIR = Path.home() / ".config" / "opencode" / "skills"
 OPENCODE_PROJECT_DIR = Path(".opencode") / "skills"
+OPENCODE_COMMANDS_GLOBAL_DIR = Path.home() / ".config" / "opencode" / "commands"
+OPENCODE_COMMANDS_PROJECT_DIR = Path(".opencode") / "commands"
 
 
 SKILLS = [
@@ -32,6 +34,15 @@ SKILLS = [
     "coding-agent-patterns",
     "iteration-manager",
     "academic-writer",
+]
+
+COMMANDS = [
+    "architect",
+    "python-dev",
+    "plan",
+    "iterate",
+    "academic",
+    "skills",
 ]
 
 
@@ -117,6 +128,13 @@ def get_default_install_dir(global_install: bool = True) -> Path:
     return OPENCODE_PROJECT_DIR
 
 
+def get_default_commands_dir(global_install: bool = True) -> Path:
+    """Get default commands directory."""
+    if global_install:
+        return OPENCODE_COMMANDS_GLOBAL_DIR
+    return OPENCODE_COMMANDS_PROJECT_DIR
+
+
 def download_file(url: str, dest: Path) -> bool:
     """Download a file from URL."""
     try:
@@ -180,6 +198,73 @@ def install_from_local(source_dir: Path, install_dir: Path, skills: Optional[lis
         print(f"  ✓ Installed: {skill_name}")
     
     print(f"\nInstalled {len(installed)} skill(s) to {install_dir}")
+    if failed:
+        print(f"Failed: {', '.join(failed)}")
+    
+    return len(installed) > 0
+
+
+def install_commands_from_local(source_dir: Path, commands_dir: Path, commands: Optional[list] = None) -> bool:
+    """Install commands from local directory."""
+    source_commands = source_dir / "commands"
+    
+    if not source_commands.exists():
+        print(f"  ⚠ Commands directory not found at {source_commands}")
+        return False
+    
+    commands_dir.mkdir(parents=True, exist_ok=True)
+    
+    if commands:
+        command_list = commands
+    else:
+        command_list = [f.stem for f in source_commands.glob("*.md")]
+    
+    installed = []
+    failed = []
+    
+    for command_name in command_list:
+        source_file = source_commands / f"{command_name}.md"
+        dest_file = commands_dir / f"{command_name}.md"
+        
+        if not source_file.exists():
+            print(f"  ⚠ Command not found: {command_name}")
+            failed.append(command_name)
+            continue
+        
+        shutil.copy(source_file, dest_file)
+        installed.append(command_name)
+        print(f"  ✓ Installed command: /{command_name}")
+    
+    print(f"\nInstalled {len(installed)} command(s) to {commands_dir}")
+    if failed:
+        print(f"Failed: {', '.join(failed)}")
+    
+    return len(installed) > 0
+
+
+def install_commands_from_github(commands_dir: Path, commands: Optional[list] = None) -> bool:
+    """Install commands from GitHub repository."""
+    
+    commands_dir.mkdir(parents=True, exist_ok=True)
+    
+    if not commands:
+        commands = COMMANDS
+    
+    installed = []
+    failed = []
+    
+    for command_name in commands:
+        command_url = f"{RAW_URL}/commands/{command_name}.md"
+        dest_file = commands_dir / f"{command_name}.md"
+        
+        if download_file(command_url, dest_file):
+            installed.append(command_name)
+            print(f"  ✓ Installed command: /{command_name}")
+        else:
+            failed.append(command_name)
+            print(f"  ✗ Failed: /{command_name}")
+    
+    print(f"\nInstalled {len(installed)} command(s) to {commands_dir}")
     if failed:
         print(f"Failed: {', '.join(failed)}")
     
@@ -355,25 +440,53 @@ def main():
     
     if args.target:
         install_dir = Path(args.target)
+        commands_dir = Path(args.target).parent / "commands"
     else:
         install_dir = get_default_install_dir(args.global_install)
+        commands_dir = get_default_commands_dir(args.global_install)
     
     if args.command == "install":
-        print(f"Installing skills to: {install_dir}")
+        print("=" * 60)
+        print("  Installing Skills")
+        print("=" * 60)
+        print(f"Skills directory: {install_dir}")
         
         if args.source:
             source_path = Path(args.source)
             if source_path.exists():
                 success = install_from_local(source_path, install_dir, args.skills)
+                print()
+                print("=" * 60)
+                print("  Installing Commands")
+                print("=" * 60)
+                print(f"Commands directory: {commands_dir}")
+                install_commands_from_local(source_path, commands_dir)
             else:
                 print(f"Source not found: {args.source}")
                 sys.exit(1)
         else:
             success = install_from_github(install_dir, args.skills)
+            print()
+            print("=" * 60)
+            print("  Installing Commands")
+            print("=" * 60)
+            print(f"Commands directory: {commands_dir}")
+            install_commands_from_github(commands_dir)
         
         if success:
-            print("\nInstallation complete!")
-            print("Use 'skill' tool in OpenCode to load skills")
+            print()
+            print("=" * 60)
+            print("  Installation Complete!")
+            print("=" * 60)
+            print()
+            print("Available commands:")
+            print("  /architect <task>  - Architecture design")
+            print("  /python-dev <task> - Python development")
+            print("  /plan <task>       - Software planning")
+            print("  /iterate <task>    - Iterative testing")
+            print("  /academic <task>   - Academic writing")
+            print("  /skills            - List all skills")
+            print()
         else:
             sys.exit(1)
     

@@ -1,0 +1,14 @@
+---
+description: Academic paper writing for top-tier conferences
+agent: build
+---
+
+Load the academic-writer skill and help write: $ARGUMENTS
+
+Follow the academic writing standards:
+1. Literature search and review
+2. Paper structure (IEEE/AAAI format)
+3. Citation management
+4. Writing style guidelines
+
+Provide professional academic writing with proper citations and formatting.

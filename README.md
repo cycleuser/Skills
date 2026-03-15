@@ -74,6 +74,38 @@ python3 install-opencode.py info --skills master-architect
 ls ~/.config/opencode/skills/
 ```
 
+## Quick Commands
+
+After installation, use these commands in OpenCode:
+
+| Command | Description |
+|---------|-------------|
+| `/architect <task>` | Design system architecture |
+| `/python-dev <task>` | Python project development |
+| `/plan <task>` | Software planning |
+| `/iterate <task>` | Iterative testing |
+| `/academic <task>` | Academic writing |
+| `/skills` | List all skills |
+
+### Command Examples
+
+```bash
+# Architecture design
+/architect Build a text mining system with CLI and GUI
+
+# Python development  
+/python-dev Create a CSV analyzer with JSON output
+
+# Software planning
+/plan Design a multi-platform application
+
+# Iterative testing
+/iterate Improve test coverage to 90%
+
+# Academic writing
+/academic Write a paper about deep learning for NLP
+```
+
 ## Usage Examples
 
 ### Example 1: Architecture Design

@@ -1,211 +1,158 @@
 # Skill Installation Test Report
 
 **Test Date:** 2026-03-15
-**Installation Path:** `~/.config/opencode/skills/`
+**Installation Path:** `~/.config/opencode/`
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Skills | 7 |
+| Total Commands | 6 |
 | Total Rules | 26 |
 | Total Lines | 2,400 |
-| Total Characters | 63,276 |
 | Test Status | ✓ ALL PASSED |
 
-## Validation Results
+## Skills Validation (7/7 passed)
 
-### Format Validation (63/63 tests passed)
+| Skill | Rules | Lines | Status |
+|-------|-------|-------|--------|
+| master-architect | 5 | 531 | ✓ PASS |
+| python-project-developer | 5 | 364 | ✓ PASS |
+| software-planner | 4 | 429 | ✓ PASS |
+| coding-agent-patterns | 4 | 343 | ✓ PASS |
+| academic-writer | 4 | 322 | ✓ PASS |
+| iteration-manager | 3 | 236 | ✓ PASS |
+| skill-manager | 1 | 175 | ✓ PASS |
 
-| Test | Status |
-|------|--------|
-| SKILL.md exists | ✓ 7/7 |
-| Frontmatter format | ✓ 7/7 |
-| Name field present | ✓ 7/7 |
-| Name matches directory | ✓ 7/7 |
-| Name format valid | ✓ 7/7 |
-| Description field present | ✓ 7/7 |
-| Description length (1-1024) | ✓ 7/7 |
-| Rules directory exists | ✓ 7/7 |
-| Rules files exist | ✓ 26/26 |
+## Commands Validation (6/6 passed)
 
-## Skill Details
+| Command | Description | Agent | Status |
+|---------|-------------|-------|--------|
+| /architect | Top-tier software architect for complex project design | build | ✓ PASS |
+| /python-dev | Python CLI/GUI project development with standard patterns | build | ✓ PASS |
+| /plan | Multi-interface software planning (CLI+GUI+Web) | plan | ✓ PASS |
+| /iterate | Iterative testing and quality improvement | build | ✓ PASS |
+| /academic | Academic paper writing for top-tier conferences | build | ✓ PASS |
+| /skills | List all available skills and their descriptions | default | ✓ PASS |
 
-### 1. academic-writer ✓
+## Available Commands
 
-| Property | Value |
-|----------|-------|
-| Description | Academic paper writing assistant for top-tier conferences (AAAI, IJCAI, IEEE) |
-| License | MIT |
-| Content | 322 lines, 6,771 chars |
-| Rules | 4 files |
-| Headings | 29 sections |
-| Code blocks | 14 |
+After installation, use these commands in OpenCode:
 
-**Rules:**
-- `citation-format.md` (208 lines)
-- `literature-search.md` (223 lines)
-- `paper-structure.md` (313 lines)
-- `writing-style.md` (263 lines)
+```
+/architect <task>     - Design system architecture
+/python-dev <task>    - Python project development
+/plan <task>          - Software planning
+/iterate <task>       - Iterative testing
+/academic <task>      - Academic writing
+/skills               - List all skills
+```
 
----
+## Usage Examples
 
-### 2. coding-agent-patterns ✓
+### /architect - Architecture Design
 
-| Property | Value |
-|----------|-------|
-| Description | Core patterns for AI coding agents (Claude Code, Codex, Cline, Aider, OpenCode) |
-| License | MIT |
-| Content | 343 lines, 10,289 chars |
-| Rules | 4 files |
-| Headings | 26 sections |
-| Code blocks | 13 |
+```
+/architect Build a text mining system with CLI and GUI
+```
 
-**Rules:**
-- `context-management.md` (190 lines)
-- `memory-systems.md` (359 lines)
-- `multi-provider.md` (317 lines)
-- `tool-safety.md` (307 lines)
+Loads master-architect skill and provides:
+- Requirement analysis
+- Architecture design
+- Module decomposition
+- Quality gates
 
----
+### /python-dev - Python Development
 
-### 3. iteration-manager ✓
+```
+/python-dev Create a CSV analyzer tool
+```
 
-| Property | Value |
-|----------|-------|
-| Description | Iterative testing, verification, and improvement supervisor |
-| License | MIT |
-| Content | 236 lines, 5,786 chars |
-| Rules | 3 files |
-| Headings | 33 sections |
-| Code blocks | 6 |
+Loads python-project-developer skill and provides:
+- Project structure
+- CLI unified flags
+- ToolResult API pattern
+- Test templates
 
-**Rules:**
-- `iteration-workflow.md` (273 lines)
-- `quality-metrics.md` (245 lines)
-- `testing-protocol.md` (230 lines)
+### /plan - Software Planning
 
----
+```
+/plan Design a multi-platform app
+```
 
-### 4. master-architect ✓
+Loads software-planner skill and provides:
+- Pre-development research
+- Architecture design
+- Module specification
+- Interface design
 
-| Property | Value |
-|----------|-------|
-| Description | Top-tier software architect agent for complex multi-stage project development |
-| License | MIT |
-| Content | 531 lines, 13,916 chars |
-| Rules | 5 files |
-| Headings | 66 sections |
-| Code blocks | 18 |
+### /iterate - Iterative Testing
 
-**Rules:**
-- `architecture-design.md` (181 lines)
-- `iteration-protocol.md` (278 lines)
-- `quality-gates.md` (277 lines)
-- `requirement-analysis.md` (106 lines)
-- `task-decomposition.md` (216 lines)
+```
+/iterate Improve test coverage to 90%
+```
 
----
+Loads iteration-manager skill and provides:
+- Test execution
+- Coverage analysis
+- Improvement suggestions
+- Quality verification
 
-### 5. python-project-developer ✓
+### /academic - Academic Writing
 
-| Property | Value |
-|----------|-------|
-| Description | Complete Python multi-project development specification for CLI/GUI tools |
-| License | MIT |
-| Content | 364 lines, 9,054 chars |
-| Rules | 5 files |
-| Headings | 46 sections |
-| Code blocks | 16 |
+```
+/academic Write a paper about deep learning for NLP
+```
 
-**Rules:**
-- `api-pattern.md` (181 lines)
-- `cli-flags.md` (152 lines)
-- `project-structure.md` (77 lines)
-- `testing-guide.md` (265 lines)
-- `tools-integration.md` (195 lines)
+Loads academic-writer skill and provides:
+- Literature search
+- Paper structure
+- Citation management
+- Writing style guidance
 
----
+## Validation Details
 
-### 6. skill-manager ✓
+### Format Validation
 
-| Property | Value |
-|----------|-------|
-| Description | Central skill registry and management system (auto-loaded) |
-| License | MIT |
-| Content | 175 lines, 4,791 chars |
-| Rules | 1 file |
-| Headings | 30 sections |
-| Code blocks | 7 |
+- ✓ SKILL.md files exist
+- ✓ Frontmatter format correct
+- ✓ Name matches directory
+- ✓ Name format valid (lowercase, hyphens)
+- ✓ Description within limits (1-1024 chars)
+- ✓ Rules directory exists
+- ✓ Rules files have content
 
-**Rules:**
-- `registry.md` (371 lines)
+### Command Validation
 
----
+- ✓ Frontmatter format correct
+- ✓ Description field present
+- ✓ Command body not empty
+- ✓ Agent specified correctly
 
-### 7. software-planner ✓
+## Installation Locations
 
-| Property | Value |
-|----------|-------|
-| Description | Comprehensive software development planning and implementation skill |
-| License | MIT |
-| Content | 429 lines, 12,669 chars |
-| Rules | 4 files |
-| Headings | 35 sections |
-| Code blocks | 11 |
-
-**Rules:**
-- `documentation.md` (387 lines)
-- `interface-design.md` (406 lines)
-- `pre-development.md` (188 lines)
-- `sample-data.md` (333 lines)
-
----
-
-## OpenCode Compatibility
-
-All skills are formatted for OpenCode's skill system:
-
-```xml
-<available_skills>
-  <skill>
-    <name>academic-writer</name>
-    <description>Academic paper writing assistant...</description>
-  </skill>
-  <skill>
-    <name>coding-agent-patterns</name>
-    <description>Core patterns for AI coding agents...</description>
-  </skill>
-  <skill>
-    <name>iteration-manager</name>
-    <description>Iterative testing supervisor...</description>
-  </skill>
-  <skill>
-    <name>master-architect</name>
-    <description>Top-tier software architect...</description>
-  </skill>
-  <skill>
-    <name>python-project-developer</name>
-    <description>Python CLI/GUI development...</description>
-  </skill>
-  <skill>
-    <name>skill-manager</name>
-    <description>Central skill registry...</description>
-  </skill>
-  <skill>
-    <name>software-planner</name>
-    <description>Software development planning...</description>
-  </skill>
-</available_skills>
+```
+~/.config/opencode/
+├── skills/
+│   ├── academic-writer/
+│   ├── coding-agent-patterns/
+│   ├── iteration-manager/
+│   ├── master-architect/
+│   ├── python-project-developer/
+│   ├── skill-manager/
+│   └── software-planner/
+└── commands/
+    ├── academic.md
+    ├── architect.md
+    ├── iterate.md
+    ├── plan.md
+    ├── python-dev.md
+    └── skills.md
 ```
 
 ## Conclusion
 
-✓ **All 7 skills are properly installed and validated.**
+✓ **All 7 skills and 6 commands are properly installed and validated.**
 
-The skills are ready for use with OpenCode. Each skill:
-- Has valid YAML frontmatter
-- Matches OpenCode naming conventions
-- Contains comprehensive documentation
-- Includes detailed rule files
-- Is properly discovered by the skill system
+The skills and commands are ready for use with OpenCode.
