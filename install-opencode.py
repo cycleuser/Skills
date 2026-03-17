@@ -34,6 +34,7 @@ SKILLS = [
     "coding-agent-patterns",
     "iteration-manager",
     "academic-writer",
+    "patent-writer",
 ]
 
 COMMANDS = [
@@ -42,6 +43,7 @@ COMMANDS = [
     "plan",
     "iterate",
     "academic",
+    "patent",
     "skills",
 ]
 

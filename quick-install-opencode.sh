@@ -37,6 +37,7 @@ SKILLS=(
     "coding-agent-patterns"
     "iteration-manager"
     "academic-writer"
+    "patent-writer"
 )
 
 COMMANDS=(
@@ -45,6 +46,7 @@ COMMANDS=(
     "plan"
     "iterate"
     "academic"
+    "patent"
     "skills"
 )
 
@@ -99,6 +101,7 @@ echo "  /python-dev <task> - Python development"
 echo "  /plan <task>       - Software planning"
 echo "  /iterate <task>    - Iterative testing"
 echo "  /academic <task>   - Academic writing"
+echo "  /patent <task>     - Patent writing"
 echo "  /skills            - List all skills"
 echo ""
 echo "Quick Start:"

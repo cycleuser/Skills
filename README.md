@@ -4,7 +4,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **7 Production-Ready Skills** - Covering architecture, development, testing, and writing
+- **8 Production-Ready Skills** - Covering architecture, development, testing, writing, and patents
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -21,6 +21,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **coding-agent-patterns** | AI coding agent patterns | Development patterns |
 | **iteration-manager** | Iterative testing and improvement | Quality assurance |
 | **academic-writer** | Academic paper writing | Research writing |
+| **patent-writer** | Patent writing assistant | Patent applications |
 
 ## Installation
 
@@ -85,6 +86,7 @@ After installation, use these commands in OpenCode:
 | `/plan <task>` | Software planning |
 | `/iterate <task>` | Iterative testing |
 | `/academic <task>` | Academic writing |
+| `/patent <task>` | Patent writing |
 | `/skills` | List all skills |
 
 ### Command Examples
@@ -104,6 +106,9 @@ After installation, use these commands in OpenCode:
 
 # Academic writing
 /academic Write a paper about deep learning for NLP
+
+# Patent writing
+/patent Write a disclosure document for an AI-based image recognition method
 ```
 
 ## Usage Examples

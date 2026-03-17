@@ -89,6 +89,19 @@
         "paper-structure.md",
         "writing-style.md"
       ]
+    },
+    {
+      "name": "patent-writer",
+      "version": "1.0.0",
+      "description": "Patent writing assistant for Chinese patents",
+      "auto_load": false,
+      "priority": 15,
+      "rules": [
+        "patent-search.md",
+        "disclosure-document.md",
+        "patent-workflow.md",
+        "writing-tips.md"
+      ]
     }
   ]
 }
