@@ -35,6 +35,7 @@ SKILLS = [
     "iteration-manager",
     "academic-writer",
     "patent-writer",
+    "official-document-writer",
 ]
 
 COMMANDS = [
@@ -44,7 +45,17 @@ COMMANDS = [
     "iterate",
     "academic",
     "patent",
+    "gongwen",
     "skills",
+    # Chinese commands
+    "架构",
+    "开发",
+    "规划",
+    "迭代",
+    "论文",
+    "专利",
+    "公文",
+    "技能",
 ]
 
 

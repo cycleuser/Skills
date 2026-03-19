@@ -4,7 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **8 Production-Ready Skills** - Covering architecture, development, testing, writing, and patents
+- **9 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, and official documents
+- **8 Commands** - English commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -22,6 +23,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **iteration-manager** | Iterative testing and improvement | Quality assurance |
 | **academic-writer** | Academic paper writing | Research writing |
 | **patent-writer** | Patent writing assistant | Patent applications |
+| **official-document-writer** | Official document writing (GB/T 9704-2012) | Official documents |
 
 ## Installation
 
@@ -87,6 +89,7 @@ After installation, use these commands in OpenCode:
 | `/iterate <task>` | Iterative testing |
 | `/academic <task>` | Academic writing |
 | `/patent <task>` | Patent writing |
+| `/gongwen <task>` | Official document writing |
 | `/skills` | List all skills |
 
 ### Command Examples
@@ -95,7 +98,7 @@ After installation, use these commands in OpenCode:
 # Architecture design
 /architect Build a text mining system with CLI and GUI
 
-# Python development  
+# Python development
 /python-dev Create a CSV analyzer with JSON output
 
 # Software planning
@@ -109,7 +112,12 @@ After installation, use these commands in OpenCode:
 
 # Patent writing
 /patent Write a disclosure document for an AI-based image recognition method
+
+# Official document writing
+/gongwen Write a notice about safety production
 ```
+
+**Note:** Chinese commands are also available. See [README_CN.md](README_CN.md) for Chinese documentation.
 
 ## Usage Examples
 
