@@ -115,6 +115,18 @@
         "writing-guidelines.md",
         "templates.md"
       ]
+    },
+    {
+      "name": "power-iterate",
+      "version": "1.0.0",
+      "description": "Autonomous continuous iteration until time or token budget exhausted",
+      "auto_load": false,
+      "priority": 200,
+      "rules": [
+        "task-decomposition.md",
+        "autonomous-loop.md",
+        "budget-manager.md"
+      ]
     }
   ]
 }

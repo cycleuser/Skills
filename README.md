@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **9 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, and official documents
-- **8 Commands** - English commands supported
+- **10 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, and autonomous iteration
+- **10 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -24,6 +24,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **academic-writer** | Academic paper writing | Research writing |
 | **patent-writer** | Patent writing assistant | Patent applications |
 | **official-document-writer** | Official document writing (GB/T 9704-2012) | Official documents |
+| **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 
 ## Installation
 
@@ -87,6 +88,7 @@ After installation, use these commands in OpenCode:
 | `/python-dev <task>` | Python project development |
 | `/plan <task>` | Software planning |
 | `/iterate <task>` | Iterative testing |
+| `/power-iterate <task> [budget]` | Autonomous iteration until budget exhausted |
 | `/academic <task>` | Academic writing |
 | `/patent <task>` | Patent writing |
 | `/gongwen <task>` | Official document writing |
@@ -106,6 +108,9 @@ After installation, use these commands in OpenCode:
 
 # Iterative testing
 /iterate Improve test coverage to 90%
+
+# Power iterate - autonomous until budget exhausted
+/power-iterate Build a complete REST API --time 60 --tokens 100000
 
 # Academic writing
 /academic Write a paper about deep learning for NLP
