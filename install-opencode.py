@@ -36,6 +36,7 @@ SKILLS = [
     "academic-writer",
     "patent-writer",
     "official-document-writer",
+    "humanizer",
 ]
 
 COMMANDS = [
@@ -47,6 +48,7 @@ COMMANDS = [
     "patent",
     "gongwen",
     "skills",
+    "humanize",
     # Chinese commands
     "架构",
     "开发",
@@ -56,6 +58,7 @@ COMMANDS = [
     "专利",
     "公文",
     "技能",
+    "人话",
 ]
 
 
