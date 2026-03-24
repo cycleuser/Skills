@@ -36,6 +36,7 @@ SKILLS = [
     "academic-writer",
     "patent-writer",
     "official-document-writer",
+    "power-iterate",
     "humanizer",
 ]
 
@@ -44,6 +45,7 @@ COMMANDS = [
     "python-dev",
     "plan",
     "iterate",
+    "power-iterate",
     "academic",
     "patent",
     "gongwen",
@@ -54,6 +56,7 @@ COMMANDS = [
     "开发",
     "规划",
     "迭代",
+    "强力迭代",
     "论文",
     "专利",
     "公文",
