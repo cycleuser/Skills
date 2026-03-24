@@ -127,6 +127,20 @@
         "autonomous-loop.md",
         "budget-manager.md"
       ]
+    },
+    {
+      "name": "humanizer",
+      "version": "1.1.0",
+      "description": "AI text humanization - convert AI-generated text into natural human language",
+      "auto_load": false,
+      "priority": 25,
+      "rules": [
+        "ai-features.md",
+        "humanization.md",
+        "formal-humanization.md",
+        "iteration.md",
+        "examples.md"
+      ]
     }
   ]
 }

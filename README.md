@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **10 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, and autonomous iteration
-- **10 Commands** - English and Chinese commands supported
+- **11 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, and autonomous iteration
+- **11 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -24,6 +24,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **academic-writer** | Academic paper writing | Research writing |
 | **patent-writer** | Patent writing assistant | Patent applications |
 | **official-document-writer** | Official document writing (GB/T 9704-2012) | Official documents |
+| **humanizer** | AI text humanization | Natural language processing |
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 
 ## Installation
@@ -92,6 +93,7 @@ After installation, use these commands in OpenCode:
 | `/academic <task>` | Academic writing |
 | `/patent <task>` | Patent writing |
 | `/gongwen <task>` | Official document writing |
+| `/humanize <text>` | Humanize AI-generated text |
 | `/skills` | List all skills |
 
 ### Command Examples
