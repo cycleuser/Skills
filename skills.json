@@ -141,6 +141,23 @@
         "iteration.md",
         "examples.md"
       ]
+    },
+    {
+      "name": "literary-ghostwriter",
+      "version": "2.0.0",
+      "description": "Literary ghostwriter - write in 7 masters' styles (Shakespeare/Zweig/Calvino/Luxun/Laoshe/Jinyong/Gulong)",
+      "auto_load": false,
+      "priority": 15,
+      "rules": [
+        "shakespeare-style.md",
+        "zweig-style.md",
+        "calvino-style.md",
+        "luxun-style.md",
+        "laoshe-style.md",
+        "jinyong-style.md",
+        "gulong-style.md",
+        "vocabulary.md"
+      ]
     }
   ]
 }

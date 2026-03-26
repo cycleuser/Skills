@@ -38,6 +38,7 @@ SKILLS = [
     "official-document-writer",
     "power-iterate",
     "humanizer",
+    "literary-ghostwriter",
 ]
 
 COMMANDS = [
@@ -51,6 +52,7 @@ COMMANDS = [
     "gongwen",
     "skills",
     "humanize",
+    "literary",
     # Chinese commands
     "架构",
     "开发",
@@ -62,6 +64,7 @@ COMMANDS = [
     "公文",
     "技能",
     "人话",
+    "文豪",
 ]
 
 

@@ -5,16 +5,16 @@ agent: build
 
 Load the patent-writer skill and help with: $ARGUMENTS
 
-Available tasks:
+**Usage**: `/patent <subcommand> <content>`
+
+**Subcommands**:
 - `/patent search <keywords>` - Patent search guidance
 - `/patent disclosure <invention>` - Write disclosure document
 - `/patent report <invention>` - Generate self-search report
 - `/patent workflow` - Show patent workflow
 
-Follow the patent writing workflow:
-1. Patent search and analysis
-2. Disclosure document writing
-3. Agent collaboration
-4. Review and revision
+**Examples**:
+- `/patent disclosure An image recognition method`
+- `/patent search deep learning image processing`
 
-Provide guidance on patent three properties (novelty, inventiveness, utility) and help draft complete patent documentation.
+Provide guidance on patent three properties (novelty, inventiveness, utility) and complete documentation.

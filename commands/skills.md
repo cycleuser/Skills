@@ -1,15 +1,25 @@
 ---
-description: List all available skills and their descriptions
+description: List all installed skills and commands
 ---
 
-List all installed skills from the cycleuser/Skills repository.
+List all installed skills from the repository.
 
-Available skills:
-- master-architect: Top-tier software architect agent
-- python-project-developer: Python CLI/GUI development
-- software-planner: Multi-interface software planning
-- coding-agent-patterns: AI coding agent patterns
-- iteration-manager: Iterative testing and improvement
-- academic-writer: Academic paper writing
+**Usage**: `/skills`
 
-To load a skill, describe a task that matches its purpose.
+**Available Skills**:
+| Skill | Function |
+|-------|----------|
+| master-architect | System architecture design |
+| python-project-developer | Python project development |
+| software-planner | Software planning |
+| iteration-manager | Iterative testing |
+| power-iterate | Power iteration |
+| academic-writer | Academic paper writing |
+| patent-writer | Patent writing |
+| official-document-writer | Official document writing |
+| humanizer | AI text humanization |
+| literary-ghostwriter | Literary ghostwriting |
+
+**Chinese Commands**: `/架构` `/开发` `/规划` `/迭代` `/强力迭代` `/论文` `/专利` `/公文` `/人话` `/文豪` `/技能`
+
+**English Commands**: `/architect` `/python-dev` `/plan` `/iterate` `/power-iterate` `/academic` `/patent` `/gongwen` `/humanize` `/literary` `/skills`

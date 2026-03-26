@@ -5,11 +5,16 @@ agent: build
 
 Load the python-project-developer skill and help develop: $ARGUMENTS
 
-Follow the python-project-developer standards:
+**Usage**: `/python-dev <project description>`
+
+**Examples**:
+- `/python-dev Create a CSV analyzer tool`
+- `/python-dev Build a command-line image processor`
+
+**Standards**:
 - Project structure (single-file or package)
 - CLI unified flags (-V, -v, -o, --json, -q)
 - ToolResult API pattern
-- OpenAI function-calling tools
 - Comprehensive testing
 
 Provide complete project scaffolding with proper documentation.

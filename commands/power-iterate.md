@@ -1,21 +1,19 @@
 ---
-description: Power iterate - autonomous continuous work until time or token limit
+description: Power iterate - autonomous continuous work until budget exhausted
 agent: build
 ---
 
 Load the power-iterate skill and start autonomous iteration on: $ARGUMENTS
 
-Follow the power-iterate workflow:
-1. Deep task decomposition
-2. Create prioritized work queue
-3. Execute continuously without user confirmation
-4. Track time and token budgets
-5. Report progress periodically
-6. Save all progress when budget is exhausted
+**Usage**: `/power-iterate <task> [options]`
 
-Budget options:
-- --time <minutes>: Time limit (default: 30)
-- --tokens <number>: Token limit (default: 100000)
-- --budget <level>: Preset budget (tiny/small/medium/large/xlarge)
+**Examples**:
+- `/power-iterate Build a REST API --time 60`
+- `/power-iterate Develop complete feature --budget large`
 
-Example: /power-iterate Build a REST API --time 60 --tokens 100000
+**Budget options**:
+- `--time <minutes>`: Time limit (default: 30)
+- `--tokens <number>`: Token limit (default: 100000)
+- `--budget <level>`: Preset budget (tiny/small/medium/large/xlarge)
+
+**Features**: Autonomous execution, no confirmation needed, continuous work until budget exhausted.
