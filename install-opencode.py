@@ -39,6 +39,7 @@ SKILLS = [
     "power-iterate",
     "humanizer",
     "literary-ghostwriter",
+    "skill-refiner",
 ]
 
 COMMANDS = [
@@ -53,6 +54,7 @@ COMMANDS = [
     "skills",
     "humanize",
     "literary",
+    "refine",
     # Chinese commands
     "架构",
     "开发",
@@ -65,6 +67,7 @@ COMMANDS = [
     "技能",
     "人话",
     "文豪",
+    "修炼",
 ]
 
 

@@ -158,6 +158,19 @@
         "gulong-style.md",
         "vocabulary.md"
       ]
+    },
+    {
+      "name": "skill-refiner",
+      "version": "1.0.0",
+      "description": "Skill refinement - polish and improve skills iteratively",
+      "auto_load": false,
+      "priority": 5,
+      "rules": [
+        "diagnosis.md",
+        "improvement.md",
+        "validation.md",
+        "templates.md"
+      ]
     }
   ]
 }
