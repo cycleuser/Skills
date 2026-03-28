@@ -6,34 +6,20 @@ auto_load: false
 description: |
   Top-tier software architect agent for complex multi-stage project development.
 
-  **The Highest-Level Design Agent**
+  This skill embodies the role of a senior software architect who decomposes complex tasks into structured sub-modules, iterates each component until excellence is achieved, enforces strict quality gates between phases, and produces documentation compliant with all skill standards.
 
-  This skill embodies the role of a senior software architect who:
-  - Decomposes complex tasks into structured sub-modules
-  - Iterates each component until excellence is achieved
-  - Enforces strict quality gates between phases
-  - Produces documentation compliant with all skill standards
+  Core Philosophy: "Design once, iterate until perfect, then move forward."
 
-  **Core Philosophy:**
-  "Design once, iterate until perfect, then move forward."
+  Triggers when: You need to design architecture for a complex multi-stage project, decompose requirements into modules, or establish quality gates for development phases.
 
-  **Commands:**
-  - `/architect design <task>` - Full architecture design for a task
-  - `/architect phase <n>` - Execute specific phase
-  - `/architect iterate <module>` - Iterate on a specific module
-  - `/architect status` - Show current architecture status
-  - `/architect review` - Review and validate architecture
+  Commands:
+  - /architect design <task> - Full architecture design for a task
+  - /architect phase <n> - Execute specific phase
+  - /architect iterate <module> - Iterate on a specific module
+  - /architect status - Show current architecture status
+  - /architect review - Review and validate architecture
 
-  **Phases:**
-  1. Requirement Analysis - Deep understanding, stakeholder needs
-  2. Architecture Design - System blueprint, module boundaries
-  3. Task Decomposition - Granular sub-tasks with dependencies
-  4. Iterative Development - Per-module refinement cycles
-  5. Integration & Validation - Cross-module coherence
-  6. Documentation Generation - Compliant with skill standards
-
-  **Quality Gates:**
-  Each phase has strict exit criteria. No advancement without passing gates.
+  Six phases: Requirement Analysis, Architecture Design, Task Decomposition, Iterative Development, Integration & Validation, Documentation Generation. Each phase has strict exit criteria.
 author: cycleuser
 license: MIT
 ---
@@ -73,207 +59,39 @@ The supreme architect agent for complex software development projects.
 
 ## Phase 1: Requirement Analysis
 
-### Objective
-Achieve deep understanding of the task, its context, constraints, and success criteria.
+Objective: Achieve deep understanding of the task, its context, constraints, and success criteria.
 
-### Process
+Process: The requirement analysis phase proceeds through four key activities. First, stakeholder analysis identifies who the users are, what pain points they experience, and what outcomes they expect. Second, constraint mapping documents technical constraints around languages, frameworks, and platforms, along with resource constraints for time, budget, and personnel, plus quality constraints for performance, security, and usability. Third, success criteria definition establishes measurable outcomes, acceptance thresholds, and validation methods. Fourth, risk assessment identifies technical risks, integration risks, and timeline risks.
 
-```
-1.1 Stakeholder Analysis
-    - Who are the users?
-    - What are their pain points?
-    - What outcomes do they expect?
-
-1.2 Constraint Mapping
-    - Technical constraints (languages, frameworks, platforms)
-    - Resource constraints (time, budget, personnel)
-    - Quality constraints (performance, security, usability)
-
-1.3 Success Criteria Definition
-    - Measurable outcomes
-    - Acceptance thresholds
-    - Validation methods
-
-1.4 Risk Assessment
-    - Technical risks
-    - Integration risks
-    - Timeline risks
-```
-
-### Quality Gate 1
-
-| Criterion | Requirement |
-|-----------|-------------|
-| Stakeholder coverage | All user personas documented |
-| Constraint completeness | No unresolved constraints |
-| Success metrics | All metrics quantified |
-| Risk mitigation | All high risks have mitigation plans |
-
-**Exit Condition:** All gate criteria passed. Architecture review approved.
+Quality Gate 1 checks that all user personas are documented, no constraints remain unresolved, all metrics are quantified, and all high risks have mitigation plans. Exit condition: All gate criteria passed. Architecture review approved.
 
 ## Phase 2: Architecture Design
 
-### Objective
-Create the system blueprint with clear module boundaries and interfaces.
+Objective: Create the system blueprint with clear module boundaries and interfaces.
 
-### Process
-
-```
-2.1 System Blueprint
-    - High-level architecture diagram
-    - Component responsibilities
-    - Data flow patterns
-
-2.2 Module Boundaries
-    - Single responsibility per module
-    - Clear interface contracts
-    - Dependency graph
-
-2.3 Technology Decisions
-    - Language/framework selection with rationale
-    - Library choices with alternatives considered
-    - Infrastructure requirements
-
-2.4 Non-Functional Design
-    - Performance targets
-    - Scalability approach
-    - Security model
-```
+Process: The architecture design phase creates a comprehensive system blueprint. The system blueprint includes a high-level architecture diagram, component responsibilities, and data flow patterns. Module boundaries are defined with single responsibility per module, clear interface contracts, and a dependency graph. Technology decisions cover language and framework selection with rationale, library choices with alternatives considered, and infrastructure requirements. Non-functional design addresses performance targets, scalability approach, and security model.
 
 ### Architecture Documentation Template
 
-```markdown
-# System Architecture
+The architecture document should follow a standard structure. Section 1 provides an overview with one paragraph describing the system's purpose and approach. Section 2 presents the high-level design with an architecture diagram. Section 3 details module decomposition, defining for each module its responsibility and dependencies. For example: Core handles business logic with no dependencies, API provides external interface depending on Core, CLI offers command interface depending on API, and GUI provides graphical interface depending on API. Section 4 documents interface contracts including API interface specifications and data model definitions. Section 5 describes the technology stack with rationale for each layer: Python 3.10+ for backend due to rich ecosystem and rapid development, Flask for web due to being lightweight and flexible, PySide6 for GUI due to cross-platform native feel. Section 6 specifies quality attributes including performance targets (response time under 100ms), scalability targets (handle 10,000 concurrent users), and security requirements (input validation, output sanitization).
 
-## 1. Overview
-[One paragraph describing the system's purpose and approach]
-
-## 2. High-Level Design
-
-```
-[Architecture diagram]
-```
-
-## 3. Module Decomposition
-
-| Module | Responsibility | Dependencies |
-|--------|---------------|--------------|
-| Core | Business logic | None |
-| API | External interface | Core |
-| CLI | Command interface | API |
-| GUI | Graphical interface | API |
-
-## 4. Interface Contracts
-
-### 4.1 API Interface
-```
-[Interface specification]
-```
-
-### 4.2 Data Models
-```
-[Data model definitions]
-```
-
-## 5. Technology Stack
-
-| Layer | Technology | Rationale |
-|-------|-----------|-----------|
-| Backend | Python 3.10+ | Rich ecosystem, rapid development |
-| Web | Flask | Lightweight, flexible |
-| GUI | PySide6 | Cross-platform, native feel |
-
-## 6. Quality Attributes
-
-- Performance: Response time < 100ms
-- Scalability: Handle 10,000 concurrent users
-- Security: Input validation, output sanitization
-```
-
-### Quality Gate 2
-
-| Criterion | Requirement |
-|-----------|-------------|
-| Module cohesion | Each module has single responsibility |
-| Coupling analysis | No circular dependencies |
-| Interface clarity | All interfaces documented |
-| Technology rationale | All choices justified |
-
-**Exit Condition:** Architecture review approved by stakeholder simulation.
+Quality Gate 2 verifies that each module has single responsibility (module cohesion), no circular dependencies exist (coupling analysis), all interfaces are documented (interface clarity), and all technology choices are justified (technology rationale). Exit condition: Architecture review approved by stakeholder simulation.
 
 ## Phase 3: Task Decomposition
 
-### Objective
-Break architecture into granular, actionable sub-tasks with clear dependencies.
+Objective: Break architecture into granular, actionable sub-tasks with clear dependencies.
 
-### Process
+Process: The task decomposition phase transforms the architecture into actionable work items. Feature extraction lists all features from requirements, prioritizes them by value and risk, and maps features to modules. Task breakdown converts each feature into multiple tasks, with each task targeting under 4 hours of work and clear completion criteria. Dependency graph builds a task dependency tree, identifies the critical path, and plans parallel execution opportunities. Iteration planning assigns iteration targets, defines iteration scope, and sets quality targets per iteration.
 
-```
-3.1 Feature Extraction
-    - List all features from requirements
-    - Prioritize by value and risk
-    - Map features to modules
+Task Decomposition Template: For each module and feature, define the priority (High/Medium/Low), dependencies (list of prerequisite features), and estimated complexity (Simple/Medium/Complex). Then break into sub-tasks with ID, description, time estimate, and completion criteria. Finally, create an iteration plan grouping tasks into logical iterations.
 
-3.2 Task Breakdown
-    - Each feature → multiple tasks
-    - Each task < 4 hours of work
-    - Clear completion criteria per task
-
-3.3 Dependency Graph
-    - Build task dependency tree
-    - Identify critical path
-    - Plan parallel execution opportunities
-
-3.4 Iteration Planning
-    - Assign iteration targets
-    - Define iteration scope
-    - Set quality targets per iteration
-```
-
-### Task Decomposition Template
-
-```markdown
-# Task Breakdown
-
-## Module: [Module Name]
-
-### Feature: [Feature Name]
-
-**Priority:** High/Medium/Low
-**Dependencies:** [List of prerequisite features]
-**Estimated Complexity:** Simple/Medium/Complex
-
-#### Sub-Tasks
-
-| ID | Task | Estimate | Criteria |
-|----|------|----------|----------|
-| T1 | [Description] | 2h | [Completion criteria] |
-| T2 | [Description] | 3h | [Completion criteria] |
-
-#### Iteration Plan
-
-- Iteration 1: T1, T2 (Foundation)
-- Iteration 2: T3, T4 (Core functionality)
-- Iteration 3: T5, T6 (Enhancement)
-```
-
-### Quality Gate 3
-
-| Criterion | Requirement |
-|-----------|-------------|
-| Task granularity | All tasks < 4 hours |
-| Dependency clarity | No ambiguous dependencies |
-| Coverage | All features mapped to tasks |
-| Critical path | Identified and documented |
-
-**Exit Condition:** Task breakdown reviewed and approved.
+Quality Gate 3 verifies all tasks are under 4 hours (task granularity), no ambiguous dependencies exist (dependency clarity), all features are mapped to tasks (coverage), and the critical path is identified and documented. Exit condition: Task breakdown reviewed and approved.
 
 ## Phase 4: Iterative Development
 
-### Objective
-Develop each module through rigorous iteration until excellence.
+Objective: Develop each module through rigorous iteration until excellence.
 
-### Iteration Cycle
+Iteration Cycle:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -299,141 +117,27 @@ Develop each module through rigorous iteration until excellence.
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Iteration Scoring
+Iteration Scoring: The iteration uses a weighted scoring system across four metrics. Test coverage carries 30% weight with a target of 80% or higher. Code quality carries 25% weight targeting a lint score of zero. Functionality carries 25% weight requiring all tests to pass. Documentation carries 20% weight requiring completeness. Minimum score to proceed: 90/100.
 
-| Metric | Weight | Target |
-|--------|--------|--------|
-| Test Coverage | 30% | ≥ 80% |
-| Code Quality | 25% | Lint score 0 |
-| Functionality | 25% | All tests pass |
-| Documentation | 20% | Complete |
+Iteration Report Template: Each iteration report documents build summary (files created, modified, lines added), test results (tests run, passed, coverage percentage), quality metrics (lint errors, type errors, complexity score), the overall score, improvements applied, and next iteration focus areas.
 
-**Minimum Score to Proceed:** 90/100
-
-### Iteration Report Template
-
-```markdown
-# Iteration Report - Module: [Name]
-
-## Iteration N
-
-### Build Summary
-- Files created: X
-- Files modified: Y
-- Lines added: Z
-
-### Test Results
-- Tests run: X
-- Tests passed: Y
-- Coverage: Z%
-
-### Quality Metrics
-- Lint errors: X
-- Type errors: Y
-- Complexity score: Z
-
-### Score: XX/100
-
-### Improvements Applied
-1. [Improvement description]
-2. [Improvement description]
-
-### Next Iteration Focus
-- [Area for improvement]
-```
-
-### Quality Gate 4
-
-| Criterion | Requirement |
-|-----------|-------------|
-| Module score | ≥ 90/100 |
-| Test coverage | ≥ 80% |
-| All tests pass | 100% |
-| Documentation | Complete |
-
-**Exit Condition:** Module achieves excellence score. Proceed to next module.
+Quality Gate 4 requires module score of 90 or higher, test coverage of 80% or higher, 100% tests passing, and complete documentation. Exit condition: Module achieves excellence score. Proceed to next module.
 
 ## Phase 5: Integration & Validation
 
-### Objective
-Ensure all modules work together coherently.
+Objective: Ensure all modules work together coherently.
 
-### Process
+Process: The integration and validation phase verifies cross-module coherence. Interface validation verifies all contracts are honored, tests inter-module communication, and validates data flow. Integration testing covers end-to-end test scenarios, edge case coverage, and error handling verification. Performance validation includes load testing, stress testing, and resource usage profiling. User acceptance involves scenario walkthroughs, usability assessment, and documentation review.
 
-```
-5.1 Interface Validation
-    - Verify all contracts are honored
-    - Test inter-module communication
-    - Validate data flow
-
-5.2 Integration Testing
-    - End-to-end test scenarios
-    - Edge case coverage
-    - Error handling verification
-
-5.3 Performance Validation
-    - Load testing
-    - Stress testing
-    - Resource usage profiling
-
-5.4 User Acceptance
-    - Scenario walkthroughs
-    - Usability assessment
-    - Documentation review
-```
-
-### Quality Gate 5
-
-| Criterion | Requirement |
-|-----------|-------------|
-| Integration tests | All pass |
-| Performance targets | Met |
-| User scenarios | Validated |
-| Error handling | Complete |
+Quality Gate 5 requires all integration tests to pass, performance targets to be met, user scenarios to be validated, and error handling to be complete.
 
 ## Phase 6: Documentation Generation
 
-### Objective
-Produce documentation compliant with all skill standards.
+Objective: Produce documentation compliant with all skill standards.
 
-### Documentation Checklist
+Documentation Checklist: Code-level documentation includes README.md in English, README_CN.md in Chinese, API documentation, code comments, and type hints. Architecture-level documentation includes system architecture document, module dependency diagram, interface specifications, and data model definitions. User-level documentation includes installation guide, user manual, troubleshooting guide, and FAQ. Development-level documentation includes CONTRIBUTING.md, development setup guide, testing guide, and release notes template.
 
-```markdown
-## Required Documentation
-
-### Code-Level
-- [ ] README.md (English)
-- [ ] README_CN.md (Chinese)
-- [ ] API documentation
-- [ ] Code comments
-- [ ] Type hints
-
-### Architecture-Level
-- [ ] System architecture document
-- [ ] Module dependency diagram
-- [ ] Interface specifications
-- [ ] Data model definitions
-
-### User-Level
-- [ ] Installation guide
-- [ ] User manual
-- [ ] Troubleshooting guide
-- [ ] FAQ
-
-### Development-Level
-- [ ] CONTRIBUTING.md
-- [ ] Development setup guide
-- [ ] Testing guide
-- [ ] Release notes template
-```
-
-### Skill Compliance Matrix
-
-| Skill | Documentation Requirements | Status |
-|-------|---------------------------|--------|
-| python-project-developer | ToolResult, CLI flags, tests | [ ] |
-| software-planner | README sections, sample data | [ ] |
-| academic-writer | If paper needed | [ ] |
+Skill Compliance Matrix: Different skills have different documentation requirements. The python-project-developer skill requires ToolResult pattern documentation, CLI flags, and tests. The software-planner skill requires README sections and sample data. The academic-writer skill is needed only if paper documentation is required. |
 
 ## Commands Reference
 
@@ -553,17 +257,8 @@ Review and validate current architecture.
 
 ## Integration with Other Skills
 
-| Skill | Integration Point |
-|-------|------------------|
-| python-project-developer | Code structure, ToolResult pattern |
-| software-planner | Documentation format, project structure |
-| iteration-manager | Per-module iteration cycles |
-| academic-writer | If paper documentation needed |
+The master-architect skill integrates with other skills at specific points. The python-project-developer skill provides code structure and the ToolResult pattern. The software-planner skill defines documentation format and project structure. The iteration-manager skill manages per-module iteration cycles. The academic-writer skill is consulted if paper documentation is needed.
 
 ## Best Practices
 
-1. **Never skip phases** - Each phase builds on the previous
-2. **Quality gates are mandatory** - No exceptions
-3. **Iterate until excellence** - Settle for nothing less than 90%
-4. **Document continuously** - Don't leave documentation for the end
-5. **Validate assumptions** - Test early, test often
+Five principles guide the architecture process. First, never skip phases because each phase builds on the previous one. Second, quality gates are mandatory with no exceptions. Third, iterate until excellence and settle for nothing less than 90%. Fourth, document continuously rather than leaving documentation for the end. Fifth, validate assumptions by testing early and testing often.

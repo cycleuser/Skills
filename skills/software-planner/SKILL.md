@@ -4,21 +4,9 @@ version: "1.0.0"
 description: |
   Comprehensive software development planning and implementation skill.
 
-  **Triggers when:**
-  - Creating new Python software with CLI/GUI/Web interfaces
-  - Planning software architecture and modules
-  - Designing scientific or engineering applications
-  - Setting up bilingual documentation and PyPI publishing
-  - Need academic research-based feature design
+  Triggers when: Creating new Python software with CLI/GUI/Web interfaces, planning software architecture and modules, designing scientific or engineering applications, setting up bilingual documentation and PyPI publishing, or needing academic research-based feature design.
 
-  **Capabilities:**
-  - Pre-development planning and research
-  - Multi-interface design (CLI + PySide6 GUI + Flask Web)
-  - Scientific visualization with pyqtgraph
-  - Academic literature-based feature design
-  - Sample data and test documentation generation
-  - Bilingual README with structured sections
-  - GPLv3 licensing and PyPI publishing setup
+  Capabilities: Pre-development planning and research, multi-interface design (CLI + PySide6 GUI + Flask Web), scientific visualization with pyqtgraph, academic literature-based feature design, sample data and test documentation generation, bilingual README with structured sections, GPLv3 licensing and PyPI publishing setup.
 author: cycleuser
 license: MIT
 ---
@@ -73,17 +61,7 @@ Software Name (v1.0)
 
 ### Step 3: Module Specification
 
-Define each module with clear responsibilities:
-
-| Module | Responsibility | Size Target |
-|--------|---------------|-------------|
-| `cli.py` | Command-line argument parsing, routing | ~100 lines |
-| `gui.py` | PySide6 window, controls, event handlers | ~200 lines |
-| `app.py` | Flask routes, API endpoints | ~100 lines |
-| `core.py` | Business logic, algorithms, data models | ~200 lines |
-| `api.py` | Unified Python API with ToolResult | ~100 lines |
-
-**Total: 500+ lines required**
+Define each module with clear responsibilities and size targets. The `cli.py` module handles command-line argument parsing and routing, targeting around 100 lines. The `gui.py` module provides PySide6 window, controls, and event handlers, targeting around 200 lines. The `app.py` module contains Flask routes and API endpoints, targeting around 100 lines. The `core.py` module implements business logic, algorithms, and data models, targeting around 200 lines. The `api.py` module provides the unified Python API with ToolResult, targeting around 100 lines. Total target is 500+ lines across all modules.
 
 ## Interface Requirements
 
@@ -125,15 +103,7 @@ def main():
     cli_parser.add_argument("input", help="Input file or data")
 ```
 
-**Entry Points (following GangDan pattern):**
-
-```bash
-softwarename              # Default: launch GUI or web based on context
-softwarename gui          # Explicit GUI mode
-softwarename web          # Web server mode
-softwarename cli <args>   # CLI mode
-python -m packagename     # Module invocation
-```
+Entry Points (following GangDan pattern): The software supports multiple entry points. The default invocation launches GUI or web based on context. Explicit GUI mode uses `softwarename gui`. Web server mode uses `softwarename web`. CLI mode uses `softwarename cli <args>`. Module invocation uses `python -m packagename`.
 
 ### GUI (PySide6 Interface)
 
@@ -190,25 +160,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.results_table)
 ```
 
-**GUI Design Principles:**
-
-1. **Default Styling Only**
-   - Use system default colors
-   - Use system default fonts
-   - No custom backgrounds
-   - No custom stylesheets
-
-2. **Layout Structure**
-   - Top: Control panel with parameters
-   - Middle: Visualization area (pyqtgraph)
-   - Bottom: Results table or log output
-
-3. **Control Types**
-   - `QLineEdit` for text input
-   - `QSpinBox` / `QDoubleSpinBox` for numeric input
-   - `QComboBox` for selections
-   - `QCheckBox` for boolean options
-   - `QPushButton` for actions
+GUI Design Principles: Three principles guide GUI implementation. First, use default styling only with system default colors, system default fonts, no custom backgrounds, and no custom stylesheets. Second, follow a consistent layout structure with the control panel with parameters at the top, visualization area with pyqtgraph in the middle, and results table or log output at the bottom. Third, select appropriate control types: `QLineEdit` for text input, `QSpinBox` or `QDoubleSpinBox` for numeric input, `QComboBox` for selections, `QCheckBox` for boolean options, and `QPushButton` for actions.
 
 ### Web (Flask Interface)
 
@@ -302,77 +254,15 @@ data/
 
 ### README.md (English)
 
-Required sections, each 200+ words:
-
-1. **Project Background** - Context, problem statement, motivation
-2. **Application Scenarios** - Use cases, target users, workflows
-3. **Hardware Compatibility** - CPU, GPU, memory requirements
-4. **Operating Systems** - Windows, macOS, Linux support
-5. **Dependencies** - Python version, required packages
-6. **Installation** - pip install, from source, configuration
-7. **Usage** - CLI commands, GUI operation, Web interface
-8. **Screenshots** - Placeholders with descriptions
-9. **License** - GPLv3 statement
+Required sections, each 200+ words: Section 1 covers project background including context, problem statement, and motivation. Section 2 describes application scenarios with use cases, target users, and workflows. Section 3 details hardware compatibility including CPU, GPU, and memory requirements. Section 4 specifies operating system support for Windows, macOS, and Linux. Section 5 lists dependencies including Python version and required packages. Section 6 provides installation instructions for pip install, from source, and configuration. Section 7 explains usage covering CLI commands, GUI operation, and Web interface. Section 8 includes screenshots with placeholders and descriptions. Section 9 covers license information with the GPLv3 statement.
 
 ### README_CN.md (Chinese)
 
-Same structure as English, translated:
-
-1. **项目背景** - 背景、问题陈述、动机
-2. **应用场景** - 用例、目标用户、工作流程
-3. **兼容硬件** - CPU、GPU、内存要求
-4. **操作系统** - Windows、macOS、Linux 支持
-5. **依赖环境** - Python 版本、依赖包
-6. **安装过程** - pip 安装、源码安装、配置
-7. **使用方法** - CLI 命令、GUI 操作、Web 界面
-8. **运行截图** - 带描述的占位符
-9. **授权协议** - GPLv3 声明
+Same structure as English, translated: Section 1 covers 项目背景 (project background). Section 2 covers 应用场景 (application scenarios). Section 3 covers 兼容硬件 (hardware compatibility). Section 4 covers 操作系统 (operating systems). Section 5 covers 依赖环境 (dependencies). Section 6 covers 安装过程 (installation). Section 7 covers 使用方法 (usage). Section 8 covers 运行截图 (screenshots). Section 9 covers 授权协议 (license).
 
 ### README Template
 
-```markdown
-# Software Name
-
-Brief one-line description.
-
-## Project Background
-
-[200+ words describing the context, problem, and motivation for this software. Include academic context and practical need.]
-
-## Application Scenarios
-
-[200+ words describing specific use cases, target users, and typical workflows.]
-
-## Hardware Compatibility
-
-[200+ words describing CPU requirements, GPU needs (if any), memory requirements, and storage needs.]
-
-## Operating Systems
-
-[200+ words describing support for Windows, macOS, Linux, with specific version requirements.]
-
-## Dependencies
-
-[200+ words listing Python version requirement, core dependencies with version constraints, and optional dependencies.]
-
-## Installation
-
-[200+ words with step-by-step installation instructions for pip, conda, and from-source methods.]
-
-## Usage
-
-[200+ words with CLI examples, GUI instructions, and Web interface usage.]
-
-## Screenshots
-
-| GUI Interface | Web Interface |
-|:-------------:|:-------------:|
-| ![GUI](images/gui.png) | ![Web](images/web.png) |
-
-## License
-
-GPLv3. See [LICENSE](LICENSE) for details.
-```
+The README template provides a structured format for documentation. Each section should contain at least 200 words to ensure adequate detail. The Project Background section describes the context, problem, and motivation for the software, including academic context and practical need. The Application Scenarios section describes specific use cases, target users, and typical workflows. The Hardware Compatibility section describes CPU requirements, GPU needs if any, memory requirements, and storage needs. The Operating Systems section describes support for Windows, macOS, and Linux with specific version requirements. The Dependencies section lists Python version requirement, core dependencies with version constraints, and optional dependencies. The Installation section provides step-by-step installation instructions for pip, conda, and from-source methods. The Usage section provides CLI examples, GUI instructions, and Web interface usage. The Screenshots section displays GUI and Web interface images. The License section states GPLv3 and references the LICENSE file.
 
 ## Project File Structure
 
@@ -417,22 +307,7 @@ project_name/
 
 ## Verification Checklist
 
-Before considering the project complete:
-
-- [ ] Code is 500+ lines total
-- [ ] CLI has unified flags (-V, -v, -o, --json, -q)
-- [ ] GUI uses default PySide6 styling
-- [ ] Web interface has REST API
-- [ ] All functions return ToolResult
-- [ ] Sample data files exist
-- [ ] Test cases defined
-- [ ] README.md has all 9 sections (200+ words each)
-- [ ] README_CN.md has all 9 sections (200+ words each)
-- [ ] Academic PDFs in `pdf/` directory
-- [ ] GPLv3 LICENSE file exists
-- [ ] requirements.txt exists
-- [ ] pyproject.toml configured correctly
-- [ ] PyPI upload scripts exist
+Before considering the project complete, verify the following items. Code should be 500+ lines total across all modules. CLI should have unified flags (-V, -v, -o, --json, -q). GUI should use default PySide6 styling without custom styling. Web interface should have a REST API. All functions should return ToolResult. Sample data files should exist in the data directory. Test cases should be defined. README.md should have all 9 sections with 200+ words each. README_CN.md should have all 9 sections with 200+ words each. Academic PDFs should be present in the `pdf/` directory. GPLv3 LICENSE file should exist. requirements.txt should exist. pyproject.toml should be configured correctly. PyPI upload scripts should exist.
 
 ## Quick Start Template
 

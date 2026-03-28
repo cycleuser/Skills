@@ -4,24 +4,15 @@ version: "1.0.0"
 description: |
   Iterative testing, verification, and improvement supervisor.
 
-  **Triggers when:**
-  - User requests iterative testing and improvement
-  - Code quality review and assurance needed
-  - Automated testing and feedback loops required
-  - Multiple rounds of refinement specified
+  Triggers when: User requests iterative testing and improvement, code quality review and assurance is needed, automated testing and feedback loops are required, or multiple rounds of refinement are specified.
 
-  **Commands:**
-  - `/iterate <n>` - Run n iterations of test-improve cycle
-  - `/iterate stop` - Stop current iteration loop
-  - `/iterate status` - Show current iteration status
-  - `/iterate report` - Generate iteration report
+  Commands:
+  - /iterate <n> - Run n iterations of test-improve cycle
+  - /iterate stop - Stop current iteration loop
+  - /iterate status - Show current iteration status
+  - /iterate report - Generate iteration report
 
-  **Capabilities:**
-  - Automated test execution and result analysis
-  - Quality metrics tracking across iterations
-  - Improvement suggestion generation
-  - Convergence detection
-  - Detailed iteration reports
+  Capabilities: Automated test execution and result analysis, quality metrics tracking across iterations, improvement suggestion generation, convergence detection, and detailed iteration reports.
 author: system
 license: MIT
 ---
@@ -32,12 +23,7 @@ Supervises iterative testing, verification, and improvement of code.
 
 ## Quick Commands
 
-| Command | Description |
-|---------|-------------|
-| `/iterate <n>` | Run n iterations of test-improve cycle |
-| `/iterate stop` | Stop current iteration loop |
-| `/iterate status` | Show current iteration status |
-| `/iterate report` | Generate comprehensive report |
+The iteration manager provides four commands. The `/iterate <n>` command runs n iterations of the test-improve cycle. The `/iterate stop` command stops the current iteration loop. The `/iterate status` command shows current iteration status. The `/iterate report` command generates a comprehensive report.
 
 ## Iteration Workflow
 
@@ -110,20 +96,11 @@ Compare with previous iteration and decide to continue or stop.
 
 ### Primary Metrics
 
-| Metric | Target | Weight |
-|--------|--------|--------|
-| Test Pass Rate | 100% | 40% |
-| Code Coverage | >80% | 30% |
-| Lint Score | 0 errors | 15% |
-| Type Check | 0 errors | 15% |
+Primary metrics track the most important quality indicators. Test pass rate has a target of 100% with 40% weight. Code coverage has a target above 80% with 30% weight. Lint score has a target of 0 errors with 15% weight. Type check has a target of 0 errors with 15% weight.
 
 ### Secondary Metrics
 
-| Metric | Target |
-|--------|--------|
-| Test Duration | < 60s |
-| Code Complexity | < 10 |
-| Documentation Coverage | > 50% |
+Secondary metrics provide additional quality signals. Test duration target is under 60 seconds. Code complexity target is under 10. Documentation coverage target is above 50%.
 
 ## Iteration Report Format
 
@@ -247,16 +224,8 @@ Agent: Resuming from iteration #3...
 
 ## Integration with Other Skills
 
-| Skill | Integration |
-|-------|-------------|
-| python-project-developer | Uses test patterns and ToolResult |
-| software-planner | Validates documentation requirements |
-| commit | Auto-commits improvements |
+The iteration manager integrates with other skills. The python-project-developer skill uses test patterns and ToolResult. The software-planner skill validates documentation requirements. The commit skill auto-commits improvements.
 
 ## Best Practices
 
-1. **Start with baseline** - Run initial tests to establish metrics
-2. **Focus on one area** - Prioritize critical failures first
-3. **Track progress** - Compare metrics across iterations
-4. **Know when to stop** - Don't over-optimize
-5. **Document changes** - Keep track of what was improved
+Five practices guide effective iteration. First, start with baseline by running initial tests to establish metrics. Second, focus on one area by prioritizing critical failures first. Third, track progress by comparing metrics across iterations. Fourth, know when to stop by avoiding over-optimization. Fifth, document changes by keeping track of what was improved.

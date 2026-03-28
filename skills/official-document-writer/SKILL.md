@@ -4,28 +4,19 @@ version: "1.0.0"
 description: |
   Official document writing assistant for Chinese government documents. Based on GB/T 9704-2012 standard.
 
-  **Triggers when:**
-  - Writing Chinese official documents (公文)
-  - Formatting documents according to national standards
-  - Reviewing document compliance
-  - Creating notices, reports, requests, replies, letters, or minutes
+  Triggers when: Writing Chinese official documents (公文), formatting documents according to national standards, reviewing document compliance, or creating notices, reports, requests, replies, letters, or minutes.
 
-  **Commands:**
-  - `/gongwen notice <topic>` - Write a notice (通知)
-  - `/gongwen report <topic>` - Write a report (报告)
-  - `/gongwen request <topic>` - Write a request (请示)
-  - `/gongwen reply <topic>` - Write a reply (批复)
-  - `/gongwen letter <topic>` - Write a letter (函)
-  - `/gongwen minutes <topic>` - Write meeting minutes (纪要)
-  - `/gongwen check <document>` - Check document compliance
-  - `/gongwen format` - Show formatting rules
+  Commands:
+  - /gongwen notice <topic> - Write a notice (通知)
+  - /gongwen report <topic> - Write a report (报告)
+  - /gongwen request <topic> - Write a request (请示)
+  - /gongwen reply <topic> - Write a reply (批复)
+  - /gongwen letter <topic> - Write a letter (函)
+  - /gongwen minutes <topic> - Write meeting minutes (纪要)
+  - /gongwen check <document> - Check document compliance
+  - /gongwen format - Show formatting rules
 
-  **Capabilities:**
-  - 15 document types support
-  - GB/T 9704-2012 compliance
-  - Hierarchy numbering rules
-  - Font and layout specifications
-  - Document structure templates
+  Capabilities: 15 document types support, GB/T 9704-2012 compliance, hierarchy numbering rules, font and layout specifications, and document structure templates.
 author: cycleuser
 license: MIT
 ---
@@ -36,36 +27,11 @@ Chinese official document writing assistant based on GB/T 9704-2012 national sta
 
 ## Quick Commands
 
-| Command | Document Type |
-|---------|---------------|
-| `/gongwen notice <topic>` | 通知 |
-| `/gongwen report <topic>` | 报告 |
-| `/gongwen request <topic>` | 请示 |
-| `/gongwen reply <topic>` | 批复 |
-| `/gongwen letter <topic>` | 函 |
-| `/gongwen minutes <topic>` | 纪要 |
-| `/gongwen check <document>` | 合规检查 |
-| `/gongwen format` | 格式规范 |
+Eight commands correspond to the main document types. The `/gongwen notice <topic>` command writes a notice (通知). The `/gongwen report <topic>` command writes a report (报告). The `/gongwen request <topic>` command writes a request (请示). The `/gongwen reply <topic>` command writes a reply (批复). The `/gongwen letter <topic>` command writes a letter (函). The `/gongwen minutes <topic>` command writes meeting minutes (纪要). The `/gongwen check <document>` command checks document compliance. The `/gongwen format` command shows formatting rules.
 
 ## Document Types (公文种类)
 
-According to "Regulations on the Handling of Official Documents of Party and Government Organs" (党政机关公文处理工作条例):
-
-| Type | Chinese | Purpose |
-|------|---------|---------|
-| Decision | 决定 | 重要事项部署、奖惩 |
-| Order | 命令（令） | 公布法规、任免、嘉奖 |
-| Public Notice | 公告 | 向国内外宣布重要事项 |
-| Announcement | 通告 | 公布社会各界周知事项 |
-| Notice | 通知 | 批转、转发、部署、任免 |
-| Circular | 通报 | 表彰先进、批评错误 |
-| Proposal | 议案 | 提请审议事项 |
-| Report | 报告 | 汇报工作、回复询问 |
-| Request | 请示 | 请求指示、批准 |
-| Reply | 批复 | 答复请示事项 |
-| Opinion | 意见 | 提出见解和办法 |
-| Letter | 函 | 商洽工作、询问答复 |
-| Minutes | 纪要 | 记载会议主要情况 |
+According to "Regulations on the Handling of Official Documents of Party and Government Organs" (党政机关公文处理工作条例), there are 15 document types. Decision (决定) handles important matter deployment and rewards or punishments. Order (命令/令) publishes laws, appointments, removals, and commendations. Public Notice (公告) announces important matters domestically and internationally. Announcement (通告) publishes matters for general public knowledge. Notice (通知) handles approval and forwarding, deployment, and appointments. Circular (通报) praises excellence or criticizes mistakes. Proposal (议案) submits matters for deliberation. Report (报告) reports on work and responds to inquiries. Request (请示) requests instructions and approval. Reply (批复) responds to requests. Opinion (意见) provides insights and methods. Letter (函) handles work consultation and inquiry responses. Minutes (纪要) records main meeting circumstances.
 
 ## Document Structure (公文结构)
 
@@ -122,55 +88,23 @@ According to "Regulations on the Handling of Official Documents of Party and Gov
 
 ### Hierarchy Numbering (层次序号)
 
-According to GB/T 9704-2012:
-
-```
-第一层：一、二、三、……（中文数字+顿号）
-第二层：（一）（二）（三）……（全角括号+中文数字）
-第三层：1. 2. 3. ……（阿拉伯数字+英文句点）
-第四层：（1）（2）（3）……（全角括号+阿拉伯数字）
-```
-
-**Note:** Do NOT use Roman numerals (I, II, III) or other formats.
+According to GB/T 9704-2012, the four-level hierarchy numbering system uses distinct formats at each level. The first level uses Chinese numerals with a pause (一、二、三、……). The second level uses full-width parentheses with Chinese numerals（（一）（二）（三）……). The third level uses Arabic numerals with an English period (1. 2. 3. ……)。 The fourth level uses full-width parentheses with Arabic numerals（（1）（2）（3）……). Note: Do NOT use Roman numerals (I, II, III) or other formats.
 
 ### Font Specifications (字体规格)
 
-| Element | Font | Size |
-|---------|------|------|
-| 发文机关标志 | 小标宋体 | 红色 |
-| 标题 | 小标宋体 | 2号 |
-| 主送机关 | 仿宋 | 3号 |
-| 正文第一层 | 黑体 | 3号 |
-| 正文第二层 | 楷体 | 3号 |
-| 正文第三、四层 | 仿宋 | 3号 |
-| 发文字号 | 仿宋 | 3号 |
-| 页码 | 宋体 | 4号 |
+Different document elements require specific fonts and sizes. The发文机关标志 uses small standard Song typeface in red. The 标题 uses small standard Song typeface in size 2. The 主送机关 uses Fang Song in size 3. The first level of 正文 uses Hei in size 3. The second level of 正文 uses Kai in size 3. The third and fourth levels of 正文 use Fang Song in size 3. The 发文字号 uses Fang Song in size 3. The 页码 uses Song in size 4.
 
 ### Page Layout (页面设置)
 
-- **Paper size:** A4 (210mm × 297mm)
-- **Margins:** Top 37mm, Bottom 35mm, Left 28mm, Right 26mm
-- **Line spacing:** Fixed 28 pounds (约0.99cm)
-- **Page number format:** — 1 — (一字线+页码+一字线)
-- **Page number position:** Bottom center, odd right, even left
+Page layout follows strict specifications. Paper size is A4 (210mm × 297mm). Margins are top 37mm, bottom 35mm, left 28mm, right 26mm. Line spacing is fixed 28 pounds (approximately 0.99cm). Page number format is — 1 — (one dash + page number + one dash). Page number position is bottom center, odd pages on right, even pages on left.
 
 ### Date Format (日期格式)
 
-```
-正确格式：2024年3月15日
-错误格式：二〇二四年三月十五日
-错误格式：2024.03.15
-错误格式：2024-03-15
-```
+The correct format is 2024年3月15日. Common errors include 二〇二四年三月十五日 (Chinese era format), 2024.03.15 (dot notation), and 2024-03-15 (dash notation). Use the Chinese character 年月日 format.
 
 ### Document Number Format (发文字号格式)
 
-```
-正确格式：国发〔2024〕1号
-错误格式：国发[2024]1号
-错误格式：国发[2024]第1号
-错误格式：国发（2024）1号
-```
+The correct format is 国发〔2024〕1号 using Chinese brackets. Common errors include 国发[2024]1号 with square brackets, 国发[2024]第1号 with the extra 第 character, and 国发（2024）1号 with parentheses instead of brackets. Use the Chinese bracket character 〔〕 without any additional characters.
 
 ## Workflow
 
@@ -214,20 +148,11 @@ Step 5: 合规审核
 
 ## Writing Principles
 
-1. **准确** - Content must be accurate and factual
-2. **简洁** - Express ideas concisely
-3. **规范** - Follow national standards strictly
-4. **得体** - Use appropriate tone and language
-5. **完整** - Include all necessary elements
+Five principles guide official document writing. First, 准确 means content must be accurate and factual. Second, 简洁 means express ideas concisely. Third, 规范 means follow national standards strictly. Fourth, 得体 means use appropriate tone and language. Fifth, 完整 means include all necessary elements.
 
 ## Common Mistakes to Avoid
 
-- ❌ Wrong hierarchy numbering format
-- ❌ Missing document number or date
-- ❌ Incorrect font or size
-- ❌ Missing stamp or signature
-- ❌ Wrong tone for document type
-- ❌ Incomplete document structure
+Six common mistakes compromise official document quality. Wrong hierarchy numbering format violates the standard numbering rules. Missing document number or date makes the document incomplete. Incorrect font or size fails to meet formatting specifications. Missing stamp or signature invalidates the document. Wrong tone for document type inappropriate for the specific公文种类. Incomplete document structure violates the required format.
 
 ## Reference Standards
 

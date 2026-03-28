@@ -4,25 +4,16 @@ version: "1.0.0"
 description: |
   Academic paper writing assistant for top-tier conferences (AAAI, IJCAI, IEEE).
 
-  **Triggers when:**
-  - Writing academic papers or articles
-  - Need literature search and citation formatting
-  - Preparing manuscripts for conference submission
-  - Creating paper structure and organization
+  Triggers when: Writing academic papers or articles, needing literature search and citation formatting, preparing manuscripts for conference submission, or creating paper structure and organization.
 
-  **Commands:**
-  - `/paper new <topic>` - Start new paper with topic
-  - `/paper search <keywords>` - Search and collect literature
-  - `/paper cite` - Format citations properly
-  - `/paper structure` - Generate paper outline
-  - `/paper review` - Review and polish text
+  Commands:
+  - /paper new <topic> - Start new paper with topic
+  - /paper search <keywords> - Search and collect literature
+  - /paper cite - Format citations properly
+  - /paper structure - Generate paper outline
+  - /paper review - Review and polish text
 
-  **Capabilities:**
-  - Literature search from Google Scholar, arXiv, DBLP
-  - Standard citation formatting (IEEE, ACM, APA)
-  - Paper structure generation for AAAI/IJCAI format
-  - Natural academic writing without AI markers
-  - Mathematical notation and figure descriptions
+  Capabilities: Literature search from Google Scholar, arXiv, DBLP, standard citation formatting (IEEE, ACM, APA), paper structure generation for AAAI/IJCAI format, natural academic writing without AI markers, and mathematical notation and figure descriptions.
 author: system
 license: MIT
 ---
@@ -33,13 +24,7 @@ Professional academic paper writing assistant for top-tier conference submission
 
 ## Quick Commands
 
-| Command | Description |
-|---------|-------------|
-| `/paper new <topic>` | Start new paper with topic analysis |
-| `/paper search <keywords>` | Search and collect relevant literature |
-| `/paper cite` | Format citations in standard format |
-| `/paper structure` | Generate paper outline |
-| `/paper review` | Review and polish for submission |
+Five commands support the academic writing workflow. The `/paper new <topic>` command starts a new paper with topic analysis. The `/paper search <keywords>` command searches and collects relevant literature. The `/paper cite` command formats citations in standard format. The `/paper structure` command generates a paper outline. The `/paper review` command reviews and polishes the paper for submission.
 
 ## Paper Structure Templates
 
@@ -257,14 +242,7 @@ Volume(Issue), page-range.
 
 ### Search Sources
 
-| Source | URL | Best For |
-|--------|-----|----------|
-| Google Scholar | scholar.google.com | General academic papers |
-| arXiv | arxiv.org | Preprints, CS/AI papers |
-| DBLP | dblp.org | Computer science bibliography |
-| Semantic Scholar | semanticscholar.org | AI-powered paper discovery |
-| ACM DL | dl.acm.org | Computing literature |
-| IEEE Xplore | ieeexplore.ieee.org | Engineering papers |
+Six search sources provide literature for academic writing. Google Scholar at scholar.google.com is best for general academic papers. arXiv at arxiv.org is best for preprints and CS/AI papers. DBLP at dblp.org provides computer science bibliography. Semantic Scholar at semanticscholar.org offers AI-powered paper discovery. ACM DL at dl.acm.org covers computing literature. IEEE Xplore at ieeexplore.ieee.org provides engineering papers.
 
 ### Search Keywords Template
 

@@ -4,20 +4,9 @@ version: "1.0.0"
 description: |
   Complete Python multi-project development specification for CLI/GUI tools.
 
-  **Triggers when:**
-  - Creating a new Python project with CLI and GUI support
-  - Setting up pyproject.toml, README, and PyPI publishing
-  - Implementing unified API with ToolResult pattern
-  - Adding OpenAI function-calling tools integration
-  - Writing standardized tests and documentation
+  Triggers when: Creating a new Python project with CLI and GUI support, setting up pyproject.toml with README and PyPI publishing, implementing unified API with ToolResult pattern, adding OpenAI function-calling tools integration, or writing standardized tests and documentation.
 
-  **Capabilities:**
-  - Project structure: single-file to package migration
-  - CLI unified flags: -V, -v, -o, --json, -q
-  - Python API: ToolResult dataclass pattern
-  - Function-calling: TOOLS + dispatch pattern
-  - Documentation: bilingual README, auto-screenshots
-  - Testing: pytest with unified test structure
+  Capabilities: Project structure guidance from single-file to package migration, CLI unified flags (-V, -v, -o, --json, -q), Python API with ToolResult dataclass pattern, function-calling with TOOLS + dispatch pattern, bilingual README documentation with auto-screenshots, and pytest testing with unified test structure.
 author: cycleuser
 license: MIT
 ---
@@ -30,20 +19,11 @@ Complete development workflow for Python CLI/GUI tools with PyPI publishing, uni
 
 ### Single File vs Package
 
-- **Single file**: Use when < 1500 lines
-- **Package structure**: Required when > 1500 lines, each module < 800 lines
+Single file structure is appropriate when the total code is under 1500 lines. Package structure is required when code exceeds 1500 lines, with each module kept under 800 lines.
 
 ### Standard Package Modules
 
-| File | Responsibility |
-|------|----------------|
-| `__init__.py` | Package init, public API exports |
-| `core.py` | Core business logic (dataclasses, engines, algorithms) |
-| `cli.py` | Command-line interface (argparse, run_cli entry) |
-| `gui.py` | GUI (tkinter/PySide6/PyQt) |
-| `api.py` | Unified Python API (ToolResult wrapper) |
-| `tools.py` | OpenAI function-calling definitions |
-| `__main__.py` | `python -m` entry point |
+The package structure follows a convention where each file has a specific responsibility. The `__init__.py` file handles package initialization and public API exports. The `core.py` file contains core business logic including dataclasses, engines, and algorithms. The `cli.py` file implements the command-line interface using argparse with the run_cli entry point. The `gui.py` file provides GUI functionality using tkinter, PySide6, or PyQt. The `api.py` file implements the unified Python API with the ToolResult wrapper. The `tools.py` file defines OpenAI function-calling tools. The `__main__.py` file provides the `python -m` entry point.
 
 ### Directory Convention
 
@@ -68,37 +48,11 @@ project/
 
 ### Required Flags (in order)
 
-```python
-import argparse
-
-parser = argparse.ArgumentParser(
-    formatter_class=argparse.RawDescriptionHelpFormatter,
-    epilog="Examples:\n  toolname --input file.txt\n  toolname -o output.json"
-)
-
-# 1. Version
-parser.add_argument("-V", "--version", action="version", version=f"toolname {__version__}")
-
-# 2. Verbose
-parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
-
-# 3. Output path
-parser.add_argument("-o", "--output", help="Output path")
-
-# 4. JSON output
-parser.add_argument("--json", action="store_true", dest="json_output", help="Output as JSON")
-
-# 5. Quiet mode
-parser.add_argument("-q", "--quiet", action="store_true", help="Suppress non-essential output")
-```
+The CLI follows a unified flag convention with five flags in a specific order. First, the version flag `-V` or `--version` uses argparse version action. Second, the verbose flag `-v` or `--verbose` enables verbose output. Third, the output path flag `-o` or `--output` specifies the output path. Fourth, the JSON output flag `--json` enables JSON output format. Fifth, the quiet mode flag `-q` or `--quiet` suppresses non-essential output.
 
 ### Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | Runtime error |
-| 2 | Invalid arguments (argparse handles) |
+Exit code 0 indicates success. Exit code 1 indicates a runtime error. Exit code 2 indicates invalid arguments, which argparse handles automatically.
 
 ### Logging by Mode
 
@@ -228,14 +182,7 @@ def dispatch(name: str, arguments: dict[str, Any] | str) -> dict:
 
 ### Required Test Classes
 
-```
-TestToolResult         # ToolResult behavior
-TestXxxAPI            # API function tests
-TestToolsSchema       # TOOLS schema validation
-TestToolsDispatch     # dispatch() tests
-TestCLIFlags          # CLI integration tests
-TestPackageExports    # __init__.py exports
-```
+The test suite requires six test classes covering different aspects of the project. TestToolResult verifies ToolResult behavior. TestXxxAPI covers API function tests. TestToolsSchema validates the TOOLS schema. TestToolsDispatch tests the dispatch function. TestCLIFlags handles CLI integration tests. TestPackageExports verifies `__init__.py` exports.
 
 ### Test Patterns
 
@@ -311,19 +258,7 @@ class TestCLIFlags:
 
 ### README Chapters (in order)
 
-```
-## Project Name -- One-line description
-## Features / 功能特性
-## Requirements / 系统要求
-## Installation / 安装
-## Quick Start / 快速开始
-## Usage / 使用方法
-## Python API
-## Agent Integration (OpenAI Function Calling) / Agent 集成
-## CLI Help (screenshot)
-## Development / 开发
-## License / 许可证
-```
+The README follows a specific chapter order to ensure consistent documentation across projects. Chapter 1 is the project name with a one-line description. Chapter 2 covers features in both English and Chinese. Chapter 3 details requirements in both languages. Chapter 4 provides installation instructions. Chapter 5 offers quick start guidance. Chapter 6 explains usage. Chapter 7 documents the Python API. Chapter 8 covers agent integration with OpenAI function calling. Chapter 9 includes a CLI help screenshot. Chapter 10 discusses development. Chapter 11 provides license information.
 
 ### Python API Section Template
 
@@ -376,11 +311,4 @@ twine upload dist\*
 
 ## Verification Checklist
 
-- [ ] `pip install -e .` succeeds
-- [ ] `toolname -V` outputs correct version
-- [ ] `toolname --help` shows unified flags
-- [ ] `from projectname import ToolResult` works
-- [ ] `from projectname.tools import TOOLS` works
-- [ ] `pytest tests/test_unified_api.py -v` passes
-- [ ] README contains Python API and Agent sections
-- [ ] Screenshots generated in `images/`
+Before considering a project complete, verify the following items. The editable install should succeed with `pip install -e .`. The version flag should output the correct version with `toolname -V`. The help command should show unified flags with `toolname --help`. The ToolResult import should work with `from projectname import ToolResult`. The TOOLS import should work with `from projectname.tools import TOOLS`. The test suite should pass with `pytest tests/test_unified_api.py -v`. The README should contain both Python API and Agent sections. Screenshots should be generated in the `images/` directory.

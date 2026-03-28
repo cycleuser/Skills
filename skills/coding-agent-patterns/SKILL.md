@@ -4,20 +4,9 @@ version: "1.0.0"
 description: |
   Core patterns for AI coding agents based on analysis of Claude Code, Codex, Cline, Aider, OpenCode.
 
-  **Triggers when:**
-  - Building an AI coding agent or assistant
-  - Implementing tool-calling loops
-  - Managing context windows for LLMs
-  - Setting up agent memory or skill systems
-  - Designing multi-provider LLM abstraction
+  Triggers when: Building an AI coding agent or assistant, implementing tool-calling loops, managing context windows for LLMs, setting up agent memory or skill systems, or designing multi-provider LLM abstraction.
 
-  **Capabilities:**
-  - Core agent loop: while(true) with tool execution
-  - Context management: pruning, compression, repo maps
-  - Tool safety: sandboxing, approval flows, doom loop detection
-  - Multi-provider abstraction: unified API for different LLMs
-  - Memory systems: project rules, auto-memory, skill loading
-  - Session persistence: SQLite vs JSONL patterns
+  Capabilities: Core agent loop with while(true) and tool execution, context management with pruning and compression and repo maps, tool safety with sandboxing and approval flows and doom loop detection, multi-provider abstraction with unified API for different LLMs, memory systems with project rules and auto-memory and skill loading, session persistence with SQLite vs JSONL patterns.
 author: cycleuser
 license: MIT
 ---
@@ -28,54 +17,15 @@ Core patterns distilled from Claude Code (70k stars), Codex (62k), Cline (58k), 
 
 ## The Core Loop: while(true)
 
-All AI coding agents share the same fundamental loop:
+All AI coding agents share the same fundamental loop. The loop follows the pattern: ask LLM if it needs tools, use them, feed results back, and repeat until done. The implementation builds context with tools and conversation history, calls the LLM with messages and tool definitions, checks for tool calls and returns content if none, executes tools and appends results to history, then loops back with tool results.
 
-```python
-while True:
-    # 1. Build context: tools + conversation history
-    messages = build_messages(history, tools)
-
-    # 2. Call LLM
-    response = llm.chat(messages, tools=tool_definitions)
-
-    # 3. Check for tool calls
-    if not response.tool_calls:
-        return response.content  # Done, return to user
-
-    # 4. Execute tools
-    for tool_call in response.tool_calls:
-        result = execute_tool(tool_call.name, tool_call.arguments)
-        history.append({"role": "tool", "content": result})
-
-    # 5. Loop back with tool results
-```
-
-**Translation**: Ask LLM if it needs tools → use them → feed results back → repeat until done.
-
-### Core Tools (all agents have these)
-
-| Tool | Purpose |
-|------|---------|
-| `read` | Read file contents |
-| `write` | Create/overwrite files |
-| `edit` | Precise string replacement in files |
-| `bash` | Execute shell commands |
-| `glob` | Find files by pattern |
-| `grep` | Search file contents |
-
-A minimal viable agent: **~1000-2000 lines** with these 6 tools + the loop.
+Core Tools: All agents have six fundamental tools. The `read` tool reads file contents. The `write` tool creates or overwrites files. The `edit` tool performs precise string replacement in files. The `bash` tool executes shell commands. The `glob` tool finds files by pattern. The `grep` tool searches file contents. A minimal viable agent requires approximately 1000-2000 lines with these six tools plus the loop.
 
 ## Challenge 1: Context Window Management
 
 The biggest engineering challenge. A real project has thousands of files, but LLMs have limited context (128K - 2M tokens).
 
-### Strategies
-
-| Agent | Strategy |
-|-------|----------|
-| **Aider** | Repo Map: tree-sitter scan, only pass signatures, load details on demand |
-| **Claude Code** | Auto-compaction: LLM summarizes history when context fills |
-| **OpenCode** | Two-level: prune old tool results (keep 40K recent), then compress |
+Strategies: Different agents use different strategies. Aider uses Repo Map with tree-sitter scanning that only passes signatures and loads details on demand. Claude Code uses Auto-compaction where the LLM summarizes history when context fills. OpenCode uses a two-level approach that prunes old tool results (keeping 40K recent) and then compresses.
 
 ### Compression Pattern
 
@@ -115,11 +65,7 @@ def build_repo_map(repo_path: Path) -> str:
 
 ### Three Safety Models
 
-| Model | Agent | Trade-off |
-|-------|-------|-----------|
-| **Hard sandbox** | Codex (Rust) | Maximum safety, OS-level isolation |
-| **Per-step approval** | Cline | Safe but tedious (too many popups) |
-| **Tiered + hooks** | Claude Code | Balanced: read/write/execute tiers |
+Three safety models represent different trade-offs. The hard sandbox model used by Codex (Rust) provides maximum safety with OS-level isolation. The per-step approval model used by Cline is safe but tedious due to too many popups. The tiered plus hooks model used by Claude Code provides balance with read/write/execute tiers.
 
 ### Sandboxing (Codex/Rust approach)
 
@@ -173,21 +119,9 @@ def detect_doom_loop(history: list) -> bool:
 
 ## Challenge 3: Multi-Provider Abstraction
 
-Each LLM provider has different APIs: message formats, tool calling, streaming.
+Each LLM provider has different APIs for message formats, tool calling, and streaming. OpenAI uses `content: string` with `function_call` for tools. Anthropic uses `content: blocks[]` with `tool_use` for tools. Google uses `parts[]` with `function_call` for tools. Ollama is OpenAI-compatible.
 
-| Provider | Message Format | Tool Field |
-|----------|----------------|------------|
-| OpenAI | `content: string` | `function_call` |
-| Anthropic | `content: blocks[]` | `tool_use` |
-| Google | `parts[]` | `function_call` |
-| Ollama | OpenAI-compatible | OpenAI-compatible |
-
-### Two Approaches
-
-| Approach | Agent | Pros |
-|----------|-------|------|
-| **Use Vercel AI SDK** | OpenCode | Free abstraction for 20+ providers |
-| **Manual adapters** | Cline | 44 providers, full control |
+Two approaches exist for multi-provider abstraction. OpenCode uses the Vercel AI SDK which provides free abstraction for over 20 providers. Cline uses manual adapters which supports 44 providers with full control.
 
 ### Unified Client Pattern
 
@@ -245,10 +179,7 @@ async def agent_loop_with_retry(max_retries: int = 32):
 
 ## Challenge 5: Session Persistence
 
-| Agent | Storage | Pros |
-|-------|---------|------|
-| **OpenCode** | SQLite | ACID, no corruption on crash |
-| **Others** | JSONL | Simple, human-readable |
+Different agents use different storage approaches. OpenCode uses SQLite which provides ACID guarantees and no corruption on crash. Other agents use JSONL which is simple and human-readable.
 
 ### JSONL Pattern
 
@@ -291,13 +222,7 @@ def undo_to_snapshot(shadow_path: Path, commit_hash: str):
 
 ### Project Rules Loading
 
-| Agent | File | Features |
-|-------|------|----------|
-| **Claude Code** | `CLAUDE.md` + `.claude/rules/` | Auto-memory, per-file-type rules |
-| **OpenCode** | `.opencode/skills/` + agents/ | On-demand skill loading, markdown agents |
-| **Cline** | `.clinerules` | 7 lifecycle hooks |
-| **Aider** | `CONVENTIONS.md` | Simple `/read` loading |
-| **Codex** | `AGENTS.md` + Skills | Deterministic workflows |
+Different agents use different approaches for loading project rules. Claude Code uses `CLAUDE.md` plus `.claude/rules/` directory with auto-memory and per-file-type rules. OpenCode uses `.opencode/skills/` plus agents directory with on-demand skill loading and markdown agents. Cline uses `.clinerules` with 7 lifecycle hooks. Aider uses `CONVENTIONS.md` with simple `/read` loading. Codex uses `AGENTS.md` plus Skills for deterministic workflows.
 
 ### Skill System Pattern (OpenCode)
 
@@ -358,8 +283,4 @@ def build_system_prompt() -> str:
 
 ## Key Takeaways
 
-1. **Start with the loop** - Write the while(true) first, get tool calling working
-2. **Context management early** - This is the #1 cause of agent failures
-3. **Provider abstraction matters** - Don't lock into one LLM vendor
-4. **Safety in layers** - Sandbox + approval + detection
-5. **Memory = context** - Rules are injected into prompts, not separate config
+Five key principles guide agent development. First, start with the loop by writing the while(true) first and getting tool calling working. Second, implement context management early since this is the number one cause of agent failures. Third, provider abstraction matters because locking into one LLM vendor creates vendor lock-in. Fourth, layer safety with sandbox plus approval plus detection. Fifth, recognize that memory equals context since rules are injected into prompts rather than being separate config.
