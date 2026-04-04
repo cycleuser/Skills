@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **20 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
-- **30 Commands** - English and Chinese commands supported
+- **21 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
+- **32 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -27,6 +27,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **humanizer** | AI text humanization | Natural language processing |
 | **literary-ghostwriter** | Literary style imitation (7 masters) | Literary writing |
 | **brief-write** | User blog style imitation | Blog & technical writing |
+| **bao-kao** | Enrollment consultation (Zhang Xuefeng style) | Gaokao & postgraduate enrollment |
 | **skill-refiner** | Skill refinement and polishing | Skill improvement |
 | **project-rebuilder** | Reference project rebuilding | Project migration |
 | **shen-shi** | GitHub triage (read-only) | Issue analysis |
@@ -105,6 +106,7 @@ After installation, use these commands in OpenCode:
 | `/humanize <text>` | Humanize AI-generated text |
 | `/literary <author> <topic>` | Literary style writing |
 | `/write <topic>` | Blog style writing |
+| `/enroll <query>` | Enrollment consultation |
 | `/refine <skill>` | Skill refinement |
 | `/rebuild <project>` | Project rebuilding |
 | `/analyze <repo>` | GitHub triage |
@@ -149,6 +151,10 @@ After installation, use these commands in OpenCode:
 
 # Blog style writing
 /write 如何搭建本地AI编程环境
+
+# Enrollment consultation
+/enroll 北京 高考 580分 能报什么学校
+/enroll 北京大学 法学硕士招生情况
 
 # Skill refinement
 /refine literary-ghostwriter

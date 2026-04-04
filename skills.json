@@ -182,6 +182,19 @@
         "user-style.md",
         "ai-patterns-avoid.md"
       ]
+    },
+    {
+      "name": "bao-kao",
+      "version": "1.0.0",
+      "description": "Enrollment consultation skill - Zhang Xuefeng style gaokao/postgraduate enrollment guidance with official data search",
+      "auto_load": false,
+      "priority": 15,
+      "rules": [
+        "data-sources.md",
+        "analysis-methods.md",
+        "consultant-style.md",
+        "taboo-list.md"
+      ]
     }
   ]
 }
