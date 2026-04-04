@@ -171,6 +171,17 @@
         "validation.md",
         "templates.md"
       ]
+    },
+    {
+      "name": "brief-write",
+      "version": "1.0.0",
+      "description": "Brief write skill - write in user's blog style with direct, colloquial, sincere expression",
+      "auto_load": false,
+      "priority": 10,
+      "rules": [
+        "user-style.md",
+        "ai-patterns-avoid.md"
+      ]
     }
   ]
 }

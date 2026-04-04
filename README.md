@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **11 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, and autonomous iteration
-- **11 Commands** - English and Chinese commands supported
+- **20 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
+- **30 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -25,6 +25,15 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **patent-writer** | Patent writing assistant | Patent applications |
 | **official-document-writer** | Official document writing (GB/T 9704-2012) | Official documents |
 | **humanizer** | AI text humanization | Natural language processing |
+| **literary-ghostwriter** | Literary style imitation (7 masters) | Literary writing |
+| **brief-write** | User blog style imitation | Blog & technical writing |
+| **skill-refiner** | Skill refinement and polishing | Skill improvement |
+| **project-rebuilder** | Reference project rebuilding | Project migration |
+| **shen-shi** | GitHub triage (read-only) | Issue analysis |
+| **ba-guan** | Pre-publish 3-layer review | Quality review |
+| **he-bing** | Complete PR workflow | Pull requests |
+| **an-jian** | Skill security review | Security analysis |
+| **zi-kong** | Autonomous iteration | Self-controlling work |
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 
 ## Installation
@@ -94,6 +103,15 @@ After installation, use these commands in OpenCode:
 | `/patent <task>` | Patent writing |
 | `/gongwen <task>` | Official document writing |
 | `/humanize <text>` | Humanize AI-generated text |
+| `/literary <author> <topic>` | Literary style writing |
+| `/write <topic>` | Blog style writing |
+| `/refine <skill>` | Skill refinement |
+| `/rebuild <project>` | Project rebuilding |
+| `/analyze <repo>` | GitHub triage |
+| `/review <text>` | Pre-publish review |
+| `/pr` | PR workflow |
+| `/security <skill>` | Security review |
+| `/auto <task>` | Autonomous iteration |
 | `/skills` | List all skills |
 
 ### Command Examples
@@ -122,7 +140,30 @@ After installation, use these commands in OpenCode:
 
 # Official document writing
 /gongwen Write a notice about safety production
-```
+
+# Humanize AI text
+/humanize 本文将全面介绍优化器的核心原理...
+
+# Literary style writing
+/literary luxun 如何面对困境
+
+# Blog style writing
+/write 如何搭建本地AI编程环境
+
+# Skill refinement
+/refine literary-ghostwriter
+
+# GitHub triage
+/analyze https://github.com/user/repo
+
+# Pre-publish review
+/review 这篇文章的内容需要把关
+
+# Security review
+/security oh-my-openagent
+
+# Autonomous iteration
+/auto Build a Python CLI tool
 
 **Note:** Chinese commands are also available. See [README_CN.md](README_CN.md) for Chinese documentation.
 
