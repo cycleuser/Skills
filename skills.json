@@ -195,6 +195,18 @@
         "consultant-style.md",
         "taboo-list.md"
       ]
+    },
+    {
+      "name": "sleepless",
+      "version": "1.0.0",
+      "description": "Sleepless - autonomous execution skill that never stops, never asks, forces completion across all task modes",
+      "auto_load": false,
+      "priority": 300,
+      "rules": [
+        "autonomous-loop.md",
+        "eternal-drive.md",
+        "task-omnipotence.md"
+      ]
     }
   ]
 }
