@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": "https://github.com/cycleuser/Skills",
   "install_url": "https://raw.githubusercontent.com/cycleuser/Skills/main",
   "skills": [
@@ -206,6 +206,65 @@
         "autonomous-loop.md",
         "eternal-drive.md",
         "task-omnipotence.md"
+      ]
+    },
+    {
+      "name": "an-jian",
+      "version": "1.0.0",
+      "description": "安检 - Security review for skills before installation, checking for dangerous commands, credential leaks, and other risks",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "dangerous-patterns.md",
+        "fix-strategies.md",
+        "risk-assessment.md"
+      ]
+    },
+    {
+      "name": "ba-guan",
+      "version": "1.0.0",
+      "description": "把关 - Pre-publish review with multi-layer deep analysis: per-change review, 5-role holistic review, and synthesis assessment",
+      "auto_load": false,
+      "priority": 100,
+      "rules": []
+    },
+    {
+      "name": "he-bing",
+      "version": "1.0.0",
+      "description": "合并 - Complete PR lifecycle: worktree, implement, commits, PR, verify, merge",
+      "auto_load": false,
+      "priority": 80,
+      "rules": []
+    },
+    {
+      "name": "shen-shi",
+      "version": "1.0.0",
+      "description": "审视 - Read-only GitHub triage for issues and PRs with evidence-based analysis reports",
+      "auto_load": false,
+      "priority": 30,
+      "rules": []
+    },
+    {
+      "name": "project-rebuilder",
+      "version": "1.0.0",
+      "description": "项目重建 - Reference existing projects and rebuild core features from scratch with team review and ralph execution modes",
+      "auto_load": false,
+      "priority": 90,
+      "rules": [
+        "project-analysis.md",
+        "team-review.md",
+        "ralph-execution.md",
+        "checkpoint.md"
+      ]
+    },
+    {
+      "name": "zi-kong",
+      "version": "1.0.0",
+      "description": "自控 - Self-controlled autonomous iteration for opencode itself with cross-session memory and self-review",
+      "auto_load": false,
+      "priority": 350,
+      "rules": [
+        "autonomous-loop.md"
       ]
     }
   ]
