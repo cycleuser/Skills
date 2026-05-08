@@ -2,18 +2,31 @@
 name: skill-refiner
 version: "1.1.0"
 description: |
-  修炼技能：对任意技能进行反复打磨改进，直到达到最优状态。
+  Skill refinement tool that iteratively polishes and improves any skill until it reaches optimal quality.
 
-  触发条件：需要改进现有技能、润色技能文档、优化技能规则、修复技能缺陷。
+  Triggers when: Needing to improve an existing skill, polish skill documentation, optimize skill rules, or fix skill deficiencies.
 
-  命令：
-  - /修炼 <技能名>：对指定技能进行修炼
-  - /refine <skill>：Refine a specific skill
+  Commands:
+  - /修炼 <技能名> - Refine a specific skill
+  - /refine <skill> - Refine a specific skill (English)
 
-  能力：深度分析技能缺陷、生成改进方案、迭代优化直到达标、测试验证改进效果、生成修炼报告。
+  Capabilities: Deep analysis of skill deficiencies, improvement plan generation, iterative optimization until standards are met, testing to verify improvements, cultivation report generation
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 修炼 (Skill Refiner)
 

@@ -2,20 +2,33 @@
 name: humanizer
 version: "1.4.0"
 description: |
-  AI文本人化处理技能：将AIGC生成的文本润色成自然的人类语言。
+  AI text humanizer that rewrites AI-generated content into natural human language based on AIGC detection countermeasures.
 
-  触发条件：需要降低文本的AIGC检测率、将AI生成内容改写为人话、优化文本使其更像人类写作风格、对AI文本进行人性化润色。
+  Triggers when: Needing to reduce AIGC detection rates, rewriting AI-generated content into natural language, optimizing text to sound more human-written, or performing humanization polish on AI text.
 
-  命令：
-  - /人话 <文本>：对文本进行人化处理
-  - /humanize <text>：Humanize AI-generated text
-  - /detect <文本>：检测文本AIGC特征
-  - /demo：生成高AIGC率示例文本并演示处理过程
+  Commands:
+  - /人话 <文本> - Humanize text
+  - /humanize <text> - Humanize AI-generated text (English)
+  - /detect <文本> - Detect AIGC features in text
+  - /demo - Generate high-AIGC example and demonstrate processing
 
-  能力：基于AIGC检测原理的反检测策略、识别"一眼AI"的典型特征、多轮迭代降低AIGC检测率、保留原文核心语义和逻辑、支持口语化和书面化两种风格、支持中英文文本处理。
-author: system
+  Capabilities: AIGC detection countermeasures, identifying AI-typical patterns, multi-round iterative AIGC rate reduction, preserving original meaning and logic, supporting both casual and formal styles, bilingual Chinese-English text processing
+author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 人话 (Humanizer)
 

@@ -2,20 +2,31 @@
 name: literary-ghostwriter
 version: "2.1.0"
 description: |
-  文豪代笔技能 - 模仿七位文学大师的写作风格
-  
-  触发条件: 需要以特定作家风格创作文章或作品，文学创作、剧本写作、小说创作，或风格模仿练习。
-  
-  命令:
-  - /文豪 <作家> <选题> - 中文创作
-  - /literary <author> <topic> - English writing
-  
-  支持七位作家: 西方三位是shakespeare/莎士比亚、zweig/茨维格、calvino/卡尔维诺。中国四位是luxun/鲁迅、laoshe/老舍、jinyong/金庸、gulong/古龙。
-  
-  能力: 深度分析作家风格的精神内核，提供神似创作的具体方法，支持中英双语创作，多种体裁支持，遵循用户提供的选题和剧情。
+  Literary ghostwriter skill that mimics the writing style of seven literary masters for creative writing.
+
+  Triggers when: Writing in a specific author's style, creative writing, script writing, novel writing, or style imitation exercises.
+
+  Commands:
+  - /文豪 <作家> <选题> - Write in Chinese with a master's style
+  - /literary <author> <topic> - Write in English with a master's style
+
+  Capabilities: Deep analysis of author's spiritual core, providing concrete methods for authentic imitation, bilingual Chinese-English creation, multiple genre support, following user-provided topics and plot
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Literary Ghostwriter 文豪代笔
 

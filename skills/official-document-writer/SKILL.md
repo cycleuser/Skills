@@ -2,7 +2,7 @@
 name: official-document-writer
 version: "1.0.0"
 description: |
-  Official document writing assistant for Chinese government documents. Based on GB/T 9704-2012 standard.
+  Official document writing assistant for Chinese government documents based on GB/T 9704-2012 standard.
 
   Triggers when: Writing Chinese official documents (公文), formatting documents according to national standards, reviewing document compliance, or creating notices, reports, requests, replies, letters, or minutes.
 
@@ -16,10 +16,23 @@ description: |
   - /gongwen check <document> - Check document compliance
   - /gongwen format - Show formatting rules
 
-  Capabilities: 15 document types support, GB/T 9704-2012 compliance, hierarchy numbering rules, font and layout specifications, and document structure templates.
+  Capabilities: 15 document types support, GB/T 9704-2012 compliance, hierarchy numbering rules, font and layout specifications, document structure templates
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Official Document Writer
 

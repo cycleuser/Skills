@@ -2,28 +2,34 @@
 name: he-bing
 version: "1.0.0"
 description: |
-  合并 - Complete PR lifecycle: worktree → implement → commits → PR → verify → merge.
-  
-  触发条件/Triggers: 需要实现功能并提交 PR、修复 Issue、或完成代码审查后的合并工作。
-  
-  工作流/Workflow:
-  - 阶段 0/Phase 0: 创建工作树/Create worktree
-  - 阶段 1/Phase 1: 实现功能/Implement feature
-  - 阶段 2/Phase 2: 创建 PR/Create PR
-  - 阶段 3/Phase 3: 验证循环/Verification loop (CI + Review + Approval)
-  - 阶段 4/Phase 4: 合并清理/Merge & cleanup
-  
-  命令/Commands:
-  - /合并 <任务> - 启动完整 PR 工作流
-  - /合并 create <任务> - 创建 PR
-  - /合并 check - 检查验证状态
-  - /合并 status - 查看 PR 状态
-  - /pr <task> - English command
-  
-  能力/Capabilities: 工作树管理、功能实现、原子提交、PR 创建、验证循环、合并清理。
+  Complete PR lifecycle management from worktree creation through implementation, commits, PR creation, verification loop, to merge and cleanup.
+
+  Triggers when: Implementing a feature and submitting a PR, fixing an Issue, or completing merge work after code review.
+
+  Commands:
+  - /合并 <任务> - Start full PR workflow
+  - /合并 create <任务> - Create PR
+  - /合并 check - Check verification status
+  - /合并 status - View PR status
+  - /pr <task> - English command for PR workflow
+
+  Capabilities: Worktree management, feature implementation, atomic commits, PR creation, verification loop (CI + Review + Approval), merge and cleanup
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 合并 (Work With PR)
 
@@ -237,7 +243,7 @@ git push origin --delete "$BRANCH_NAME"
 
 # 3. 清理工作树/Cleanup worktree
 git worktree remove "$WORKTREE_PATH"
-rm -rf "$WORKTREE_PATH"
+if [ -n "$WORKTREE_PATH" ] && [ "$WORKTREE_PATH" != "/" ]; then rm -rf "$WORKTREE_PATH"; fi
 
 # 4. 返回主工作目录/Return to main
 cd "$ORIGINAL_PATH"

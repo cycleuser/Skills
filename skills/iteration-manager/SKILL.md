@@ -2,7 +2,7 @@
 name: iteration-manager
 version: "1.0.0"
 description: |
-  Iterative testing, verification, and improvement supervisor.
+  Iterative testing, verification, and improvement supervisor for code quality assurance.
 
   Triggers when: User requests iterative testing and improvement, code quality review and assurance is needed, automated testing and feedback loops are required, or multiple rounds of refinement are specified.
 
@@ -12,10 +12,23 @@ description: |
   - /iterate status - Show current iteration status
   - /iterate report - Generate iteration report
 
-  Capabilities: Automated test execution and result analysis, quality metrics tracking across iterations, improvement suggestion generation, convergence detection, and detailed iteration reports.
-author: system
+  Capabilities: Automated test execution and result analysis, quality metrics tracking across iterations, improvement suggestion generation, convergence detection, and detailed iteration reports
+author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Iteration Manager
 

@@ -1,12 +1,10 @@
 ---
 name: skill-manager
 version: "1.0.0"
-auto_load: true
-load_priority: 0
 description: |
-  Central skill registry and management system. Auto-loaded on every session.
+  Central skill registry and management system, auto-loaded on session start for skill discovery and invocation.
 
-  Auto-loaded on startup to provide skill discovery and invocation capabilities.
+  Triggers when: Listing available skills, loading or activating a specific skill, refreshing the skill registry, or viewing skill help information.
 
   Commands:
   - /skills - List all available skills with descriptions
@@ -14,10 +12,23 @@ description: |
   - /skill reload - Refresh skill registry
   - /skill help <name> - Show detailed help for a skill
 
-  Capabilities: Auto-discovery of all skills in workspace, unified skill invocation via /skill command, skill registry with metadata and descriptions, version tracking and dependency management.
-author: system
+  Capabilities: Auto-discovery of all skills in workspace, unified skill invocation via /skill command, skill registry with metadata and descriptions, version tracking and dependency management
+author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Skill Manager
 
@@ -97,14 +108,17 @@ This will rescan all skill directories and update the registry.
 ### From GitHub (Recommended)
 
 ```bash
-# Quick install (Unix/macOS)
-curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install.sh | bash
+# Quick install (Unix/macOS) - Download and inspect first, then run
+# ⚠️ WARNING: `curl|bash` is a security risk — always inspect scripts before executing
+curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install.sh -o /tmp/install_skills.sh && less /tmp/install_skills.sh && bash /tmp/install_skills.sh
 
-# Quick install (Windows)
-curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install.bat | cmd
+# Quick install (Windows) - Download and inspect first
+# ⚠️ WARNING: Always inspect scripts before executing
+curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/quick-install.bat -o %TEMP%\install_skills.bat && type %TEMP%\install_skills.bat && %TEMP%\install_skills.bat
 
-# Or use Python installer
-curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/install.py | python
+# Or use Python installer - Download and inspect first
+# ⚠️ WARNING: Always inspect scripts before executing
+curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/install.py -o /tmp/install_skills.py && less /tmp/install_skills.py && python /tmp/install_skills.py
 ```
 
 ### Manual Install

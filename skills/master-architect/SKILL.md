@@ -1,16 +1,10 @@
 ---
 name: master-architect
 version: "1.0.0"
-priority: 100
-auto_load: false
 description: |
-  Top-tier software architect agent for complex multi-stage project development.
+  Top-tier software architect agent for complex multi-stage project development with strict quality gates and iterative refinement.
 
-  This skill embodies the role of a senior software architect who decomposes complex tasks into structured sub-modules, iterates each component until excellence is achieved, enforces strict quality gates between phases, and produces documentation compliant with all skill standards.
-
-  Core Philosophy: "Design once, iterate until perfect, then move forward."
-
-  Triggers when: You need to design architecture for a complex multi-stage project, decompose requirements into modules, or establish quality gates for development phases.
+  Triggers when: Designing architecture for a complex multi-stage project, decomposing requirements into modules, or establishing quality gates for development phases.
 
   Commands:
   - /architect design <task> - Full architecture design for a task
@@ -19,10 +13,23 @@ description: |
   - /architect status - Show current architecture status
   - /architect review - Review and validate architecture
 
-  Six phases: Requirement Analysis, Architecture Design, Task Decomposition, Iterative Development, Integration & Validation, Documentation Generation. Each phase has strict exit criteria.
+  Capabilities: Six-phase architecture with quality gates, requirement analysis, architecture design, task decomposition, iterative development, integration and validation, documentation generation
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Master Architect
 

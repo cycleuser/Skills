@@ -2,27 +2,34 @@
 name: shen-shi
 version: "1.0.0"
 description: |
-  GitHub 审视 - Read-only GitHub triage for issues and PRs.
-  
-  触发条件/Triggers: 需要分析 GitHub Issues 或 PRs、生成审查报告、或分类问题。
-  
-  核心原则/Core Principles:
-  - 只读不写/Read-only: 永不修改 GitHub 状态
-  - 证据支持/Evidence: 每个结论都需要 GitHub permalink 证明
-  - 并行分析/Parallel: 每个 Issue/PR 独立后台任务
-  - 报告输出/Reports: 写入临时目录，不操作 GitHub
-  
-  命令/Commands:
-  - /审视 analyze <repo> - 分析仓库所有开放 Issue 和 PR
-  - /审视 issues <repo> - 只分析 Issues
-  - /审视 prs <repo> - 只分析 PRs
-  - /审视 <URL> - 分析特定 Issue 或 PR
-  - /analyze <repo> - English command
-  
-  能力/Capabilities: GitHub 数据读取、问题分类、证据收集、报告生成、后台并行处理。
+  Read-only GitHub triage for issues and PRs with evidence-backed analysis and parallel processing.
+
+  Triggers when: Analyzing GitHub Issues or PRs, generating review reports, or triaging problems.
+
+  Commands:
+  - /审视 analyze <repo> - Analyze all open issues and PRs in a repo
+  - /审视 issues <repo> - Analyze issues only
+  - /审视 prs <repo> - Analyze PRs only
+  - /审视 <URL> - Analyze a specific issue or PR
+  - /analyze <repo> - English command for repo analysis
+
+  Capabilities: GitHub data reading, issue classification, evidence collection with permalinks, report generation, parallel background processing
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 审视 (GitHub Triage)
 

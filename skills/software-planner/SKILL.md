@@ -2,14 +2,34 @@
 name: software-planner
 version: "1.0.0"
 description: |
-  Comprehensive software development planning and implementation skill.
+  Comprehensive software development planning and implementation skill for multi-interface Python applications with academic research integration.
 
   Triggers when: Creating new Python software with CLI/GUI/Web interfaces, planning software architecture and modules, designing scientific or engineering applications, setting up bilingual documentation and PyPI publishing, or needing academic research-based feature design.
 
-  Capabilities: Pre-development planning and research, multi-interface design (CLI + PySide6 GUI + Flask Web), scientific visualization with pyqtgraph, academic literature-based feature design, sample data and test documentation generation, bilingual README with structured sections, GPLv3 licensing and PyPI publishing setup.
+  Commands:
+  - /planner research <topic> - Conduct domain research
+  - /planner design <project> - Design system architecture
+  - /planner modules - Generate module specifications
+  - /planner docs - Create bilingual documentation
+  - /planner verify - Run verification checklist
+
+  Capabilities: Pre-development planning and research, multi-interface design (CLI + PySide6 GUI + Flask Web), scientific visualization with pyqtgraph, academic literature-based feature design, sample data and test documentation generation, bilingual README with structured sections, GPLv3 licensing and PyPI publishing setup
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Software Development Planner
 

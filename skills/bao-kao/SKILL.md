@@ -1,9 +1,36 @@
 ---
 name: bao-kao
-description: 报考技能：类似资深报考顾问风格的考研高考报考指导。从官网搜索所有公开数据（专业列表、历年报考指南、一分一段表、录取分数线），进行交叉对比分析，给出实用建议。支持中英双语命令。命令： - /报考 <查询内容>：搜索分析报考数据 - /enroll <query>：Search and analyze enrollment data - /专业 <专业名>：分析专业就业前景 - /major <name>：Analyze major employment prospects - /学校 <学校名>：分析学校录取情况 - /school <name>：Analyze school admission data
+version: "1.0.0"
+description: |
+  Enrollment guidance assistant that searches official data for cross-referenced analysis and practical advice on college entrance and graduate school applications.
+
+  Triggers when: Needing enrollment data analysis, checking admission scores, analyzing major employment prospects, or researching school admission statistics.
+
+  Commands:
+  - /报考 <查询内容> - Search and analyze enrollment data
+  - /专业 <专业名> - Analyze major employment prospects
+  - /学校 <学校名> - Analyze school admission data
+  - /enroll <query> - Search and analyze enrollment data (English)
+  - /major <name> - Analyze major employment prospects (English)
+  - /school <name> - Analyze school admission data (English)
+
+  Capabilities: Official data search from education authorities, cross-referenced data verification, historical trend analysis, score-ranking conversion, admission probability estimation, employment prospect analysis
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 报考技能 (Bao-Kao Skill)
 

@@ -2,26 +2,34 @@
 name: ba-guan
 version: "1.0.0"
 description: |
-  把关 - Pre-publish review with multi-layer deep analysis.
-  
-  触发条件/Triggers: 准备发布 npm 包、需要发布前审查、或检查代码变更质量。
-  
-  审查层次/Review Layers:
-  - 逐变更审查/Per-Change: 每个变更组深度分析 (最多 10 个智能体)
-  - 整体审查/Holistic: 5 角色并行审查 (架构/开发/测试/安全/文档)
-  - 综合评估/Synthesis: 1 个智能体汇总审查结果
-  
-  命令/Commands:
-  - /把关 - 启动发布前审查
-  - /把关 check - 检查未发布变更
-  - /把关 version - 建议版本升级
-  - /把关 report - 生成审查报告
-  - /review - English command
-  
-  能力/Capabilities: 检测未发布变更、逐变更深度分析、多角色审查、版本建议、发布风险评估。
+  Pre-publish review with multi-layer deep analysis for code quality assurance before release.
+
+  Triggers when: Preparing to publish an npm package, needing pre-release review, or checking code change quality.
+
+  Commands:
+  - /把关 - Start full pre-publish review
+  - /把关 check - Check unpublished changes
+  - /把关 version - Suggest version bump
+  - /把关 report - Generate review report
+  - /review <task> - English command for pre-publish review
+
+  Capabilities: Detect unpublished changes, per-change deep analysis, multi-role review (architect/developer/tester/security/docs), version suggestion, release risk assessment
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 把关 (Pre-Publish Review)
 

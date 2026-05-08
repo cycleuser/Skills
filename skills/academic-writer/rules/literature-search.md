@@ -1,223 +1,193 @@
 # Literature Search Protocol
 
-## Search Strategy
+## Iterative Search Strategy
 
-### Step 1: Keyword Expansion
+Real literature search is not one query — it is iterative mining. You search broadly, read deeply, then search specifically based on what you learned.
 
-Before searching, expand your keywords:
+### Phase 1: Broad Survey (1-2 hours)
 
-```python
-def expand_keywords(primary_topic: str) -> dict:
-    """Generate comprehensive search keywords."""
-    return {
-        "primary": [primary_topic],
-        "synonyms": get_synonyms(primary_topic),
-        "related_methods": get_related_methods(primary_topic),
-        "applications": get_applications(primary_topic),
-        "variations": get_variations(primary_topic),
-    }
+Goal: Understand the landscape — key surveys, foundational papers, active directions.
+
+```bash
+# Semantic Scholar — best for overview + citation graph
+curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=TOPIC&limit=20&fields=title,authors,year,abstract,citationCount,influentialCitationCount" | python3 -m json.tool
+
+# arXiv — latest preprints, often before peer review
+curl -s "http://export.arxiv.org/api/query?search_query=all:TOPIC&max_results=20&sortBy=submittedDate" | python3 -c "
+import sys, xml.etree.ElementTree as ET
+tree = ET.parse(sys.stdin)
+ns = {'a': 'http://www.w3.org/2005/Atom'}
+for entry in tree.findall('.//a:entry', ns):
+    title = entry.find('a:title', ns).text.strip().replace('\n',' ')
+    year = entry.find('a:published', ns).text[:4]
+    print(f'{year} | {title}')
+"
+
+# Google Scholar (via webfetch tool)
+# webfetch https://scholar.google.com/scholar?q=TOPIC
 ```
 
-### Step 2: Multi-Source Search
+### Phase 2: Citation Mining (2-3 hours)
 
-Execute parallel searches across multiple databases:
+Goal: From 5-10 key papers, mine their references AND who cited them.
 
-| Database | Search Query Example | Priority |
-|----------|---------------------|----------|
-| Google Scholar | `"exact phrase" AND keyword` | High |
-| arXiv | `cat:cs.AI AND keyword` | High |
-| DBLP | `title:keyword OR abstract:keyword` | Medium |
-| Semantic Scholar | `keyword + field:Computer Science` | High |
+For each key paper:
+1. Read abstract + introduction + related work + conclusion
+2. Extract cited papers that appear in multiple key papers (these are must-cites)
+3. Follow "cited by" forward citations (Semantic Scholar API)
+4. Check recent citations (last 2 years) for latest baselines
 
-### Step 3: Filter and Rank
-
-Filter results by:
-
-1. **Relevance** - Match with research question
-2. **Recency** - Prefer papers from last 5 years
-3. **Venue** - Prioritize top-tier venues
-4. **Citations** - Highly cited papers (but check recency)
-
-## Search Templates
-
-### For Method Papers
-
-```
-"[method name]" OR "[method abbreviation]"
-"[core technique]" AND "[domain]"
-"[problem]" AND "[solution approach]"
+```bash
+# Forward citations from a paper
+curl -s "https://api.semanticscholar.org/graph/v1/paper/PAPER_ID/citations?fields=title,authors,year,citationCount&limit=50"
 ```
 
-### For Survey Papers
+### Phase 3: Targeted Search (1-2 hours)
 
-```
-"[domain]" AND ("survey" OR "review" OR "tutorial")
-"[topic]" AND ("recent advances" OR "comprehensive review")
-```
+Goal: Find specific baselines, datasets, and venue-specific references.
 
-### For Comparative Studies
+```bash
+# Search for specific methods
+curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=METHOD_NAME+TASK&limit=10&fields=title,year,venue"
 
-```
-"[task]" AND ("benchmark" OR "comparison" OR "evaluation")
-"[method A]" vs "[method B]" comparison
-```
-
-## Paper Collection Template
-
-For each relevant paper found:
-
-```markdown
-## [ID] Author et al. (Year) - Short Title
-
-### Metadata
-- **Full Title**: [complete title]
-- **Authors**: [author list]
-- **Venue**: [conference/journal name, year]
-- **URL**: [link to paper]
-- **DOI**: [if available]
-- **arXiv**: [if preprint]
-
-### Summary
-- **Problem**: What problem does it solve?
-- **Method**: What is the proposed approach?
-- **Results**: What are the main findings?
-- **Contribution**: What is novel?
-
-### Relevance
-- **Why relevant**: Connection to your work
-- **Cite as**: [X] for what specific claim
-- **Comparison point**: How does it compare to your method?
-
-### Notes
-- Key equations or algorithms
-- Datasets used
-- Limitations mentioned
+# Search specific venue proceedings
+# DBLP is best for venue-specific search
+curl -s "https://dblp.org/search/publ/api?q=TOPIC+venue:AAAI&format=json&h=20"
 ```
 
-## Organizing Literature
+### Phase 4: Must-Cite Verification
 
-### By Theme
+Before writing, check that your reference list includes:
+- 2-3 papers from the target venue (last 2 years)
+- Foundational papers that any reviewer would expect
+- Papers from potential reviewers (if known)
+- Baseline papers you compare against
+- The paper that introduced each dataset you use
 
-```
-literature/
-├── surveys/
-│   ├── survey_001.md
-│   └── survey_002.md
-├── methods/
-│   ├── method_001.md
-│   └── method_002.md
-├── applications/
-│   ├── app_001.md
-│   └── app_002.md
-└── baselines/
-    ├── baseline_001.md
-    └── baseline_002.md
-```
+## Search Keywords Strategy
 
-### By Relation
+Do not search a single keyword. Expand systematically:
 
 ```
-references/
-├── must_cite/           # Essential papers
-├── related_work/        # Related but not core
-├── baselines/           # Methods to compare against
-└── background/          # Foundational papers
-```
+Start: "retrieval augmented generation"
 
-## Citation Extraction
-
-### From Paper Text
-
-```python
-def extract_citations(paper_text: str) -> list:
-    """Extract citations from paper text."""
-    patterns = [
-        r'\[(\d+)\]',                          # [1]
-        r'\((\w+,\s*\d{4}[a-z]?)\)',           # (Author, 2024)
-        r'(\w+)\s+et\s+al\.\s*\((\d{4})\)',    # Author et al. (2024)
-    ]
-    return find_all_matches(paper_text, patterns)
-```
-
-### Building Reference List
-
-```python
-def build_reference(citation_info: dict, style: str = "ieee") -> str:
-    """Build formatted reference string."""
-    if style == "ieee":
-        return f"[{citation_info['id']}] {citation_info['authors']}, " \
-               f"\"{citation_info['title']},\" {citation_info['venue']}, " \
-               f"{citation_info['year']}, pp. {citation_info['pages']}."
-    elif style == "acm":
-        return f"{citation_info['authors']}. {citation_info['year']}. " \
-               f"{citation_info['title']}. In {citation_info['venue']}. " \
-               f"ACM, {citation_info['pages']}."
+Expansion:
+1. Core synonyms: "RAG", "retrieval-augmented", "knowledge-augmented generation"
+2. Components: "dense retrieval" + "generation", "retriever-reader"
+3. Related tasks: "open-domain QA", "knowledge-grounded dialogue"  
+4. Benchmarks: "NaturalQuestions", "HotpotQA", "MS MARCO"
+5. Limitations: "hallucination" + "retrieval", "retrieval noise"
+6. Alternatives: "parametric knowledge", "in-context learning"
 ```
 
 ## Literature Matrix
 
-Create a comparison matrix for related work:
+Build a structured matrix, not a flat reference list:
 
-| Paper | Year | Problem | Method | Dataset | Metric | Strength | Limitation |
-|-------|------|---------|--------|---------|--------|----------|------------|
-| [1] | 2024 | X | A | D1 | M1 | S1 | L1 |
-| [2] | 2023 | Y | B | D2 | M2 | S2 | L2 |
+| ID | Paper | Year | Problem | Method | Key Result | Limitation | Your Use |
+|----|-------|------|---------|--------|------------|------------|----------|
+| R1 | Lewis et al. | 2020 | Open-domain QA | RAG (retriever+generator) | EM: 44.5 on NQ | Fixed retriever | Primary baseline |
+| R2 | Izacard et al. | 2022 | Same | FiD (inter-doc attention) | EM: 51.4 on NQ | Memory-heavy | Architecture comparison |
+| R3 | Gao et al. | 2024 | Same | Self-RAG (adaptive retrieval) | EM: 56.1 on NQ | Training cost | Related approach |
 
-## Quality Assessment
+The "Limitation" column is critical — it is where your gap identification comes from.
 
-### Conference Ranking (CS)
+## Paper Reading Protocol
 
-| Tier | Examples |
-|------|----------|
-| A* | AAAI, IJCAI, NeurIPS, ICML, CVPR, ACL |
-| A | ICDM, CIKM, ECML, COLING |
-| B | Others with reasonable reputation |
+For each paper, extract in order:
+1. Abstract (1 min) — what is this about?
+2. Contribution claim (30 sec) — what did they say they did?
+3. Method figure (1 min) — how does it work?
+4. Results table (1 min) — how well does it work?
+5. Limitations section (30 sec) — where does it break?
+6. Related work (2 min) — what else should I read?
 
-### Journal Ranking
+Time budget: 5-6 minutes per paper for triage, 30-60 minutes for papers you will cite.
 
-| Tier | Examples |
-|------|----------|
-| CCF-A | TPAMI, TKDE, TOIS |
-| CCF-B | TNNLS, TMM, IPM |
-| SCI | Various indexed journals |
+## Literature Organization
+
+### By Relevance Level
+
+```
+references/
+├── must_cite/       # 5-10 papers: foundational + baselines + target venue
+├── related_work/    # 10-20 papers: related approaches
+├── background/      # 5-10 papers: foundational concepts
+└── optional/        # 5-10 papers: marginally related, cite if space allows
+```
+
+### By Argument Role
+
+```
+references/
+├── gap_papers/      # Papers whose limitations define your gap
+├── baseline_papers/ # Methods you compare against
+├── foundation/       # Core techniques you build upon
+└── context/         # Domain papers that establish importance
+```
+
+## Chinese Academic Sources
+
+For Chinese CCF journal submissions:
+
+```bash
+# 知网 CNKI — primary Chinese academic database
+# (requires subscription, typically via university)
+# URL: cnki.net
+
+# 万方数据 — alternative Chinese database
+# URL: wanfangdata.com.cn
+
+# 百度学术 — aggregated search, free
+# URL: xueshu.baidu.com
+```
+
+CCF ranking reference for Chinese CS submissions:
+- CCF-A journals: 计算机学报, 软件学报, 计算机研究与发展
+- CCF-A conferences: (use international conferences like AAAI, NeurIPS)
+- CCF-B journals: 计算机科学, 模式识别与人工智能
 
 ## Citation Tracking
 
-### Forward Citations
+### Forward Citation Chain
 
-Find papers that cite a key paper:
+When you find a key paper from 2020:
+1. Semantic Scholar: find papers citing it (2021-2024)
+2. These papers likely improved upon it or identified its limitations
+3. Read the 3 most-cited forward citations — they define the current state
 
-1. Google Scholar: "Cited by" link
-2. Semantic Scholar: "Citations" section
-3. Web of Science: Citation report
+### Backward Citation Chain
 
-### Backward Citations
-
-Follow references in a paper to find foundational work.
+When you find a new 2024 paper:
+1. Read its reference list carefully
+2. Papers it cites heavily (3+ mentions) are likely foundational
+3. Check if those foundational papers have newer/improved versions
 
 ## Search Log Template
+
+Keep a log to avoid re-searching:
 
 ```markdown
 # Literature Search Log
 
-## Date: YYYY-MM-DD
+## Project: [title]
 
-### Search 1: [Keywords]
-- **Database**: Google Scholar
-- **Query**: "keyword1" AND "keyword2"
-- **Results**: 150
-- **Relevant**: 12
-- **Saved**: [paper IDs]
+### Session: YYYY-MM-DD
 
-### Search 2: [Keywords]
-- **Database**: arXiv
-- **Query**: cat:cs.AI AND keyword
-- **Results**: 45
-- **Relevant**: 8
-- **Saved**: [paper IDs]
+**Round 1: Broad**
+- Query: "TOPIC"
+- Sources: Semantic Scholar, arXiv
+- Results: 40 found, 8 relevant, 3 saved
+- Key papers: [R1] Lewis et al. 2020, [R2] Izacard 2022
 
-### Summary
-- Total papers found: X
-- Total relevant: Y
-- Key papers identified: [list]
+**Round 2: Citation Mining from [R1]**
+- Forward citations: 12 relevant (2022-2024)
+- Backward refs: 5 foundational
+- New must-cites: [R3] Gao 2024
+
+**Round 3: Targeted**
+- Query: "self-adaptive retrieval generation"
+- New baselines: [R4] Asai 2024
+
+**Total**: 23 papers collected, 12 must-cite, 11 related work
 ```

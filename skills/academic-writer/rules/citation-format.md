@@ -71,77 +71,60 @@ Author, A. A. (2024, June). Title of the paper. In Proceedings of the
 Conference Name (pp. 1-10). Publisher.
 ```
 
-## AAAI/IJCAI Specific Format
-
-### In-Text Citation
+## AAAI/IJCAI In-Text Citation
 
 ```
 Single author: (Author, 2024)
 Two authors: (Author and Author, 2024)
 Three+: (Author et al., 2024)
-
-Multiple citations: (Author1, 2023; Author2, 2024)
+Multiple: (Author1, 2023; Author2, 2024)
 ```
 
-### Reference List
+## GB/T 7714-2015 (Chinese Standard)
+
+### 期刊论文
 
 ```
-[Author1, First name Last name, and Author2, First name Last name. 2024. 
- Title of the paper. In Proceedings of the AAAI Conference on Artificial 
- Intelligence, pages 1-10.
+[X] 作者. 论文标题[J]. 期刊名, 年, 卷(期): 起止页.
+[1] 张三, 李四. 基于深度学习的图像分类方法[J]. 计算机学报, 2024, 47(3): 521-535.
 ```
 
-## Citation Elements
-
-### Required Fields
-
-| Type | Required Fields |
-|------|-----------------|
-| Conference | Authors, Title, Conference, Year, Pages |
-| Journal | Authors, Title, Journal, Volume, Issue, Pages, Year |
-| arXiv | Authors, Title, arXiv ID, Year |
-| Book | Authors, Title, Edition, Publisher, Year |
-
-### Optional Fields
-
-| Type | Optional Fields |
-|------|-----------------|
-| Conference | DOI, URL |
-| Journal | DOI, URL, Month |
-| arXiv | URL |
-| Book | ISBN, City, Pages |
-
-## Formatting Rules
-
-### Author Names
+### 会议论文
 
 ```
-Single: J. Smith
-Two: J. Smith and R. Jones
-Three: J. Smith, R. Jones, and T. Lee
-Four+: J. Smith et al. (in-text, list all in reference)
+[X] 作者. 论文标题[C]//会议名. 出版地: 出版者, 年: 起止页.
+[2] 王五. 知识图谱构建方法研究[C]//中国人工智能大会. 北京: 科学出版社, 2024: 112-120.
 ```
 
-### Title Capitalization
+### 学位论文
 
 ```
-IEEE: Sentence case for article titles, Title Case for journal names
-ACM: Title Case for all titles
-APA: Sentence case for article titles
+[X] 作者. 论文标题[D]. 城市: 学校, 年.
+[3] 赵六. 强化学习在机器人控制中的应用[D]. 北京: 清华大学, 2024.
 ```
 
-### Abbreviations
+### 图书
 
-Common conference abbreviations:
+```
+[X] 作者. 书名[M]. 版本. 出版地: 出版者, 年.
+[4] 周七. 机器学习导论[M]. 2版. 北京: 高等教育出版社, 2024.
+```
 
-| Full Name | Abbreviation |
-|-----------|--------------|
-| AAAI Conference on Artificial Intelligence | AAAI |
-| International Joint Conference on Artificial Intelligence | IJCAI |
-| International Conference on Machine Learning | ICML |
-| Neural Information Processing Systems | NeurIPS |
-| Conference on Computer Vision and Pattern Recognition | CVPR |
-| Annual Meeting of the Association for Computational Linguistics | ACL |
+### 电子资源
+
+```
+[X] 作者. 标题[EB/OL]. (发布日期)[引用日期]. URL.
+[5] 百度. 文心一言[EB/OL]. (2024-03-16)[2024-05-08]. https://yiyan.baidu.com.
+```
+
+### 中文论文引用英文文献
+
+中文论文中引用英文文献，保持英文原文格式，按GB/T 7714的英文规则：
+
+```
+[6] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need[C]//
+    Advances in Neural Information Processing Systems. 2017: 5998-6008.
+```
 
 ## BibTeX Templates
 
@@ -182,27 +165,65 @@ Common conference abbreviations:
 }
 ```
 
-## Common Mistakes to Avoid
+### BibTeX Workflow
 
-1. Inconsistent author name formatting
-2. Missing page numbers for conference papers
-3. Wrong volume/issue numbers
-4. Outdated conference names
-5. Missing DOI when available
+```bash
+# Create/update bibliography
+# 1. Collect BibTeX entries from:
+#    - DBLP: dblp.org → search → "export as BibTeX"  
+#    - Semantic Scholar: API returns BibTeX
+#    - Google Scholar: "Cite" → "BibTeX"
+#    - arXiv: "Export BibTeX" link
 
-## Cross-Reference Format
+# 2. Store in references.bib
 
-When citing multiple related works:
+# 3. In LaTeX:
+#    \bibliographystyle{IEEEtran}  % or acm, plainnat
+#    \bibliography{references}
+```
+
+## Citation Integration in Text
+
+Bad: Just drop citation numbers as decoration.
+Good: Integrate citations into the argument.
 
 ```
-Recent advances in [domain] have proposed various approaches 
-[1], [2], [3]. Among them, Method A [4] achieves the best 
-performance, while Method B [5] offers better efficiency.
+Bad: "Deep learning has achieved great success [1, 2, 3, 4, 5]."
+Good: "Deep learning dominates image classification [1] and machine translation 
+      [2], but its application to small-sample scenarios remains limited [3, 4]."
+```
+
+### Multiple Citations
+
+```
+Bad: [1] [2] [3] [4] [5]  (scattered)
+Good: [1]–[5]             (IEEE range)
+Good: [1, 3, 5]           (specific papers)
 ```
 
 ## Self-Citation Guidelines
 
-- Limit self-citations to relevant work only
-- Do not exceed recommended percentage (typically < 10%)
-- Include recent relevant self-citations
-- Avoid excessive citations to the same paper
+- Cite your own work only when directly building upon it
+- Limit self-citations to < 10% of total references
+- Cite the specific work, not your CV
+- Reviewers notice excessive self-citation and it hurts credibility
+
+## Citation Consistency
+
+- Use one style consistently throughout the paper
+- Verify every in-text citation appears in the reference list
+- Verify every reference is cited in text (no orphans)
+- Conference abbreviations: use standard ones (see list)
+- Page numbers: include when available, especially for conference papers
+
+### Standard Abbreviations
+
+| Full Name | Abbreviation |
+|-----------|--------------|
+| AAAI Conference on Artificial Intelligence | AAAI |
+| International Joint Conference on AI | IJCAI |
+| International Conference on Machine Learning | ICML |
+| Neural Information Processing Systems | NeurIPS |
+| Conference on Computer Vision and Pattern Recognition | CVPR |
+| Annual Meeting of the Association for Computational Linguistics | ACL |
+| International Conference on Learning Representations | ICLR |

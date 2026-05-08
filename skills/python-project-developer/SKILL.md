@@ -2,14 +2,35 @@
 name: python-project-developer
 version: "1.0.0"
 description: |
-  Complete Python multi-project development specification for CLI/GUI tools.
+  Complete Python multi-project development specification for CLI/GUI tools with unified API, OpenAI function-calling integration, and PyPI publishing.
 
   Triggers when: Creating a new Python project with CLI and GUI support, setting up pyproject.toml with README and PyPI publishing, implementing unified API with ToolResult pattern, adding OpenAI function-calling tools integration, or writing standardized tests and documentation.
 
-  Capabilities: Project structure guidance from single-file to package migration, CLI unified flags (-V, -v, -o, --json, -q), Python API with ToolResult dataclass pattern, function-calling with TOOLS + dispatch pattern, bilingual README documentation with auto-screenshots, and pytest testing with unified test structure.
+  Commands:
+  - /python-project init <name> - Initialize new Python project
+  - /python-project structure - Generate project structure
+  - /python-project api - Implement ToolResult API pattern
+  - /python-project cli - Add CLI with unified flags
+  - /python-project test - Generate test suite
+  - /python-project publish - Setup PyPI publishing
+
+  Capabilities: Project structure guidance from single-file to package migration, CLI unified flags (-V, -v, -o, --json, -q), Python API with ToolResult dataclass pattern, function-calling with TOOLS + dispatch pattern, bilingual README documentation with auto-screenshots, pytest testing with unified test structure
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Python Multi-Project Development Specification
 

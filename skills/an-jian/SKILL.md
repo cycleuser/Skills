@@ -2,36 +2,34 @@
 name: an-jian
 version: "1.0.0"
 description: |
-  安检 - Security review for skills before installation.
-  
-  触发条件/Triggers: 安装新技能前、定期审查已安装技能、或怀疑技能有安全问题。
-  
-  安全检查/Security Checks:
-  - 危险命令/Dangerous Commands: rm -rf, sudo, curl|bash 等
-  - 网络请求/Network Requests: 可能泄露数据
-  - 文件写入/File Writes: 敏感位置写入
-  - 凭证泄露/Credentials: API key/密码泄露风险
-  - 资源耗尽/Resource Exhaustion: 无限循环
-  - 权限提升/Privilege Escalation: 提权尝试
-  - 外部依赖/External Dependencies: 可疑依赖
-  
-  命令/Commands:
-  - /安检 <技能路径> - 审查技能安全
-  - /安检 scan <路径> - 深度扫描
-  - /安检 list - 列出已安装技能风险
-  - /安检 fix <技能> - 修复安全问题
-  - /security <skill-path> - English command
-  
-  处理方式/Actions:
-  - 自动修复/Auto-fix: 移除或替换危险代码
-  - 禁用部分/Disable: 禁用危险功能
-  - 用户确认/User Confirm: 用户选择是否继续
-  - 阻止安装/Block: 严重风险阻止安装
-  
-  能力/Capabilities: 静态代码分析、危险模式识别、风险评估、自动修复、用户交互决策。
+  Security review for skills before installation, detecting dangerous patterns and assessing risk levels.
+
+  Triggers when: Installing a new skill, periodically reviewing installed skills, or suspecting security issues in a skill.
+
+  Commands:
+  - /安检 <技能路径> - Audit skill security
+  - /安检 scan <路径> - Deep scan
+  - /安检 list - List installed skill risks
+  - /安检 fix <技能> - Fix security issues
+  - /security <skill-path> - English command for skill security audit
+
+  Capabilities: Static code analysis, dangerous pattern recognition, risk assessment, auto-fix, user interaction decisions
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 安检 (Security Review)
 

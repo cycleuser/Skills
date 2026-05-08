@@ -1,9 +1,34 @@
 ---
 name: brief-write
-description: 简写技能：模仿用户博客写作风格，用简洁直接、口语化、真诚坦率的语言表达。支持中英双语命令，能识别并避免"一眼AI"的写作模式。触发条件：需要模仿用户写作风格、简练表达、撰写博客文章、技术文档等场景。命令： - /简写 <主题或文本>：按用户风格改写或创作 - /write <topic/text>：Write in user's style - /风格检查 <文本>：检查是否符合简写风格 - /style-check <text>：Check writing style compliance
+version: "1.0.0"
+description: |
+  Writing skill that mimics user blog style with concise, colloquial, and sincere language while avoiding AI-detectable patterns.
+
+  Triggers when: Needing to mimic user writing style, write concisely, compose blog articles, or create technical documentation.
+
+  Commands:
+  - /简写 <主题或文本> - Write or rewrite in user's style
+  - /write <topic/text> - Write in user's style (English)
+  - /风格检查 <文本> - Check writing style compliance
+  - /style-check <text> - Check writing style compliance (English)
+
+  Capabilities: User blog style imitation, concise colloquial expression, AI-pattern avoidance, style compliance checking, bilingual Chinese-English support
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 简写技能 (Brief-Write Skill)
 

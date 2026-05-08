@@ -2,24 +2,33 @@
 name: project-rebuilder
 version: "1.0.0"
 description: |
-  项目重建技能 - 参考现有项目从零重写核心特性。采用 team 并行审查 + ralph 持久执行模式。
-  
-  触发条件：需要参考某个开源项目重写核心功能、从零构建类似产品、或深度重构现有项目。
-  
-  工作模式:
-  - team: 多角色并行审查（架构师、开发者、测试员）
-  - ralph: 持久执行，跨会话记忆，持续迭代
-  
-  命令:
-  - /rebuild <参考项目> <目标> - 启动项目重建
-  - /rebuild analyze <项目> - 分析参考项目
-  - /rebuild team - 启动团队审查
-  - /rebuild status - 查看重建进度
-  
-  能力：参考项目深度分析、核心特性提取、多角色并行审查、跨会话持久执行、从零重建核心功能。
+  Project rebuilding skill that references existing projects to rewrite core features from scratch with team parallel review and persistent execution.
+
+  Triggers when: Needing to reference an open-source project to rewrite core features, building a similar product from scratch, or deeply refactoring an existing project.
+
+  Commands:
+  - /rebuild <参考项目> <目标> - Start project rebuild
+  - /rebuild analyze <项目> - Analyze reference project
+  - /rebuild team - Start team parallel review
+  - /rebuild status - View rebuild progress
+
+  Capabilities: Reference project deep analysis, core feature extraction, multi-role parallel review (architect/developer/tester), cross-session persistent execution, rebuilding core features from scratch
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Project Rebuilder 项目重建
 

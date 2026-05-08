@@ -1,42 +1,37 @@
 ---
 name: sleepless
 version: "1.0.0"
-priority: 300
-auto_load: false
 description: |
-  修仙 - Sleepless: 不眠不休的自主执行技能。人睡着了 AI 继续工作，直到任务强制完成。
+  Sleepless autonomous execution skill that never stops until the task is 100% complete, with self-healing and forced delivery guarantees.
 
-  触发条件/Triggers: 用户需要长时间自主工作、通宵执行开发任务、人机分离后 AI 自行推进、任何需要"挂机"完成的场景。
+  Triggers when: User needs long-running autonomous work, overnight development tasks, unattended AI execution, or any scenario requiring continuous unattended processing.
 
-  核心铁律/Iron Laws:
-  - 不眠不休/No Sleep: 循环永不主动退出，只有任务 100% 完成才 STOP
-  - 不问不退/No Ask No Exit: 禁止任何中间询问、确认、澄清，全程静默执行
-  - 不停不断/No Pause: 错误不停、阻塞不停、预算耗尽也不停——换路径继续
-  - 强制完成/Force Complete: 宁可降级交付也不空手而归
+  Commands:
+  - /修仙 <任务> - Start sleepless execution
+  - /修仙 <任务> --budget <级别> - Start with budget level
+  - /修仙 status - Check sleepless status
+  - /修仙 log - View sleepless log
+  - /sleepless <task> - Start sleepless execution (English)
+  - /sleepless <task> --budget <level> - Start with budget level (English)
+  - /sleepless status - Check status (English)
 
-  命令/Commands:
-  - /修仙 <任务> - 启动不眠不休自主执行
-  - /修仙 <任务> --budget <级别> - 指定预算级别启动
-  - /修仙 status - 查看修仙状态
-  - /修仙 log - 查看修仙日志
-  - /sleepless <task> - Start sleepless execution
-  - /sleepless <task> --budget <level> - Start with budget level
-  - /sleepless status - Check sleepless status
-
-  任务模式/Task Modes（全部支持）:
-  - 开发模式/Dev: 全栈开发、功能实现、项目构建
-  - 修复模式/Fix: Bug 修复、问题排查、热修复
-  - 重构模式/Refactor: 代码重构、架构调整、性能优化
-  - 测试模式/Test: 测试编写、覆盖率提升、质量保障
-  - 文档模式/Doc: 文档编写、README、API 文档
-  - 迭代模式/Iterate: 持续改进、多轮打磨
-  - 集成模式/Integrate: 多技能协同、跨模块整合
-  - 探索模式/Explore: 代码探索、架构分析、技术调研
-
-  能力/Capabilities: 永不中断的自主循环、强制完成机制、错误自愈、路径切换、跨会话持久化、全任务模式支持。
+  Capabilities: Eternal autonomous loop with no voluntary exit, forced delivery mechanism, error self-healing, path switching on failure, cross-session persistence, all task modes support (dev/fix/refactor/test/doc/iterate/integrate/explore)
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 修仙 (Sleepless)
 
@@ -74,6 +69,12 @@ license: MIT
 │   - 禁止 "此操作有风险，是否继续？"                                      │
 │   - 禁止 question() 工具调用                                           │
 │   遇到模糊？自行决策，标注 [自决]，继续推进。                               │
+│                                                                      │
+│   ⚠️ 安全例外/Safety Override:                                        │
+│   当操作可能导致不可逆数据丢失时（rm -rf、git push --force、              │
+│   删除生产数据、覆写不可恢复文件），第二律暂停，必须用更安全的               │
+│   替代方案（如移动到 /tmp 而非删除、创建备份后再操作）。                     │
+│   这是铁律中唯一的例外——安全优先于效率。                                   │
 │                                                                      │
 │   第三律·不停不断                                                      │
 │   ═════════════                                                       │
@@ -195,7 +196,19 @@ class SleeplessLoop:
         self.loop_count = 0
 
     def run(self):
+        hard_timeout = time.monotonic() + self.budget.time_limit  # Hard timeout guard
         while True:
+            # Hard timeout guard: force exit if budget exceeded
+            if time.monotonic() >= hard_timeout:
+                self.state = "STOPPING"
+                self.save_and_exit()
+                break
+            # Budget check: stop if tokens or time exhausted
+            if not self.budget.has_remaining():
+                self.state = "STOPPING"
+                self.save_and_exit()
+                break
+
             self.loop_count += 1
 
             # 承 - 接受当前状态
@@ -416,7 +429,7 @@ on_error(error):
 └──────────────────────────────────────────────────┘
     ↓
   自动恢复 → 继续修仙（无需确认！）
-  修仙铁律第二条：不问不退
+  修仙铁律第二条：不问不退（⚠️ 安全操作例外：见上方安全覆盖说明）
 ```
 
 ## 交付保证

@@ -1,20 +1,32 @@
 ---
 name: power-iterate
 version: "2.1.0"
-auto_load: false
 description: |
-  强力迭代技能：全自主持续迭代直到达到时间或token限制。
+  Fully autonomous continuous iteration skill that works until time or token budget is exhausted.
 
-  触发条件：用户请求强力迭代、持续开发、不间断工作、设置了明确的时间或token预算。
+  Triggers when: User requests power iteration, continuous development, uninterrupted work, or sets explicit time or token budgets.
 
-  命令：
-  - /强力迭代 <任务> [预算]：启动强力迭代
-  - /power-iterate <task> [budget]：Start power iteration
+  Commands:
+  - /强力迭代 <任务> [预算] - Start power iteration
+  - /power-iterate <task> [budget] - Start power iteration (English)
 
-  核心特性：完全自主决策无需用户确认、自动理解需求并设计评估方案、自动规划迭代路径、时间/token预算管理、定期进度报告。
+  Capabilities: Fully autonomous decision-making without user confirmation, automatic requirement understanding and evaluation design, automatic iteration path planning, time/token budget management, periodic progress reporting
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Power Iterate 强力迭代 v2.1
 

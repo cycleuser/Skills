@@ -2,36 +2,35 @@
 name: zi-kong
 version: "1.0.0"
 description: |
-  自控 - Self-controlled autonomous iteration for opencode itself.
-  
-  触发条件/Triggers: 需要 opencode 自我改进、持续迭代技能、或自主执行长期任务。
-  
-  核心能力/Core Capabilities:
-  - 自主循环/Autonomous Loop: 真正的 while(true) 自主执行，不受单次会话限制
-  - 跨会话记忆/Cross-Session Memory: 保存完整上下文，下次继续
-  - 自我审查/Self-Review: 每次迭代后自我审查，决定下一步
-  - 预算控制/Budget Control: 时间/token 预算管理，智能分配
-  - 并行任务/Parallel Tasks: 同时处理多个改进任务
-  - 决策树/Decision Tree: 遇到选择时自主决策并记录
-  - 回滚机制/Rollback: 每次更改可回滚，安全迭代
-  
-  命令/Commands:
-  - /自控 <目标> - 启动自主迭代
-  - /自控 status - 查看迭代状态
-  - /自控 pause - 暂停迭代
-  - /自控 resume - 恢复迭代
-  - /自控 log - 查看迭代日志
-  - /auto <goal> - English command
-  
-  工作模式/Work Modes:
-  - 守护模式/Daemon: 后台持续运行，定期检查
-  - 任务模式/Task: 完成特定任务后停止
-  - 持续模式/Continuous: 无限制持续改进
-  
-  能力/Capabilities: 真正的自主迭代、跨会话执行、自我审查、预算管理、安全回滚。
+  Self-controlled autonomous iteration for opencode itself with cross-session memory and safe rollback.
+
+  Triggers when: Needing opencode self-improvement, continuous skill iteration, or autonomous execution of long-running tasks.
+
+  Commands:
+  - /自控 <目标> - Start autonomous iteration
+  - /自控 status - View iteration status
+  - /自控 pause - Pause iteration
+  - /自控 resume - Resume iteration
+  - /自控 log - View iteration log
+  - /auto <goal> - English command for autonomous iteration
+
+  Capabilities: True autonomous while(true) loop, cross-session context persistence, self-review after each iteration, budget control with time/token management, parallel task handling, decision tree for autonomous choices, rollback mechanism for safe iteration
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # 自控 (Self-Controlled Iteration)
 
@@ -143,10 +142,22 @@ class AutonomousLoop:
         self.context = load_context()  # 跨会话加载
         self.budget = load_budget()
         self.decisions = []
+        self.hard_timeout = time.monotonic() + self.budget.time_limit  # Hard timeout guard
         
     def run(self):
         """主循环/Main loop"""
         while True:
+            # Hard timeout guard: force exit if budget exceeded
+            if time.monotonic() >= self.hard_timeout:
+                self.state = "STOPPING"
+                self.save_and_exit()
+                break
+            # Budget check: stop if tokens or time exhausted
+            if not self.budget.has_remaining():
+                self.state = "STOPPING"
+                self.save_and_exit()
+                break
+            
             # 1. 检查状态
             if self.state == "PAUSED":
                 wait_for_resume()

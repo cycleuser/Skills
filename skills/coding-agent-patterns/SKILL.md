@@ -6,10 +6,26 @@ description: |
 
   Triggers when: Building an AI coding agent or assistant, implementing tool-calling loops, managing context windows for LLMs, setting up agent memory or skill systems, or designing multi-provider LLM abstraction.
 
-  Capabilities: Core agent loop with while(true) and tool execution, context management with pruning and compression and repo maps, tool safety with sandboxing and approval flows and doom loop detection, multi-provider abstraction with unified API for different LLMs, memory systems with project rules and auto-memory and skill loading, session persistence with SQLite vs JSONL patterns.
+  Commands:
+  - /architect - View coding agent patterns and architecture (informational skill)
+
+  Capabilities: Core agent loop with while(true) and tool execution, context management with pruning and compression and repo maps, tool safety with sandboxing and approval flows and doom loop detection, multi-provider abstraction with unified API for different LLMs, memory systems with project rules and auto-memory and skill loading, session persistence with SQLite vs JSONL patterns
 author: cycleuser
 license: MIT
 ---
+
+## Safety Rules
+
+**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
+
+Core rules:
+1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
+2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
+3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
+4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
+5. **Redirect stdin** with `< /dev/null` for non-interactive commands
+
+A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
 # Coding Agent Development Patterns
 
