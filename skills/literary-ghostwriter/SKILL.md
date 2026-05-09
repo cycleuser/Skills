@@ -195,3 +195,49 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 通用:
 - [rules/vocabulary.md](rules/vocabulary.md) - 风格词汇库
+
+## Style Verification / 风格验证
+
+### Shakespeare Style Check
+- Does the text use iambic pentameter rhythm?
+- Is the vocabulary Elizabethan-era appropriate?
+- Are metaphors woven through the prose, not bolted on?
+- Check: Read aloud — if it doesn't sound like a soliloquy, keep revising.
+
+### Lu Xun Style Check / 鲁迅风格检查
+- 语言是否有冷峻之感？
+- 是否有"哀其不幸，怒其不争"的批判视角？
+- 是否使用了鲁迅式比喻（如"铁屋子"）而非泛泛比喻？
+- 检查：读完有无"寒到心里"的感觉？
+
+### General Authenticity Check / 通用真伪检查
+- Does the text reveal the author's spiritual core, not just surface mannerisms?
+- Are the character voices consistent with the author's character archetypes?
+- Would a well-read fan of this author know it's an imitation within the first 3 paragraphs?
+
+## Edge Cases / 边界情况
+
+- **Multi-author mashup**: When combining two styles (e.g., Shakespeare + Lu Xun), clearly label which sections use which style
+- **Modern topics in classical style**: Balance authenticity with readability; use footnotes for archaic terms when writing about contemporary subjects
+- **Poetry vs Prose**: Different verification criteria for verse (rhythm + rhyme + imagery) vs prose (voice + structure + pacing)
+- **Dialogue-heavy scenes**: Each character can have a different author style (e.g., Hamlet as Shakespeare, Horatio as Zweig)
+- **Translation layer**: When writing in English mimicking a Chinese author (or vice versa), maintain the author's logic structure but adapt idioms to target language
+
+## Troubleshooting / 排查
+
+- **Style too superficial**: If only surface-level vocabulary matches but spirit doesn't, re-read the author's seminal work before rewriting
+- **Voice inconsistency**: If voice shifts mid-text, mark each paragraph's intended author style before writing
+- **Anachronism**: If modern expressions leak into classical styles, maintain a "forbidden words" list per author
+- **Over-imitation**: If the text becomes parody rather than homage, reduce signature phrases to 1-2 per page
+
+## Version History / 版本历史
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.0.0 | 2026-04-01 | Expanded to 7 authors |
+| 2.1.0 | 2026-05-09 | Added safety rules, style verification, edge cases, troubleshooting, vocabulary.md |
+
+## See Also / 相关技能
+
+- `/简写` from **brief-write** — 互补的简洁写作风格 / Complementary concise writing style
+- `/人话` from **humanizer** — 检测文学模仿中的 AI 痕迹 / Detect AI patterns in literary imitation

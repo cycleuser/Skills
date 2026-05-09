@@ -274,8 +274,19 @@ Review and validate current architecture.
 
 ## Integration with Other Skills
 
-The master-architect skill integrates with other skills at specific points. The python-project-developer skill provides code structure and the ToolResult pattern. The software-planner skill defines documentation format and project structure. The iteration-manager skill manages per-module iteration cycles. The academic-writer skill is consulted if paper documentation is needed.
+- Use `/python-project` from **python-project-developer** to scaffold the project structure after architecture design is complete. Run `/python-project init <name>` then `/python-project structure` to generate the skeleton.
+- Use `/iterate <n>` from **iteration-manager** to iteratively test each module against quality gates. Start with `/iterate 5` after each module implementation to verify the 90/100 score threshold.
+- Use `/把关` from **ba-guan** for pre-publish review after architecture implementation. Run `/把关 check` to detect unpublished changes, then `/把关` for the full three-layer review.
+- Use `/合并 <task>` from **he-bing** to manage the PR workflow for architectural changes. Use `/合并 create` to open a PR and `/合并 check` to verify CI and review status.
+- Use `/安检` from **an-jian** to security-review the architecture. Run `/安检 scan` on the architecture documents and implementation to catch dangerous patterns, credential leaks, and privilege escalation risks.
 
 ## Best Practices
 
 Five principles guide the architecture process. First, never skip phases because each phase builds on the previous one. Second, quality gates are mandatory with no exceptions. Third, iterate until excellence and settle for nothing less than 90%. Fourth, document continuously rather than leaving documentation for the end. Fifth, validate assumptions by testing early and testing often.
+
+## See Also
+
+- `/agent-patterns` from **coding-agent-patterns** — Agent architecture patterns for complex systems
+- `/python-project` from **python-project-developer** — Scaffold implementation after architecture design
+- `/把关` from **ba-guan** — Pre-publish multi-layer review
+- `/合并` from **he-bing** — PR workflow for phased delivery of architecture components

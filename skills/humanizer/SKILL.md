@@ -269,6 +269,13 @@ AI的发展前景值得期待，但风险同样不可忽视。关键在于如何
 4. 有证据：引用具体数据、案例、研究
 5. 有痕迹：展现推理过程，承认不确定性
 
+## Integration with Other Skills / 与其他技能集成
+
+- Use `/paper new <topic>` and `/paper cite` from **academic-writer** when humanizing academic content. Feed academic drafts through `/humanize` to remove AI patterns while preserving scholarly tone.
+- Use `/简写 <text>` from **brief-write** for complementary style-aware writing. After humanization with `/人话`, pipe to `/简写` for the user's concise, direct blog style.
+- Use `/gongwen check <document>` from **official-document-writer** for official document humanization. Review 公文 with `/gongwen check`, then apply `/人话 --style formal` to reduce AIGC markers while maintaining GB/T 9704-2012 compliance.
+- Use `/patent disclosure <invention>` from **patent-writer** for patent-related text humanization. Run `/detect` on patent drafts to identify AI patterns, then `/人话` to humanize while preserving technical precision.
+
 ## Rules
 
 - rules/ai-features.md：AI文本特征识别规则
@@ -304,3 +311,10 @@ language：auto，语言选择，可选 auto/zh/en
 - **内存优化**：处理大文档时，及时释放中间结果的内存
 - **超时控制**：每个文本段落的处理设置最大时间限制
 - **并发控制**：批量处理时限制并发数量，避免资源竞争
+
+## See Also / 相关技能
+
+- `/简写` from **brief-write** — 带反AI模式的博客风格写作 / Blog-style writing with anti-AI patterns
+- `/paper review` from **academic-writer** — 学术语境中的 AIGC 检测 / AIGC detection in academic context
+- `/gongwen check` from **official-document-writer** — 人化处理公文文本 / Humanize official documents
+- `/patent disclosure` from **patent-writer** — 人化处理专利描述 / Humanize patent descriptions

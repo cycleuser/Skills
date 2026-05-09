@@ -1,16 +1,10 @@
 # Skill Registry
 
-Complete registry of all available skills in the workspace.
+Complete registry of all 22 available skills.
 
 ## Registry Format
 
-Each skill entry contains:
-- `name`: Skill identifier for invocation
-- `version`: Semantic version
-- `location`: File path to SKILL.md
-- `description`: Brief description
-- `triggers`: Conditions that activate the skill
-- `invoke`: Command to load the skill
+Each entry contains: `name`, `version`, `location`, `description`, `commands`, `rules`.
 
 ---
 
@@ -20,9 +14,8 @@ Each skill entry contains:
 
 ```yaml
 name: skill-manager
-version: "1.0.0"
+version: "1.1.0"
 location: skills/skill-manager/SKILL.md
-invoke: /skill skill-manager
 description: |
   Central skill registry and management system. Auto-loaded on every session.
 auto_load: true
@@ -32,6 +25,8 @@ commands:
   - /skill <name> - Load skill
   - /skill reload - Refresh registry
   - /skill help <name> - Show details
+rules:
+  - registry.md
 ```
 
 ---
@@ -44,7 +39,6 @@ commands:
 name: master-architect
 version: "1.0.0"
 location: skills/master-architect/SKILL.md
-invoke: /skill master-architect
 description: |
   Top-tier software architect agent for complex multi-stage project development.
   Decomposes tasks into sub-modules, iterates each until excellence.
@@ -72,15 +66,20 @@ rules:
 ```yaml
 name: python-project-developer
 version: "1.0.0"
-location: .opencode/skills/python-project-developer/SKILL.md
-invoke: /skill python-project-developer
+location: skills/python-project-developer/SKILL.md
 description: |
   Complete Python multi-project development specification for CLI/GUI tools.
 triggers:
-  - Creating a new Python project with CLI and GUI support
+  - Creating Python projects with CLI/GUI support
   - Setting up pyproject.toml, README, and PyPI publishing
   - Implementing unified API with ToolResult pattern
-  - Adding OpenAI function-calling tools integration
+commands:
+  - /python-project init <name> - Initialize new project
+  - /python-project structure - Generate project structure
+  - /python-project api - Implement API pattern
+  - /python-project cli - Add CLI with unified flags
+  - /python-project test - Generate test suite
+  - /python-project publish - Setup PyPI publishing
 rules:
   - project-structure.md
   - cli-flags.md
@@ -94,8 +93,7 @@ rules:
 ```yaml
 name: software-planner
 version: "1.0.0"
-location: .opencode/skills/software-planner/SKILL.md
-invoke: /skill software-planner
+location: skills/software-planner/SKILL.md
 description: |
   Comprehensive software development planning for Python projects with CLI, GUI, Web interfaces.
 triggers:
@@ -103,6 +101,12 @@ triggers:
   - Planning software architecture from academic research
   - Designing scientific or engineering applications
   - Setting up bilingual documentation and PyPI publishing
+commands:
+  - /planner research <topic> - Conduct domain research
+  - /planner design <project> - Design system architecture
+  - /planner modules - Generate module specifications
+  - /planner docs - Create bilingual documentation
+  - /planner verify - Run verification checklist
 rules:
   - pre-development.md
   - interface-design.md
@@ -115,8 +119,7 @@ rules:
 ```yaml
 name: coding-agent-patterns
 version: "1.0.0"
-location: .opencode/skills/coding-agent-patterns/SKILL.md
-invoke: /skill coding-agent-patterns
+location: skills/coding-agent-patterns/SKILL.md
 description: |
   Core patterns for AI coding agents based on Claude Code, Codex, Cline, Aider, OpenCode.
 triggers:
@@ -124,6 +127,11 @@ triggers:
   - Implementing tool-calling loops
   - Managing context windows
   - Setting up agent memory systems
+commands:
+  - /agent-patterns loop - Core tool-calling loop
+  - /agent-patterns context - Context management
+  - /agent-patterns safety - Tool safety patterns
+  - /agent-patterns memory - Memory system design
 rules:
   - context-management.md
   - tool-safety.md
@@ -136,8 +144,7 @@ rules:
 ```yaml
 name: iteration-manager
 version: "1.0.0"
-location: .opencode/skills/iteration-manager/SKILL.md
-invoke: /skill iteration-manager
+location: skills/iteration-manager/SKILL.md
 description: |
   Iterative testing, verification, and improvement supervisor.
 triggers:
@@ -155,15 +162,128 @@ rules:
   - iteration-workflow.md
 ```
 
+### project-rebuilder
+
+```yaml
+name: project-rebuilder
+version: "1.0.0"
+location: skills/project-rebuilder/SKILL.md
+description: |
+  项目重建 - Rebuild projects from scratch referencing existing implementations.
+  Uses team parallel review + ralph persistent execution mode.
+triggers:
+  - Rebuilding core features from reference projects
+  - Deep refactoring of existing projects
+  - Building similar products from scratch
+commands:
+  - /rebuild <project> <goal> - Start project rebuild
+  - /rebuild analyze <project> - Analyze reference project
+  - /rebuild team - Launch team review
+  - /rebuild status - Check rebuild progress
+rules:
+  - project-analysis.md
+  - team-review.md
+  - ralph-execution.md
+  - checkpoint.md
+```
+
+---
+
+## Quality & Security
+
+### an-jian
+
+```yaml
+name: an-jian
+version: "1.0.0"
+location: skills/an-jian/SKILL.md
+description: |
+  安检 - Security review for skills before installation.
+  Detects dangerous commands, network leaks, file writes, credential exposure, resource exhaustion.
+triggers:
+  - Before installing new skills
+  - Periodic security review of installed skills
+  - Suspicion of compromised skill content
+commands:
+  - /安检 <skill-path> - Review skill security
+  - /安检 scan <path> - Deep scan
+  - /安检 list - List installed skill risks
+  - /安检 fix <skill> - Fix security issues
+  - /security <skill-path> - English command
+rules:
+  - dangerous-patterns.md
+  - risk-assessment.md
+  - fix-strategies.md
+  - audit-format.md
+```
+
+### ba-guan
+
+```yaml
+name: ba-guan
+version: "1.0.0"
+location: skills/ba-guan/SKILL.md
+description: |
+  把关 - Pre-publish review with multi-layer deep analysis.
+  Per-change review (up to 10 agents) → Holistic 5-role review → Synthesis.
+triggers:
+  - Preparing to publish npm packages
+  - Pre-publish code review
+  - Quality check of code changes
+commands:
+  - /把关 - Start pre-publish review
+  - /把关 check - Check unpublished changes
+  - /把关 version - Suggest version bump
+  - /把关 report - Generate review report
+  - /review - English command
+rules:
+  - change-detection.md
+  - review-roles.md
+  - version-bump.md
+```
+
+---
+
+## Git Workflow
+
+### he-bing
+
+```yaml
+name: he-bing
+version: "1.0.0"
+location: skills/he-bing/SKILL.md
+description: |
+  合并 - Complete PR lifecycle: worktree → implement → commits → PR → verify → merge.
+  5-phase workflow with automatic verification loops and merge cleanup.
+triggers:
+  - Implementing features and submitting PRs
+  - Fixing issues
+  - Code review and merge workflows
+commands:
+  - /合并 <task> - Start full PR workflow
+  - /合并 create <task> - Create PR
+  - /合并 check - Check verification status
+  - /合并 status - View PR status
+  - /pr <task> - English command
+rules:
+  - worktree.md
+  - commit-atomic.md
+  - verification.md
+```
+
+---
+
+## Writing Skills
+
 ### academic-writer
 
 ```yaml
 name: academic-writer
-version: "1.0.0"
-location: .opencode/skills/academic-writer/SKILL.md
-invoke: /skill academic-writer
+version: "3.0.0"
+location: skills/academic-writer/SKILL.md
 description: |
   Academic paper writing assistant for top-tier conferences (AAAI, IJCAI, IEEE).
+  Literature search, citation formatting, figure quality, reviewer response, opencode workflow.
 triggers:
   - Writing academic papers or articles
   - Need literature search and citation formatting
@@ -174,117 +294,64 @@ commands:
   - /paper cite - Format citations
   - /paper structure - Generate outline
   - /paper review - Review and polish
+  - /paper figures - Figure quality check
+  - /paper rebuttal - Write reviewer response
 rules:
   - literature-search.md
   - citation-format.md
   - paper-structure.md
   - writing-style.md
+  - anti-ai-patterns.md
+  - figure-quality.md
+  - reviewer-response.md
+  - opencode-experience.md
 ```
-
----
-
-## Visualization Skills
-
-### math-visualizer
-
-```yaml
-name: math-visualizer
-version: "1.0.0"
-location: Others/manim-video-generator/skills/math-visualizer/SKILL.md
-invoke: /skill math-visualizer
-description: |
-  Mathematical visualization skill for equations, proofs, and geometric concepts.
-triggers:
-  - User mentions equations, formulas, or mathematical expressions
-  - Request involves mathematical proofs or derivations
-  - User mentions LaTeX, calculus, algebra, geometry
-```
-
-### visual-storyteller
-
-```yaml
-name: visual-storyteller
-version: "1.0.0"
-location: Others/manim-video-generator/skills/visual-storyteller/SKILL.md
-invoke: /skill visual-storyteller
-description: |
-  Narrative-driven animation skill for explanatory content.
-triggers:
-  - User wants to explain a concept or process
-  - Content is educational or tutorial-like
-```
-
-### animation-composer
-
-```yaml
-name: animation-composer
-version: "1.0.0"
-location: Others/manim-video-generator/skills/animation-composer/SKILL.md
-invoke: /skill animation-composer
-description: |
-  Scene composition and orchestration for complex multi-part animations.
-triggers:
-  - User wants to compose multi-element scenes
-  - Scene requires act-based structure
-```
-
-### motion-graphics
-
-```yaml
-name: motion-graphics
-version: "1.0.0"
-location: Others/manim-video-generator/skills/motion-graphics/SKILL.md
-invoke: /skill motion-graphics
-description: |
-  Kinetic typography, logo animations, and stylized motion design.
-triggers:
-  - User wants text animations or kinetic typography
-  - Request involves logo reveals or title sequences
-```
-
----
-
-## Writing Skills
 
 ### humanizer
 
 ```yaml
 name: humanizer
-version: "1.4"
-location: .opencode/skills/humanizer/SKILL.md
-invoke: /skill humanizer
+version: "1.4.0"
+location: skills/humanizer/SKILL.md
 description: |
-  AI文本人化处理技能：将AIGC生成的文本润色成自然的人类语言。
+  AI text humanizer that rewrites AI-generated content into natural human language
+  using AIGC detection countermeasures.
 triggers:
-  - 需要降低文本的AIGC检测率
-  - 将AI生成内容改写为人话
-  - 优化文本使其更像人类写作风格
+  - Reducing AIGC detection rates
+  - Rewriting AI content into natural language
+  - Humanization polish on AI text
 commands:
-  - /人话 <文本> - 对文本进行人化处理
-  - /humanize <text> - Humanize AI-generated text
-  - /detect <文本> - 检测文本AIGC特征
+  - /人话 <text> - Humanize text
+  - /人话 --style formal <text> - Formal style
+  - /人话 --style casual <text> - Casual style
+  - /humanize <text> - Humanize (English)
+  - /detect <text> - Detect AIGC features
+  - /demo - Generate demo
 rules:
-  - anti-detection.md
-  - ai-patterns.md
-  - humanization-strategies.md
+  - ai-features.md
+  - detection-methods.md
+  - humanization.md
+  - formal-humanization.md
+  - iteration.md
+  - examples.md
 ```
 
 ### literary-ghostwriter
 
 ```yaml
 name: literary-ghostwriter
-version: "2.1"
-location: .opencode/skills/literary-ghostwriter/SKILL.md
-invoke: /skill literary-ghostwriter
+version: "2.1.0"
+location: skills/literary-ghostwriter/SKILL.md
 description: |
-  文豪技能：模仿7位文学大师写作风格，追求"神似"而非"形似"。
-  支持Shakespeare、鲁迅、金庸、古龙、Calvino、老舍、茨威格。
+  文豪代笔 - Imitate writing styles of 7 literary masters.
+  3 Western (Shakespeare, Zweig, Calvino) + 4 Chinese (Lu Xun, Lao She, Jin Yong, Gu Long).
 triggers:
-  - 需要模仿特定作家风格写作
-  - 文学创作和风格化表达
+  - Creating works in specific author styles
+  - Literary creation, script writing, novel writing
+  - Style imitation practice
 commands:
-  - /文豪 <作家> <主题> - 按指定作家风格创作
-  - /literary <author> <topic> - Create in author's style
+  - /文豪 <author> <topic> - Create in author style (CN)
+  - /literary <author> <topic> - Create in author style (EN)
 rules:
   - shakespeare-style.md
   - luxun-style.md
@@ -293,216 +360,318 @@ rules:
   - calvino-style.md
   - laoshe-style.md
   - zweig-style.md
+  - vocabulary.md
 ```
 
 ### brief-write
 
 ```yaml
 name: brief-write
-version: "1.0"
-location: .opencode/skills/brief-write/SKILL.md
-invoke: /skill brief-write
+version: "1.0.0"
+location: skills/brief-write/SKILL.md
 description: |
-  简写技能：模仿用户博客写作风格，用简洁直接、口语化、真诚坦率的语言表达。
-  支持中英双语命令，能识别并避免"一眼AI"的写作模式。
+  简写 - Mimic user's blog writing style: concise, direct, colloquial, honest.
+  Bilingual CN/EN with anti-AI-pattern detection.
 triggers:
-  - 需要模仿用户写作风格
-  - 简练表达
-  - 撰写博客文章、技术文档
+  - Mimicking user writing style
+  - Concise expression
+  - Blog posts, technical documentation
 commands:
-  - /简写 <主题或文本> - 按用户风格改写或创作
-  - /write <topic/text> - Write in user's style
-  - /风格检查 <文本> - 检查是否符合简写风格
+  - /简写 <text> - Rewrite in user style
+  - /write <text> - Write in user style (EN)
+  - /风格检查 <text> - Check style compliance
+  - /style-check <text> - Style check (EN)
 rules:
   - user-style.md
   - ai-patterns-avoid.md
 ```
 
+### official-document-writer
+
+```yaml
+name: official-document-writer
+version: "1.0.0"
+location: skills/official-document-writer/SKILL.md
+description: |
+  Official document writing assistant for Chinese government documents (公文).
+  Based on GB/T 9704-2012 standard with 15 document types.
+triggers:
+  - Writing Chinese official documents (公文)
+  - Formatting documents by national standards
+  - Reviewing document compliance
+commands:
+  - /gongwen notice <topic> - Write notice (通知)
+  - /gongwen report <topic> - Write report (报告)
+  - /gongwen request <topic> - Write request (请示)
+  - /gongwen reply <topic> - Write reply (批复)
+  - /gongwen letter <topic> - Write letter (函)
+  - /gongwen minutes <topic> - Write minutes (纪要)
+  - /gongwen check <doc> - Check compliance
+  - /gongwen format - Show formatting rules
+rules:
+  - document-types.md
+  - formatting-rules.md
+  - templates.md
+  - writing-guidelines.md
+```
+
+---
+
+## Patent & Legal
+
+### patent-writer
+
+```yaml
+name: patent-writer
+version: "2.0.0"
+location: skills/patent-writer/SKILL.md
+description: |
+  Patent writing assistant for Chinese patents. Search, disclosure documents,
+  filing strategy, blocking risk assessment, writing guidelines.
+triggers:
+  - Writing patent applications
+  - Creating patent disclosure documents
+  - Patent search and analysis
+  - Planning patent strategy
+commands:
+  - /patent search <keywords> - Patent search
+  - /patent disclosure <invention> - Write disclosure
+  - /patent report <invention> - Self-search report
+  - /patent workflow - Show workflow
+  - /patent strategy - Filing strategy
+  - /patent check - Quality checklist
+  - /patent examples - Show examples
+rules:
+  - patent-search.md
+  - disclosure-document.md
+  - patent-workflow.md
+  - writing-tips.md
+```
+
+---
+
+## Consultation
+
 ### bao-kao
 
 ```yaml
 name: bao-kao
-version: "1.0"
-location: .opencode/skills/bao-kao/SKILL.md
-invoke: /skill bao-kao
+version: "1.0.0"
+location: skills/bao-kao/SKILL.md
 description: |
-  报考技能：类似资深报考顾问风格的考研高考报考指导。
-  从官网搜索所有公开数据（专业列表、历年报考指南、一分一段表、录取分数线），进行交叉对比分析，给出实用建议。
+  报考 - Enrollment consultation for college/graduate entrance exams.
+  Searches official data sources, cross-compares admission data, practical advice.
 triggers:
-  - 高考报考咨询
-  - 考研报考咨询
-  - 专业选择咨询
-  - 学校选择咨询
+  - College entrance exam consultation (高考)
+  - Graduate entrance exam consultation (考研)
+  - Major selection consultation (专业选择)
+  - School selection consultation (学校选择)
 commands:
-  - /报考 <查询内容> - 搜索分析报考数据
-  - /enroll <query> - Search and analyze enrollment data
-  - /专业 <专业名> - 分析专业就业前景
-  - /major <name> - Analyze major employment prospects
-  - /学校 <学校名> - 分析学校录取情况
-  - /school <name> - Analyze school admission data
+  - /报考 <query> - Search and analyze enrollment data
+  - /enroll <query> - Search enrollment data (EN)
+  - /专业 <major> - Analyze major prospects
+  - /major <name> - Analyze major (EN)
+  - /学校 <school> - Analyze school admission
+  - /school <name> - Analyze school (EN)
 rules:
   - data-sources.md
   - analysis-methods.md
   - consultant-style.md
   - taboo-list.md
+  - search-methods.md
 ```
+
+---
+
+## Autonomous Execution
+
+### sleepless
+
+```yaml
+name: sleepless
+version: "1.0.0"
+location: skills/sleepless/SKILL.md
+description: |
+  修仙 - Sleepless autonomous execution. No sleep, no ask, no pause — works until task is complete.
+  Supports 8 task modes: Dev, Fix, Refactor, Test, Doc, Iterate, Integrate, Explore.
+triggers:
+  - Long-running autonomous work
+  - Overnight execution of development tasks
+  - Any task requiring "set it and forget it" execution
+commands:
+  - /修仙 <task> - Start sleepless execution
+  - /修仙 <task> --budget <level> - With budget
+  - /修仙 status - Check status
+  - /修仙 log - View log
+  - /sleepless <task> - English command
+rules:
+  - autonomous-loop.md
+  - eternal-drive.md
+  - task-omnipotence.md
+```
+
+### power-iterate
+
+```yaml
+name: power-iterate
+version: "2.1.0"
+location: skills/power-iterate/SKILL.md
+description: |
+  强力迭代 - Fully autonomous continuous iteration until time/token budget exhausted.
+  Auto-understands requirements, designs evaluation plans, plans iteration paths.
+triggers:
+  - Requests for power iteration
+  - Continuous development
+  - Non-stop work with explicit time/token budget
+commands:
+  - /强力迭代 <task> [budget] - Start power iteration
+  - /power-iterate <task> [budget] - English command
+rules:
+  - autonomous-loop.md
+  - budget-manager.md
+  - task-decomposition.md
+```
+
+### zi-kong
+
+```yaml
+name: zi-kong
+version: "1.0.0"
+location: skills/zi-kong/SKILL.md
+description: |
+  自控 - Self-controlled autonomous iteration for opencode itself.
+  Cross-session memory, self-review, budget control, parallel tasks, decision tree, rollback.
+triggers:
+  - opencode self-improvement
+  - Continuous iteration of skills
+  - Autonomous long-running tasks
+commands:
+  - /自控 <goal> - Start autonomous iteration
+  - /自控 status - Check status
+  - /自控 pause - Pause iteration
+  - /自控 resume - Resume iteration
+  - /自控 log - View log
+  - /auto <goal> - English command
+rules:
+  - autonomous-loop.md
+  - memory.md
+  - budget.md
+  - safety.md
+  - self-review.md
+```
+
+---
+
+## Skill Management
 
 ### skill-refiner
 
 ```yaml
 name: skill-refiner
-version: "1.0"
-location: .opencode/skills/skill-refiner/SKILL.md
-invoke: /skill skill-refiner
+version: "1.0.0"
+location: skills/skill-refiner/SKILL.md
 description: |
-  修炼技能：对任意技能进行反复打磨改进，直到达到最优状态。
+  修炼 - Repeatedly polish and improve any skill until optimal state.
+  Deep analysis → improvement plans → iterative optimization → validation.
 triggers:
-  - 需要改进现有技能
-  - 润色技能文档
-  - 优化技能规则
+  - Improving existing skills
+  - Polishing skill documentation
+  - Optimizing skill rules
+  - Fixing skill defects
 commands:
-  - /修炼 <技能名> - 对指定技能进行修炼
-  - /refine <skill> - Refine a specific skill
+  - /修炼 <skill> - Refine specified skill
+  - /refine <skill> - Refine skill (EN)
 rules:
-  - refinement-process.md
-  - quality-criteria.md
+  - diagnosis.md
+  - improvement.md
+  - templates.md
+  - validation.md
 ```
 
 ---
 
-## Git Workflow Skills
+## GitHub Tools
 
-### commit
-
-```yaml
-name: commit
-version: "1.0.0"
-location: Others/symphony/.codex/skills/commit/SKILL.md
-invoke: /skill commit
-description: |
-  Create well-formed git commits with session context.
-triggers:
-  - Asked to commit or prepare commit message
-```
-
-### push
+### shen-shi
 
 ```yaml
-name: push
+name: shen-shi
 version: "1.0.0"
-location: Others/symphony/.codex/skills/push/SKILL.md
-invoke: /skill push
+location: skills/shen-shi/SKILL.md
 description: |
-  Push branch changes and create/update pull request.
+  审视 - Read-only GitHub triage for issues and PRs.
+  Evidence-backed analysis, parallel processing, report generation — never modifies GitHub state.
 triggers:
-  - Asked to push or publish updates
-```
-
-### pull
-
-```yaml
-name: pull
-version: "1.0.0"
-location: Others/symphony/.codex/skills/pull/SKILL.md
-invoke: /skill pull
-description: |
-  Pull origin/main and resolve merge conflicts.
-triggers:
-  - Need to sync feature branch with origin
-```
-
-### land
-
-```yaml
-name: land
-version: "1.0.0"
-location: Others/symphony/.codex/skills/land/SKILL.md
-invoke: /skill land
-description: |
-  Land a PR with conflict resolution and CI monitoring.
-triggers:
-  - Asked to land, merge, or shepherd a PR
-```
-
-### debug
-
-```yaml
-name: debug
-version: "1.0.0"
-location: Others/symphony/.codex/skills/debug/SKILL.md
-invoke: /skill debug
-description: |
-  Investigate stuck runs and execution failures.
-triggers:
-  - Runs stall, retry repeatedly, or fail unexpectedly
-```
-
-### linear
-
-```yaml
-name: linear
-version: "1.0.0"
-location: Others/symphony/.codex/skills/linear/SKILL.md
-invoke: /skill linear
-description: |
-  Linear GraphQL operations for issue management.
-triggers:
-  - Need to interact with Linear API
+  - Analyzing GitHub Issues or PRs
+  - Generating review reports
+  - Classifying issues
+commands:
+  - /审视 analyze <repo> - Analyze all open issues/PRs
+  - /审视 issues <repo> - Analyze issues only
+  - /审视 prs <repo> - Analyze PRs only
+  - /审视 <URL> - Analyze specific issue/PR
+  - /analyze <repo> - English command
+rules:
+  - classification.md
+  - evidence.md
+  - report-format.md
 ```
 
 ---
 
 ## Skill Statistics
 
-| Category | Count |
-|----------|-------|
-| Core (Auto-loaded) | 1 |
-| Architecture & Planning | 1 |
-| Development | 5 |
-| Visualization | 4 |
-| Writing | 5 |
-| Git Workflow | 6 |
-| **Total** | **22** |
+| Category | Count | Skills |
+|----------|-------|--------|
+| Core (Auto-loaded) | 1 | skill-manager |
+| Architecture & Planning | 1 | master-architect |
+| Development | 5 | python-project-developer, software-planner, coding-agent-patterns, iteration-manager, project-rebuilder |
+| Quality & Security | 2 | an-jian, ba-guan |
+| Git Workflow | 1 | he-bing |
+| Writing | 5 | academic-writer, humanizer, literary-ghostwriter, brief-write, official-document-writer |
+| Patent & Legal | 1 | patent-writer |
+| Consultation | 1 | bao-kao |
+| Autonomous Execution | 3 | sleepless, power-iterate, zi-kong |
+| Skill Management | 1 | skill-refiner |
+| GitHub Tools | 1 | shen-shi |
+| **Total** | **22** | |
 
-## Core Skills (Auto-loaded)
+## Quick Reference Tables
+
+### Core Skills (Auto-loaded)
 
 | Skill | Purpose |
 |-------|---------|
 | skill-manager | Registry and invocation |
 
-## Writing Skills
+### Writing Skills
 
 | Skill | Purpose |
 |-------|---------|
+| academic-writer | Academic paper writing for top conferences |
 | humanizer | AI text humanization |
-| literary-ghostwriter | Literary style imitation |
+| literary-ghostwriter | Literary style imitation (7 masters) |
 | brief-write | User blog style imitation |
-| bao-kao | Enrollment consultation |
-| skill-refiner | Skill refinement |
+| official-document-writer | Chinese government documents (GB/T 9704-2012) |
+
+### Development Skills
+
+| Skill | Purpose |
+|-------|---------|
+| python-project-developer | Python CLI/GUI project scaffolding |
+| software-planner | Multi-interface software planning |
+| coding-agent-patterns | AI coding agent architecture |
+| iteration-manager | Iterative testing and improvement |
+| project-rebuilder | Rebuild projects from scratch |
+
+### Autonomous Execution
+
+| Skill | Purpose |
+|-------|---------|
+| sleepless | Non-stop execution until complete |
+| power-iterate | Continuous iteration with budget |
+| zi-kong | Self-controlled iteration for opencode |
 
 ## Last Updated
 
-2026-04-04
-
-## Installation
-
-### From GitHub
-
-```bash
-# Quick install
-curl -sSL https://raw.githubusercontent.com/cycleuser/Skills/main/install.py | python
-
-# Or clone and install
-git clone https://github.com/cycleuser/Skills.git
-cd Skills && python install.py install
-```
-
-### List Installed Skills
-
-```bash
-python install.py list
-```
-
-## How to Update Registry
-
-Run `/skill reload` to scan for new skills and update this registry.
+2026-05-09

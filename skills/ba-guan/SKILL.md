@@ -245,6 +245,13 @@ Patch (修订号):
 → 输出发行建议/Output recommendation
 ```
 
+## Integration with Other Skills / 与其他技能集成
+
+- Use `/architect review` from **master-architect** for architectural review during the Layer 2 holistic phase. Run `/architect review` to validate module cohesion, interface contracts, and test coverage alongside ba-guan's own multi-role analysis.
+- Use `/安检` from **an-jian** for security audit. Run `/安检 scan` as a dedicated security pass, then feed results into ba-guan's Layer 2 security review for the final report.
+- Use `/审视 <URL>` from **shen-shi** for GitHub-based code review patterns. Apply `/审视` to analyze related PRs and issues before finalizing the release assessment, borrowing evidence-based review methodology.
+- Use `/iterate <n>` from **iteration-manager** for iterative improvement cycles after review. When ba-guan's report identifies issues, run `/iterate 3` to fix them and re-verify before the final `/把关` decision.
+
 ## Rules
 
 - [rules/change-detection.md](rules/change-detection.md) - 变更检测/Change Detection
@@ -258,3 +265,10 @@ Patch (修订号):
 | change_groups | 10 | 最大变更组数/Max groups |
 | reviewers | 5 | 审查角色数/Reviewers |
 | coverage_threshold | 70% | 测试覆盖阈值/Coverage threshold |
+
+## See Also / 相关技能
+
+- `/安检` from **an-jian** — 整体审查中的安全审计层 / Security audit layer in holistic review
+- `/architect review` from **master-architect** — 整体审查中的架构审查层 / Architecture review layer in holistic review
+- `/合并` from **he-bing** — 审查通过后的 PR 工作流 / PR workflow after review passes
+- `/审视` from **shen-shi** — 基于 GitHub 的代码审查模式 / GitHub-based code review patterns

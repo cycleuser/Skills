@@ -194,6 +194,40 @@ Within 12 months of first filing, you can claim priority to earlier applications
 - No undefined or inconsistent terms
 - Clear, concise, and technically accurate
 
+## Troubleshooting
+
+### Search returns too many irrelevant results
+- **Symptom**: `/patent search` returns broad results unrelated to the invention
+- **Fix**: Narrow search with IPC classification codes; use `/patent search <keywords> --class <IPC>` to filter by technical field; add boolean operators (AND, NOT) in quotes
+
+### Disclosure document rejected by patent agent
+- **Symptom**: Patent agent returns disclosure for insufficient technical detail
+- **Fix**: Use `/patent disclosure <invention> --detailed` for full technical specification; include best mode and alternative embodiments; add comparative data showing advantages over prior art
+
+### Novelty search inconclusive
+- **Symptom**: Can't determine if invention is novel from search results alone
+- **Fix**: Use `/patent report <invention> --depth full` for comprehensive analysis; cross-search both patent databases and academic literature; consult patent classification definitions
+
+### Filing timeline pressure
+- **Symptom**: Invention already disclosed publicly, 12-month grace period running out
+- **Fix**: Use `/patent strategy --urgent` for accelerated workflow; prioritize provisional application filing; flag all prior public disclosures with dates
+
+## Edge Cases
+
+- **Software patents**: Chinese patent law requires hardware + software combination; pure software methods may need different strategy — flag with `/patent strategy --software`
+- **Design patents**: Design patent (外观设计) has different requirements than utility model (实用新型) or invention (发明专利) — use `/patent workflow --type design` for correct forms
+- **Co-inventors from different organizations**: Ownership and filing rights need explicit assignment agreements before filing
+- **Patent family strategy**: PCT vs Paris Convention routes — use `/patent strategy --international` for multi-country filing analysis
+- **Pre-existing publications**: If the inventor published a paper before filing, check novelty grace period (6 months in China for certain exhibitions/conferences)
+- **Employee invention**: If invention was made within scope of employment, employer typically owns rights unless contract states otherwise
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version with search, disclosure, workflow |
+| 2.0.0 | 2026-05-09 | Added strategy, check, examples commands; expanded from 128→212 lines; 4 rule files integrated |
+
 ## Rules
 - [rules/patent-search.md](rules/patent-search.md) - Patent search methodology with analysis framework
 - [rules/disclosure-document.md](rules/disclosure-document.md) - Complete disclosure document structure and examples  
@@ -211,3 +245,8 @@ Within 12 months of first filing, you can claim priority to earlier applications
 3. **Write Clearly**: Help agent understand your technical innovation with specifics
 4. **Plan Strategically**: Consider filing timeline, priority claims, and scope breadth
 5. **Iterate with Agent**: Review and refine together for optimal results
+
+## See Also
+
+- `/paper` from **academic-writer** — Literature search for prior art and novelty assessment
+- `/人话` from **humanizer** — Humanize patent descriptions for broader readability

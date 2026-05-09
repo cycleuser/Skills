@@ -371,6 +371,44 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ---
 
+## Troubleshooting / 排查
+
+### Reference project analysis fails / 参考项目分析失败
+- **Symptom / 症状**: `/rebuild analyze <project>` returns incomplete or no results
+- **Cause / 原因**: Large project, complex dependency graph, or missing build tools
+- **Fix / 解决**: Run analysis on specific submodules, use `--depth 2` for shallow analysis, check build dependencies are installed
+
+### Team review produces conflicting recommendations / 团队审查意见冲突
+- **Symptom / 症状**: Architect, Developer, and Tester agents disagree on approach
+- **Cause / 原因**: Different quality priorities or architectural philosophies
+- **Fix / 解决**: Use `/rebuild team --resolve` to trigger resolution pass, or manually select the approach using `/rebuild --approach <name>`
+
+### Ralph execution stalls / Ralph 执行卡住
+- **Symptom / 症状**: Ralph persistent execution locks up at checkpoint
+- **Cause / 原因**: Network timeout, disk full, or infinite loop in generated code
+- **Fix / 解决**: Use `/rebuild status` to identify the stalled checkpoint, `/rebuild --resume` from last valid checkpoint, increase timeout settings
+
+### Rebuilt project doesn't match original behavior / 重建项目行为不一致
+- **Symptom / 症状**: Output differs from reference despite passing tests
+- **Cause / 原因**: Edge cases not covered in reference analysis, implicit state dependencies
+- **Fix / 解决**: Run `/rebuild compare` for behavioral diff, add missing edge cases to analysis, iterate with targeted test cases
+
+## Edge Cases / 边界情况
+
+- **Monorepo analysis / 多包仓库**: Multi-package repos need per-package analysis scope; use `/rebuild analyze <repo> --scope <package>`
+- **Binary-only dependencies / 纯二进制依赖**: If reference uses compiled libraries without source, mark as "black box" and re-implement interface only
+- **Legacy language migration / 旧语言迁移**: Python 2→3, ES5→ES6+ need syntax transformation rules in analysis phase
+- **Database schema mismatch / 数据库模式不匹配**: If reference DB schema differs from target, generate migration scripts as separate checkpoint
+- **Large file handling / 大文件处理**: Files >5MB analyzed as "external assets", not rebuilt — only references tracked
+- **Concurrent rebuilds / 并发重建**: Two rebuilds on same project auto-sequentialize via checkpoint lock; second waits for first to complete
+
+## Version History / 版本历史
+
+| Version / 版本 | Date / 日期 | Changes / 变更 |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version with team+ralph parallel review pattern |
+| 1.1.0 | 2026-05-09 | Added safety rules, edge cases, troubleshooting, 4 rule files |
+
 ## Rules
 
 - [rules/project-analysis.md](rules/project-analysis.md) - 参考项目分析方法
@@ -387,3 +425,9 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 | review_iterations | 3 | 审查 - 改进迭代次数 |
 | checkpoint_interval | 30min | 自动保存间隔 |
 | parallel_reviewers | 3 | 并行审查角色数 |
+
+## See Also / 相关技能
+
+- `/architect design` from **master-architect** — 对参考项目进行架构分析 / Architecture analysis for reference project
+- `/iterate` from **iteration-manager** — 对重建组件进行迭代测试 / Iterative testing of rebuilt components
+- `/python-project` from **python-project-developer** — 搭建重建项目的项目结构 / Scaffold rebuilt project structure

@@ -314,6 +314,28 @@ git pull origin "$BASE_BRANCH"
 → 验证 → 合并/Verify → Merge
 ```
 
+## Performance & Resource Management / 性能与资源管理
+
+### Worktree Optimization / 工作树优化
+- **Shallow clone for large repos**: Use `git clone --depth 1` for repos >500MB to reduce worktree creation time
+- **Worktree cleanup**: Automatically remove worktrees older than 24 hours; use `/合并 --cleanup` for manual cleanup
+- **Shared object store**: Worktrees share the main repo's object store — no need to re-clone; only new working directory is created
+
+### CI Verification Efficiency / CI验证效率
+- **Parallel verification**: Run lint, typecheck, security scan, and test suite in parallel across separate jobs
+- **Incremental verification**: Skip unchanged modules by comparing against base branch; use `--skip-unchanged` flag
+- **Cached dependencies**: Use CI caching for pip/npm dependencies across verification runs; avoid reinstalling from scratch
+
+### Commit Optimization / 提交优化
+- **Atomic commit size**: Keep commits under 200 lines changed for faster review; split large changes with `--split` option
+- **Pre-commit hook caching**: Cache hook results for unchanged files; only re-run hooks on modified files
+- **Rebase vs merge**: Prefer rebase for feature branches (cleaner history); merge for long-running branches (preserves context)
+
+### Resource Cleanup / 资源清理
+- **Auto-cleanup schedule**: Configure auto-cleanup for worktrees, merged branches, and stale PRs; default: 7 days
+- **Disk space monitoring**: Alert if worktree directory exceeds 10% of disk; suggest cleanup before proceeding
+- **Stale PR detection**: Mark PRs as stale after 14 days of inactivity; auto-close after 30 days with no response
+
 ## Rules
 
 - [rules/worktree.md](rules/worktree.md) - 工作树管理/Worktree
@@ -327,3 +349,9 @@ git pull origin "$BASE_BRANCH"
 | base_branch | dev | 目标分支/Target branch |
 | worktree_parent | ../ | 工作树父目录/Parent dir |
 | max_review_cycles | 5 | 最大审查循环/Max cycles |
+
+## See Also / 相关技能
+
+- `/把关` from **ba-guan** — 合并前的发布前审查 / Pre-publish review before merge
+- `/architect phase` from **master-architect** — 按阶段进行架构验证 / Phase-by-phase architecture validation
+- `/自控` from **zi-kong** — 带自我审查的自主 PR 迭代 / Autonomous PR iteration with self-review

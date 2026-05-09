@@ -244,8 +244,16 @@ Agent: Resuming from iteration #3...
 
 ## Integration with Other Skills
 
-The iteration manager integrates with other skills. The python-project-developer skill uses test patterns and ToolResult. The software-planner skill validates documentation requirements. The commit skill auto-commits improvements.
+- Use `/paper new <topic>` and `/paper search <keywords>` from **academic-writer** to document iteration results and quality metrics as structured papers. After generating an `/iterate report`, feed it to `/paper` for formal documentation.
+- Use `/人话 <text>` from **humanizer** to humanize generated iteration reports, removing AI-typical patterns from test analysis summaries. Pipe `/iterate report` output through `/人话` for natural-sounding documentation.
+- Use `/python-project test` from **python-project-developer** to generate test suites before starting iteration. Scaffold tests with `/python-project test`, then run `/iterate <n>` to refine them against quality gates.
 
 ## Best Practices
 
 Five practices guide effective iteration. First, start with baseline by running initial tests to establish metrics. Second, focus on one area by prioritizing critical failures first. Third, track progress by comparing metrics across iterations. Fourth, know when to stop by avoiding over-optimization. Fifth, document changes by keeping track of what was improved.
+
+## See Also
+
+- `/python-project test` from **python-project-developer** — Generate test suites for iteration
+- `/architect phase` from **master-architect** — Quality gates during phased development
+- `/把关 check` from **ba-guan** — Pre-publish quality validation

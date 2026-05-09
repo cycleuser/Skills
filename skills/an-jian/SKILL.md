@@ -366,6 +366,28 @@ fetch('http://...', {...})  # 发送请求
 → 验证修复结果/Verify fixes
 ```
 
+## Performance & Resource Management / 性能与资源管理
+
+### Scan Optimization / 扫描优化
+- **Incremental scanning**: Only scan files changed since last audit; use `/安检 scan --incremental` for large projects
+- **Pattern pre-filtering**: Skip binary files, minified code, and generated files (node_modules, __pycache__, .git) by default
+- **Parallel file scanning**: Split file list across workers for repos with >100 files; max 4 parallel workers
+
+### Caching Strategy / 缓存策略
+- **Rule cache**: Pre-compiled regex patterns cached for 24 hours — avoids recompilation on re-scan
+- **Result cache**: Identical files with same hash skip re-scanning; cache valid for 1 hour
+- **Network call batching**: Group network dependency checks into batches of 10 to reduce API round trips
+
+### Large Repository Handling / 大仓库处理
+- **Depth-limited scanning**: `--depth 3` limits dependency tree analysis to 3 levels for npm/pip packages
+- **Shard mode**: Repos >10,000 files split into shards of 1000; results aggregated after parallel scan
+- **Timeout per file**: Each file limited to 30s analysis; files exceeding timeout flagged as "complex" for manual review
+
+### Report Optimization / 报告优化
+- **Risk aggregation**: Duplicate findings across files merged into single risk entry with file list
+- **Priority filtering**: `--min-severity high` skips low/info findings for faster triage
+- **Streaming output**: Long reports streamed as generated, not buffered in memory
+
 ## Rules
 
 - [rules/dangerous-patterns.md](rules/dangerous-patterns.md) - 危险模式/Dangerous Patterns

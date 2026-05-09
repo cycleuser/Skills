@@ -296,6 +296,57 @@ def build_system_prompt() -> str:
     return ""
 ```
 
+## Usage Examples
+
+### Implementing a Core Agent Loop
+```
+/agent-patterns loop --provider anthropic --tools file_read,bash_exec,web_search
+```
+
+### Setting Up Context Management
+```
+/agent-patterns context --strategy pruning --window 100k --reserve 20k
+```
+
+### Configuring Multi-Provider Abstraction
+```
+/agent-patterns context --provider openai,groq,anthropic --fallback enabled
+```
+
+## Troubleshooting
+
+### Context window overflow despite pruning
+- **Symptom**: Agent still exceeds context limit after applying compression rules
+- **Fix**: Increase `--reserve` margin to 30%; enable aggressive pruning for messages >20 turns old; check that tool outputs are summarized, not stored raw
+
+### Tool safety false positives
+- **Symptom**: Safe read commands blocked by safety filter
+- **Fix**: Whitelist specific paths with `--allow-path /safe/directory`; categorize tools by risk tier (read vs write vs network); never disable safety entirely, only refine rules
+
+### Provider fallback causes quality drop
+- **Symptom**: Fallback provider produces significantly worse code/responses than primary
+- **Fix**: Implement minimum capability threshold per provider; if fallback doesn't meet threshold, fail gracefully instead; use `/agent-patterns provider --test` to benchmark before deployment
+
+### Memory system state corruption
+- **Symptom**: Persistent state loaded incorrectly or contains stale data
+- **Fix**: Add version field to all persistent records; implement migration for schema changes; validate checksum on load; use SQLite with WAL mode for concurrent access safety
+
+## Edge Cases
+
+- **Streaming truncation**: If a tool call is sent mid-stream, buffer until tool call delimiter is detected before parsing
+- **Nested tool calls**: Tool A returns results needed by Tool B — implement explicit dependency graph, don't rely on position
+- **Concurrent sessions**: Two sessions writing to same file — use advisory file locks; SQLite handles this natively through WAL
+- **Provider outages**: Graceful degradation: if all providers down, agent enters read-only analysis mode with cached data
+- **Extremely large repos**: Repo maps for 100k+ file repos — use hierarchical collapsing to keep map representation bounded
+- **Token counting mismatch**: Different providers count tokens differently — normalize to standard token count with 10% margin
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, 5 patterns from Claude Code/Codex/Cline/Aider/OpenCode |
+| 1.1.0 | 2026-05-09 | Added integration, performance, examples, troubleshooting, edge cases |
+
 ## Rules
 
 - [rules/context-management.md](rules/context-management.md) - Context window strategies
@@ -337,3 +388,9 @@ Follow the skill manager patterns from skill-manager skill to implement modular 
 ## Key Takeaways
 
 Five key principles guide agent development. First, start with the loop by writing the while(true) first and getting tool calling working. Second, implement context management early since this is the number one cause of agent failures. Third, provider abstraction matters because locking into one LLM vendor creates vendor lock-in. Fourth, layer safety with sandbox plus approval plus detection. Fifth, recognize that memory equals context since rules are injected into prompts rather than being separate config.
+
+## See Also
+
+- `/python-project` from **python-project-developer** — Use ToolResult pattern and project scaffolding for agents
+- `/architect design` from **master-architect** — Architecture decomposition for agent systems
+- `/skills` from **skill-manager** — Skill registration pattern for agent capabilities

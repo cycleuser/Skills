@@ -328,6 +328,60 @@ project_name/
     └── api.py              # Unified API
 ```
 
+## Usage Examples
+
+### Planning a Data Analysis Tool
+```
+/planner research "time series analysis with interactive visualization"
+/planner design "TimeViz - time series analysis tool"
+/planner modules --interface cli,web
+/planner docs --lang zh,en
+/planner verify
+```
+
+### Planning a Scientific Simulation
+```
+/planner research "molecular dynamics simulation with GPU acceleration"
+/planner design "MolSim" --domain scientific
+/planner modules --interface gui,cli
+```
+
+### Quick Start for Small Projects
+```
+/planner design "MyTool" --minimal
+/planner modules --single-file
+```
+
+## Troubleshooting
+
+### Research phase returns too broad results
+- **Fix**: Narrow with `--domain scientific|web|cli|gui` flag; add `--year 2024-2026` for recent papers; exclude tangential fields with `--exclude-field`
+
+### Module specification too abstract
+- **Fix**: Use `/planner modules --detailed` for API-level decomposition; add `--example` to generate pseudocode for each module
+
+### Documentation generation creates empty stubs
+- **Fix**: Ensure module specs are complete before running docs; use `/planner docs --fill` to auto-populate from module signatures
+
+### Interface design conflicts
+- **Fix**: Use `/planner design --resolve` to detect and resolve conflicts between CLI/GUI/Web interfaces
+
+## Edge Cases
+
+- **Monorepo planning**: Use `--monorepo` flag to generate per-package module specs with shared dependency tracking
+- **Legacy migration**: `--migrate-from <old-spec>` compares old architecture against new plan, flags breaking changes
+- **Multi-language projects**: Specify `--languages python,rust,typescript` for cross-language interface compatibility verification
+- **Real-time systems**: Use `--domain realtime` to add latency budget and concurrency model to module specs
+- **Embedded/constrained**: `--domain embedded` adds memory budget and dependency size limits
+- **Empty project seed**: If no prior code exists, `/planner design <name> --seed` generates minimal template alongside architecture
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, CLI/GUI/Web planning, academic research integration |
+| 1.0.1 | 2026-05-09 | Added safety rules, examples, troubleshooting, edge cases |
+
 ## Rules
 
 - [rules/pre-development.md](rules/pre-development.md) - Research and planning phase

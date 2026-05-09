@@ -162,3 +162,29 @@ The skill-manager works with all other skills. Use `/skills` to see the complete
 - **Research Projects**: Use `academic-writer` for paper writing, `literary-ghostwriter` for creative writing, and `patent-writer` for IP protection.
 - **Code Quality**: Use `humanizer` to improve generated text, `an-jian` to audit skills before installation, and `iteration-manager` to improve code iteratively.
 - **Project Management**: Combine `master-architect` for planning, `he-bing` for PR workflows, and `ba-guan` for pre-publish review.
+
+## Troubleshooting
+
+### Skill not found
+- **Symptom**: `/skill <name>` returns "skill not found"
+- **Fix**: Run `/skill reload` to rescan the skills directory; check that SKILL.md exists at `skills/<name>/SKILL.md`; verify the skill is listed in `/skills` output
+
+### Registry mismatch
+- **Symptom**: `/skills` shows different skills than what's actually in the directory
+- **Fix**: Run `/skill reload` to regenerate the registry; if mismatch persists, manually update `rules/registry.md` or delete it and reload
+
+### Cross-skill reference broken
+- **Symptom**: Skill A references `/command` from Skill B, but command doesn't exist
+- **Fix**: Run `/skills` to verify both skills are registered; check the referenced skill's Quick Commands table for correct command syntax
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, skill discovery and loading |
+| 1.1.0 | 2026-05-09 | Fixed registry (10 dead refs removed, 10 unregistered skills added, 5 rule filename mismatches corrected); added troubleshooting, version history |
+
+## See Also
+
+- `/修炼` from **skill-refiner** — Polish and improve skills in the registry
+- `/agent-patterns memory` from **coding-agent-patterns** — Memory system patterns for skill loading

@@ -1,6 +1,6 @@
 ---
 name: shen-shi
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Read-only GitHub triage for issues and PRs with evidence-backed analysis and parallel processing.
 
@@ -193,3 +193,42 @@ Each Issue/PR = 1 background task
 | parallel_tasks | 10 | 最大并行任务数/Max parallel tasks |
 | output_dir | /tmp | 报告输出目录/Report output dir |
 | include_closed | false | 是否包含已关闭/Include closed |
+
+## Troubleshooting / 排查
+
+### GitHub API rate limit / API限流
+- **Symptom / 症状**: 403 errors when querying Issues/PRs
+- **Fix / 解决**: Use `--token <ghp_token>` for authenticated requests (5000/hr vs 60/hr); cache results locally to reduce API calls
+
+### Large repository timeout / 大仓库超时
+- **Symptom / 症状**: Analyzing repos with >1000 open issues times out
+- **Fix / 解决**: Use `/审视 issues <repo> --limit 100` to paginate; increase `--timeout` parameter; analyze by label filter
+
+### Report generation stalls / 报告生成卡住
+- **Symptom / 症状**: Report writing hangs at evidence collection phase
+- **Fix / 解决**: Check for broken links in issue bodies; use `--skip-links` to skip link validation; reduce `--max-depth` for comment threads
+
+### Mixed-language issues / 多语言议题
+- **Symptom / 症状**: Classification accuracy drops on bilingual repositories
+- **Fix / 解决**: Use `/审视 <URL> --lang zh` or `--lang en` to force language detection; review classification rules for language-specific patterns
+
+## Edge Cases / 边界情况
+
+- **Empty repository**: If repo has zero open issues/PRs, output "No issues or PRs found" instead of failing
+- **Archived repository**: Issues are read-only, mark all as "archived" and skip classification
+- **Cross-repository references**: When Issue references another repo's PR, fetch the reference but annotate it as external
+- **Deleted comments**: Placeholder text may contain "[deleted]" — skip these in sentiment analysis
+- **Bot-generated issues**: Issues from bots (dependabot, stale bot) flagged as `automated` type
+- **Issue templates**: Template text in issue body skipped for analysis, only user-filled content used
+
+## Version History / 版本历史
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version with read-only GitHub triage |
+| 1.1.0 | 2026-05-09 | Added safety rules, evidence.md, classification.md, report-format.md, troubleshooting, edge cases |
+
+## See Also / 相关技能
+
+- `/把关` from **ba-guan** — 基于证据模式的发布前审查 / Pre-publish review with evidence patterns
+- `/安检` from **an-jian** — Issues 的安全分类审查 / Security classification of issues

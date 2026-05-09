@@ -433,6 +433,69 @@ Combine with `/humanizer` to improve the readability of code snippets in papers.
 ### Project Planning and Architecture
 For papers describing complex software systems, use `/architect` from master-architect skill to plan the system architecture that will be documented in the paper. This ensures the technical implementation aligns with the academic contribution.
 
+## Usage Examples
+
+### Starting a New Paper
+```
+/paper new "Attention Mechanisms in Multimodal Transformers"
+/paper structure --venue AAAI --sections abstract,intro,related,method,experiments,conclusion
+/paper search "multimodal transformer attention mechanism 2024 2025"
+```
+
+### Literature Review Workflow
+```
+/paper search "diffusion models for text generation" --sources arxiv,dblp,semantic-scholar
+/paper search "autoregressive vs diffusion language models" --sources arxiv
+/paper cite --format IEEE
+```
+
+### Figure Preparation
+```
+/paper figures --check figure1.svg,figure2.pdf --colorblind --resolution 300dpi
+/paper figures --export all --format svg,pdf
+```
+
+### Reviewer Response
+```
+/paper rebuttal --reviewer-1 "add ablation study on attention heads" --reviewer-2 "compare with method X"
+/paper review --check all --fix auto
+```
+
+## Troubleshooting
+
+### Literature search returns empty
+- **Symptom**: `/paper search` returns zero results despite valid keywords
+- **Fix**: Try broader terms (e.g., "attention" not "multi-head cross-attention with relative positional encoding"); split multi-concept queries into separate searches; use `--year` to broaden date range
+
+### Citations missing in final output
+- **Symptom**: Bibliographic references in text but bibliography section empty
+- **Fix**: Run `/paper cite --sync` to reconcile in-text citations with bibliography database; check for orphaned `\cite{}` commands without bib entries
+
+### Figures fail quality check
+- **Symptom**: `/paper figures --check` flags multiple issues
+- **Fix**: Apply fixes in order: resolution first, then color palette, then font size, then alignment; use `--fix auto` to batch-apply non-destructive fixes; re-check after each fix category
+
+### AIGC detection score too high
+- **Symptom**: Paper flagged as likely AI-generated
+- **Fix**: Run `/paper review` section by section, not whole paper; focus on abstract and conclusion which have highest AIGC detection sensitivity; add personal voice with specific observations and non-obvious insights
+
+## Edge Cases
+
+- **Anonymous submission**: Remove all author affiliations, acknowledgments, and GitHub links; use `/paper new --anonymous` to auto-strip identifying info
+- **ArXiv pre-print before conference**: Check conference dual-submission policy; some venues allow ArXiv, others don't; use `/paper check --policy <venue>` to verify
+- **Multi-lingual papers**: Chinese abstract required for some Chinese journals alongside English; use `--lang zh,en` for bilingual output
+- **Rebuttal with page limits**: Typical rebuttal is 1 page; use `/paper rebuttal --max-pages 1` to enforce limit; prioritize reviewer concerns by feasibility
+- **Camera-ready deadline**: 2-4 week turnaround typical; `/paper review --priority critical` focuses on reviewer-mandated changes only, skips cosmetic improvements
+- **Withdrawn paper handling**: If bibliography includes withdrawn ArXiv papers, `/paper cite --validate` flags them with warning
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, paper structure, literature search, citations |
+| 2.0.0 | 2026-04-15 | Added `/paper review`, anti-AI patterns, writing style rules |
+| 3.0.0 | 2026-05-09 | Added figure-quality.md, reviewer-response.md, opencode-experience.md, 2 commands, integration, performance sections |
+
 ## Rules
 
 - [rules/anti-ai-patterns.md](rules/anti-ai-patterns.md) - AIGC detection evasion for academic text
@@ -443,3 +506,10 @@ For papers describing complex software systems, use `/architect` from master-arc
 - [rules/figure-quality.md](rules/figure-quality.md) - SVG/PDF figure quality standards, colorblind-safe palettes, and generation workflow
 - [rules/reviewer-response.md](rules/reviewer-response.md) - Point-by-point reviewer response letter strategies
 - [rules/opencode-experience.md](rules/opencode-experience.md) - Opencode-specific paper writing workflow, context management, and failure modes
+
+## See Also
+
+- `/人话` from **humanizer** — Humanize academic text to reduce AIGC detection scores
+- `/agent-patterns` from **coding-agent-patterns** — Agent patterns for research workflow automation
+- `/python-project` from **python-project-developer** — Scaffold code for experiments and benchmarks
+- `/patent` from **patent-writer** — Bridge academic research to patent disclosure

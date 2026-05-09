@@ -182,3 +182,37 @@ token_limit：100000，Token限制。
 budget_level：medium，预算级别，可选 tiny/small/medium/large/xlarge。
 max_iterations：50，最大迭代次数。
 checkpoint_interval：5，检查点间隔（任务数）。
+
+## 常见问题与排查
+
+### 迭代陷入死循环
+- **症状**: 同一任务反复修改但质量不提升
+- **解决**: 检查收敛检测阈值，增加 `--threshold 5` 增加敏感度；手动中断并指定新策略
+
+### 预算快速耗尽
+- **症状**: 仅完成1-2轮迭代即耗尽token预算
+- **解决**: 使用 `--budget high` 增加预算；缩小任务范围；优化每次迭代的代码变更量
+
+### 评估指标不准确
+- **症状**: 质量指标显示良好但实际效果差
+- **解决**: 添加人工验收指标；调整指标权重；增加边界情况测试
+
+## 边界情况
+
+- **单文件项目**: 迭代粒度缩小到函数级别，不做模块级重构
+- **超大型项目**: 指定 `--scope <module>` 限定迭代范围
+- **跨语言项目**: 每种语言独立评估指标，汇总时取加权平均
+- **历史代码退改**: 检测到回退时自动创建检查点，支持回滚
+
+## 版本历史
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 2.0.0 | 2026-04-01 | 重构为自主迭代框架 |
+| 2.1.0 | 2026-05-09 | 添加安全规则、边界情况、排查指南 |
+
+## See Also / 相关技能
+
+- `/修仙` from **sleepless** — 不眠不休执行，支持长时间迭代会话 / Non-stop execution for extended iteration sessions
+- `/自控` from **zi-kong** — 跨会话记忆，支持长周期迭代 / Cross-session memory for long-running iterations
+- `/iterate` from **iteration-manager** — 迭代中的质量指标追踪 / Quality metrics tracking during iteration

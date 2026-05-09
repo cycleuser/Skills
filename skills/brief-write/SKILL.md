@@ -1,6 +1,6 @@
 ---
 name: brief-write
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Writing skill that mimics user blog style with concise, colloquial, and sincere language while avoiding AI-detectable patterns.
 
@@ -273,8 +273,45 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ---
 
+## 常见问题与排查
+
+### 风格模仿不准确
+- **症状**: 输出与原博客风格差距大
+- **原因**: 参考样本不足或样本代表性差
+- **解决**: 多提供几篇代表性文章作为参考；使用 `/风格检查` 逐项对比
+
+### AI痕迹仍然明显
+- **症状**: 改写后仍能看出AI生成痕迹
+- **原因**: 只改了词汇没改句式，或删改太保守
+- **解决**: 增加颠覆性改写轮次；参考 `rules/ai-patterns-avoid.md` 逐项检查
+
+### 技术内容失真
+- **症状**: 改写成口语化后技术信息不准确
+- **原因**: 过度简化导致关键细节丢失
+- **解决**: 使用 `--preserve-technical` 保留技术术语和数字；技术段落只做句式调整不做语义修改
+
+## 边界情况
+
+- **纯代码块内容**: 代码块不做改写，只调整上下文描述
+- **长文改写**: 超过5000字的文章分段处理，每段保持风格一致
+- **对话/引用改写**: 原文中的直接引语和对话保留原意，仅调整衔接语
+- **列表/表格**: 保持结构不变，仅调整措辞
+- **跨语言写作**: 如果原文中文但要求英文输出，同时应用语言转换和风格调整
+
+## 版本历史
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，博客风格模仿 + AI模式避让 |
+| 1.1.0 | 2026-05-09 | 添加安全规则，边界情况，排查指南，blog路径修正 |
+
 ## 参考资料
 
 - 用户博客：`../../blog`
 - 风格规则：`rules/user-style.md`
 - 写作禁忌：`rules/ai-patterns-avoid.md`
+
+## See Also / 相关技能
+
+- `/人话` from **humanizer** — 互补的 AIGC 检测规避策略 / Complementary AI text detection strategies
+- `/文豪` from **literary-ghostwriter** — 文学风格参考，用于校准语感 / Literary style reference for voice calibration
