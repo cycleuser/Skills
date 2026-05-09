@@ -38,13 +38,12 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-**中文命令：**
-- `/简写 <主题或文本>` - 按用户风格创作或改写文本
-- `/风格检查 <文本>` - 检查文本是否符合简写风格标准
-
-**英文命令：**
-- `/write <topic/text>` - Write or rewrite in user's style
-- `/style-check <text>` - Check writing style compliance
+| Command | Description |
+|---------|-------------|
+| `/简写 <主题或文本>` | Write or rewrite in user's style |
+| `/风格检查 <文本>` | Check writing style compliance |
+| `/write <topic/text>` | Write in user's style (English) |
+| `/style-check <text>` | Check writing style compliance (English) |
 
 ---
 
@@ -276,6 +275,6 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## 参考资料
 
-- 用户博客：`/Users/fred/Documents/GitHub/cycleuser/blog`
+- 用户博客：`../../blog`
 - 风格规则：`rules/user-style.md`
 - 写作禁忌：`rules/ai-patterns-avoid.md`

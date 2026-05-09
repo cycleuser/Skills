@@ -13,6 +13,9 @@ description: |
   - /自控 resume - Resume iteration
   - /自控 log - View iteration log
   - /auto <goal> - English command for autonomous iteration
+  - /auto status - View status (English)
+  - /auto pause - Pause iteration (English)
+  - /auto resume - Resume iteration (English)
 
   Capabilities: True autonomous while(true) loop, cross-session context persistence, self-review after each iteration, budget control with time/token management, parallel task handling, decision tree for autonomous choices, rollback mechanism for safe iteration
 author: cycleuser
@@ -39,8 +42,8 @@ True autonomous iteration. Controls opencode itself for continuous self-improvem
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
+| Command | Description |
+|---------|-------------|
 | `/自控 <目标>` | 启动自主迭代 |
 | `/自控 status` | 查看迭代状态 |
 | `/自控 pause` | 暂停迭代 |

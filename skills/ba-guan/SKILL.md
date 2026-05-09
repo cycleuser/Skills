@@ -38,8 +38,8 @@ Nuclear-grade pre-publish review. Three-layer review ensures release quality.
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
+| Command | Description |
+|---------|-------------|
 | `/把关` | 启动完整发布前审查 |
 | `/把关 check` | 检查未发布变更 |
 | `/把关 version` | 建议版本升级 |

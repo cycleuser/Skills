@@ -12,6 +12,8 @@ description: |
   - /审视 prs <repo> - Analyze PRs only
   - /审视 <URL> - Analyze a specific issue or PR
   - /analyze <repo> - English command for repo analysis
+  - /analyze issues <repo> - Analyze issues only (English)
+  - /analyze prs <repo> - Analyze PRs only (English)
 
   Capabilities: GitHub data reading, issue classification, evidence collection with permalinks, report generation, parallel background processing
 author: cycleuser
@@ -39,8 +41,8 @@ Read-only GitHub analysis skill. Analyzes open issues and PRs with evidence-back
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
+| Command | Description |
+|---------|-------------|
 | `/审视 <仓库>` | 分析仓库所有开放 Issue 和 PR |
 | `/审视 issues <仓库>` | 只分析 Issues |
 | `/审视 prs <仓库>` | 只分析 PRs |

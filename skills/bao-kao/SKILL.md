@@ -10,6 +10,8 @@ description: |
   - /报考 <查询内容> - Search and analyze enrollment data
   - /专业 <专业名> - Analyze major employment prospects
   - /学校 <学校名> - Analyze school admission data
+  - /一分一段 <省份年份> - Query score ranking tables
+  - /分数线 <学校专业> - Query admission score cutoffs
   - /enroll <query> - Search and analyze enrollment data (English)
   - /major <name> - Analyze major employment prospects (English)
   - /school <name> - Analyze school admission data (English)
@@ -56,17 +58,16 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-**中文命令：**
-- `/报考 <查询内容>` - 搜索分析报考数据
-- `/专业 <专业名>` - 分析专业就业前景
-- `/学校 <学校名>` - 分析学校录取情况
-- `/一分一段 <省份年份>` - 查一分一段表
-- `/分数线 <学校专业>` - 查录取分数线
-
-**英文命令：**
-- `/enroll <query>` - Search and analyze enrollment data
-- `/major <name>` - Analyze major employment prospects
-- `/school <name>` - Analyze school admission data
+| Command | Description |
+|---------|-------------|
+| `/报考 <查询内容>` | Search and analyze enrollment data |
+| `/专业 <专业名>` | Analyze major employment prospects |
+| `/学校 <学校名>` | Analyze school admission data |
+| `/一分一段 <省份年份>` | Query score ranking tables |
+| `/分数线 <学校专业>` | Query admission score cutoffs |
+| `/enroll <query>` | Search and analyze enrollment data (English) |
+| `/major <name>` | Analyze major employment prospects (English) |
+| `/school <name>` | Analyze school admission data (English) |
 
 ---
 

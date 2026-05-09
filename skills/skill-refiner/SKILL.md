@@ -34,13 +34,10 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-命令：功能说明
-
-/修炼 <技能名>：对指定技能进行修炼
-/修炼 <技能名> --depth deep：深度修炼
-/修炼 <技能名> --aspect <维度>：针对特定维度修炼
-/修炼 --all：修炼所有技能
-/refine <skill>：Refine a specific skill
+| Command | Description |
+|---------|-------------|
+| `/修炼 <技能名>` | Refine a specific skill |
+| `/refine <skill>` | Refine a specific skill (English) |
 
 ## 修炼维度
 

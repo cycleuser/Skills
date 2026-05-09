@@ -34,9 +34,10 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-中文命令：/文豪 莎士比亚|茨维格|卡尔维诺|鲁迅|老舍|金庸|古龙 <选题>
-
-英文命令：/literary shakespeare|zweig|calvino|luxun|laoshe|jinyong|gulong <topic>
+| Command | Description |
+|---------|-------------|
+| `/文豪 <作家> <选题>` | Write in Chinese with a master's style (莎士比亚/茨维格/卡尔维诺/鲁迅/老舍/金庸/古龙) |
+| `/literary <author> <topic>` | Write in English with a master's style (shakespeare/zweig/calvino/luxun/laoshe/jinyong/gulong) |
 
 ---
 

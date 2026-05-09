@@ -7,7 +7,7 @@ description: |
   Triggers when: Building an AI coding agent or assistant, implementing tool-calling loops, managing context windows for LLMs, setting up agent memory or skill systems, or designing multi-provider LLM abstraction.
 
   Commands:
-  - /architect - View coding agent patterns and architecture (informational skill)
+  - /agent-patterns - View coding agent patterns and architecture (informational skill)
 
   Capabilities: Core agent loop with while(true) and tool execution, context management with pruning and compression and repo maps, tool safety with sandboxing and approval flows and doom loop detection, multi-provider abstraction with unified API for different LLMs, memory systems with project rules and auto-memory and skill loading, session persistence with SQLite vs JSONL patterns
 author: cycleuser
@@ -26,6 +26,12 @@ Core rules:
 5. **Redirect stdin** with `< /dev/null` for non-interactive commands
 
 A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+
+## Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `/agent-patterns` | View coding agent patterns (core loop, context management, tool safety, multi-provider, memory systems) |
 
 # Coding Agent Development Patterns
 
@@ -296,6 +302,37 @@ def build_system_prompt() -> str:
 - [rules/tool-safety.md](rules/tool-safety.md) - Security patterns
 - [rules/multi-provider.md](rules/multi-provider.md) - LLM abstraction
 - [rules/memory-systems.md](rules/memory-systems.md) - Agent memory patterns
+
+## Integration with Other Skills
+
+### Academic Documentation
+When building AI agents for research projects, combine with `/paper` from academic-writer skill to document the agent architecture, tool safety patterns, and context management strategies. Use `/paper structure` to create technical papers about your agent implementations.
+
+### Project Structure
+Use `/python-project` from python-project-developer skill to structure your agent project following the patterns described here. The ToolResult pattern from python-project-developer can be integrated with the core agent loop patterns described here.
+
+### Iterative Development
+Combine with `/iterate` from iteration-manager skill to implement iterative improvement of agent capabilities. Use `/iterate` to run multiple test cycles and improve agent performance.
+
+### Skill-Based Architecture
+Follow the skill manager patterns from skill-manager skill to implement modular agent capabilities. The skill system pattern described in this document aligns with the centralized skill registry approach.
+
+## Performance and Resource Management
+
+### Context Window Optimization
+- **Selective compression**: Compress only history older than 10 turns, keep recent interactions intact
+- **Semantic caching**: Cache expensive tool results (API calls, file reads) with TTL-based invalidation
+- **Progressive disclosure**: Load full context only when needed, start with summaries
+
+### Tool Execution Efficiency
+- **Batch operations**: Group similar tool calls (multiple file reads, multiple bash commands) to reduce round trips
+- **Asynchronous execution**: Execute independent tools in parallel when possible
+- **Early termination**: Stop tool execution if intermediate results indicate failure
+
+### LLM Provider Optimization  
+- **Adaptive provider selection**: Route different query types to optimal providers (coding to code-specialized models, analysis to reasoning-optimized models)
+- **Caching responses**: Cache deterministic tool calls and repeated analysis patterns
+- **Streaming responses**: Handle large outputs with streaming to reduce memory pressure
 
 ## Key Takeaways
 

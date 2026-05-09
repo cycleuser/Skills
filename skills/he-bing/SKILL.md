@@ -12,6 +12,9 @@ description: |
   - /合并 check - Check verification status
   - /合并 status - View PR status
   - /pr <task> - English command for PR workflow
+  - /pr create <task> - Create PR (English)
+  - /pr check - Check verification status (English)
+  - /pr status - View PR status (English)
 
   Capabilities: Worktree management, feature implementation, atomic commits, PR creation, verification loop (CI + Review + Approval), merge and cleanup
 author: cycleuser
@@ -38,8 +41,8 @@ Complete PR lifecycle management. From worktree to merge, automated end-to-end.
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
+| Command | Description |
+|---------|-------------|
 | `/合并 <任务>` | 启动完整 PR 工作流 |
 | `/合并 create <任务>` | 创建 PR |
 | `/合并 check` | 检查验证状态 |

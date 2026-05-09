@@ -9,6 +9,7 @@ description: |
   Commands:
   - /iterate <n> - Run n iterations of test-improve cycle
   - /iterate stop - Stop current iteration loop
+  - /iterate resume - Resume current iteration loop
   - /iterate status - Show current iteration status
   - /iterate report - Generate iteration report
 
@@ -36,7 +37,13 @@ Supervises iterative testing, verification, and improvement of code.
 
 ## Quick Commands
 
-The iteration manager provides four commands. The `/iterate <n>` command runs n iterations of the test-improve cycle. The `/iterate stop` command stops the current iteration loop. The `/iterate status` command shows current iteration status. The `/iterate report` command generates a comprehensive report.
+| Command | Description |
+|---------|-------------|
+| `/iterate <n>` | Run n iterations of test-improve cycle |
+| `/iterate stop` | Stop current iteration loop |
+| `/iterate resume` | Resume current iteration loop |
+| `/iterate status` | Show current iteration status |
+| `/iterate report` | Generate iteration report |
 
 ## Iteration Workflow
 

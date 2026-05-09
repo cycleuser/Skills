@@ -38,8 +38,8 @@ Security review for skills. Pre-installation check ensures no security risks.
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
+| Command | Description |
+|---------|-------------|
 | `/安检 <技能路径>` | 审查技能安全 |
 | `/安检 scan <路径>` | 深度扫描 |
 | `/安检 list` | 列出已安装技能风险 |

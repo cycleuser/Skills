@@ -31,6 +31,16 @@ Core rules:
 
 A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
+## Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `/planner research <topic>` | Conduct domain research |
+| `/planner design <project>` | Design system architecture |
+| `/planner modules` | Generate module specifications |
+| `/planner docs` | Create bilingual documentation |
+| `/planner verify` | Run verification checklist |
+
 # Software Development Planner
 
 Complete workflow for planning and implementing Python software with CLI, GUI, and Web interfaces, following established project patterns from GangDan, Chou, Huan, LaPian, and NuoYi.

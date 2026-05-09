@@ -10,6 +10,8 @@ description: |
   - /rebuild <参考项目> <目标> - Start project rebuild
   - /rebuild analyze <项目> - Analyze reference project
   - /rebuild team - Start team parallel review
+  - /rebuild ralph - Start persistent cross-session execution
+  - /rebuild checkpoint - View or restore checkpoints
   - /rebuild status - View rebuild progress
 
   Capabilities: Reference project deep analysis, core feature extraction, multi-role parallel review (architect/developer/tester), cross-session persistent execution, rebuilding core features from scratch
@@ -36,12 +38,14 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-- `/rebuild <参考项目> <目标>` - 启动项目重建
-- `/rebuild analyze <项目/URL>` - 分析参考项目
-- `/rebuild team` - 启动团队并行审查
-- `/rebuild ralph` - 启动持久执行模式
-- `/rebuild status` - 查看重建进度
-- `/rebuild checkpoint` - 保存当前进度
+| Command | Description |
+|---------|-------------|
+| `/rebuild <参考项目> <目标>` | Start project rebuild |
+| `/rebuild analyze <项目/URL>` | Analyze reference project |
+| `/rebuild team` | Start team parallel review |
+| `/rebuild ralph` | Start persistent cross-session execution |
+| `/rebuild status` | View rebuild progress |
+| `/rebuild checkpoint` | Save current progress checkpoint |
 
 ---
 

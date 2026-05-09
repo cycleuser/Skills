@@ -28,6 +28,13 @@ Core rules:
 
 A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
+## Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `/强力迭代 <任务> [预算]` | Start fully autonomous power iteration |
+| `/power-iterate <task> [budget]` | Start power iteration (English) |
+
 # Power Iterate 强力迭代 v2.1
 
 全自主持续迭代技能。自动理解需求、自动设计评估、自动规划迭代、自主执行直到预算耗尽。

@@ -40,7 +40,16 @@ Chinese official document writing assistant based on GB/T 9704-2012 national sta
 
 ## Quick Commands
 
-Eight commands correspond to the main document types. The `/gongwen notice <topic>` command writes a notice (通知). The `/gongwen report <topic>` command writes a report (报告). The `/gongwen request <topic>` command writes a request (请示). The `/gongwen reply <topic>` command writes a reply (批复). The `/gongwen letter <topic>` command writes a letter (函). The `/gongwen minutes <topic>` command writes meeting minutes (纪要). The `/gongwen check <document>` command checks document compliance. The `/gongwen format` command shows formatting rules.
+| Command | Description |
+|---------|-------------|
+| `/gongwen notice <topic>` | Write a notice (通知) |
+| `/gongwen report <topic>` | Write a report (报告) |
+| `/gongwen request <topic>` | Write a request (请示) |
+| `/gongwen reply <topic>` | Write a reply (批复) |
+| `/gongwen letter <topic>` | Write a letter (函) |
+| `/gongwen minutes <topic>` | Write meeting minutes (纪要) |
+| `/gongwen check <document>` | Check document compliance |
+| `/gongwen format` | Show formatting rules |
 
 ## Document Types (公文种类)
 

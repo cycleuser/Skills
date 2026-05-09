@@ -32,6 +32,17 @@ Core rules:
 
 A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
+## Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `/python-project init <name>` | Initialize new Python project |
+| `/python-project structure` | Generate project structure |
+| `/python-project api` | Implement ToolResult API pattern |
+| `/python-project cli` | Add CLI with unified flags |
+| `/python-project test` | Generate test suite |
+| `/python-project publish` | Setup PyPI publishing |
+
 # Python Multi-Project Development Specification
 
 Complete development workflow for Python CLI/GUI tools with PyPI publishing, unified APIs, and OpenAI function-calling integration.
@@ -329,6 +340,20 @@ rmdir /s /q dist
 python -m build
 twine upload dist\*
 ```
+
+## Integration with Other Skills
+
+### Academic Paper Documentation
+Combine with `/paper` from academic-writer skill to document software projects for academic papers. Use `/paper structure` to create the paper outline and reference the `/python-project` structure for technical implementation details. The ToolResult pattern can be documented as an academic contribution.
+
+### Code Quality and AIGC Detection
+Use `/humanizer` to improve the readability of generated code. When generating Python projects with AI assistance, run `/humanize` on the generated code to make it more human-like and reduce AIGC detection markers.
+
+### Testing and Quality Assurance
+Combine with `/iterate` from iteration-manager skill to automate the testing and improvement cycle. Use `/iterate 5` to run multiple test cycles and improve code quality iteratively.
+
+### Git Workflow Automation
+Use `/commit` from git workflow skills to create well-formed git commits for project changes. The `python-project-developer` structure works well with automated commit generation.
 
 ## Verification Checklist
 

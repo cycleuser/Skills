@@ -36,7 +36,12 @@ Central registry for all skills in the workspace. Auto-loaded on session start.
 
 ## Quick Commands
 
-Four commands manage skills. The `/skills` command lists all available skills. The `/skill <name>` command loads a specific skill. The `/skill help <name>` command shows skill details. The `/skill reload` command refreshes the registry.
+| Command | Description |
+|---------|-------------|
+| `/skills` | List all available skills with descriptions |
+| `/skill <name>` | Load and activate a specific skill |
+| `/skill help <name>` | Show detailed help for a skill |
+| `/skill reload` | Refresh skill registry |
 
 ## Available Skills
 
@@ -105,6 +110,8 @@ This will rescan all skill directories and update the registry.
 
 ## Installation
 
+⚠️ **SAFETY NOTE**: The commands below follow safety rules — they download scripts for inspection before execution. Never pipe `curl` directly to `bash` without visual review. See [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md).
+
 ### From GitHub (Recommended)
 
 ```bash
@@ -144,3 +151,14 @@ python install.py list
 
 - **GitHub**: https://github.com/cycleuser/Skills
 - **Issues**: https://github.com/cycleuser/Skills/issues
+
+## Integration with Other Skills
+
+### Skill Discovery and Usage
+The skill-manager works with all other skills. Use `/skills` to see the complete registry of available skills. Each skill can be loaded with `/skill <name>` and used independently or in combination with others.
+
+### Common Skill Combinations
+- **Development Projects**: Combine `python-project-developer`, `coding-agent-patterns`, and `academic-writer` for complete software development, documentation, and research workflows.
+- **Research Projects**: Use `academic-writer` for paper writing, `literary-ghostwriter` for creative writing, and `patent-writer` for IP protection.
+- **Code Quality**: Use `humanizer` to improve generated text, `an-jian` to audit skills before installation, and `iteration-manager` to improve code iteratively.
+- **Project Management**: Combine `master-architect` for planning, `he-bing` for PR workflows, and `ba-guan` for pre-publish review.

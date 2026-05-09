@@ -8,6 +8,8 @@ description: |
 
   Commands:
   - /人话 <文本> - Humanize text
+  - /人话 --style formal <文本> - Humanize in formal style
+  - /人话 --style casual <文本> - Humanize in casual style
   - /humanize <text> - Humanize AI-generated text (English)
   - /detect <文本> - Detect AIGC features in text
   - /demo - Generate high-AIGC example and demonstrate processing
@@ -36,14 +38,14 @@ AI文本人化处理技能，基于AIGC检测原理，将AI生成文本转化为
 
 ## Quick Commands
 
-命令：功能说明
-
-/人话 <文本>：对输入文本进行人化处理
-/人话 --style formal <文本>：书面化人化处理
-/人话 --style casual <文本>：口语化人化处理
-/humanize <text>：Humanize AI-generated text (English)
-/detect <文本>：分析文本的AI特征
-/demo：生成示例并演示完整处理流程
+| Command | Description |
+|---------|-------------|
+| `/人话 <文本>` | Humanize text |
+| `/人话 --style formal <文本>` | Humanize in formal style |
+| `/人话 --style casual <文本>` | Humanize in casual style |
+| `/humanize <text>` | Humanize AI-generated text (English) |
+| `/detect <文本>` | Detect AIGC features in text |
+| `/demo` | Generate high-AIGC example and demonstrate processing |
 
 ## AIGC检测原理与反检测策略
 
@@ -285,3 +287,20 @@ style：auto，风格选择，可选 auto/formal/casual
 max_iterations：10，最大迭代次数
 preserve_meaning：true，保留原文语义
 language：auto，语言选择，可选 auto/zh/en
+
+## 性能与资源管理
+
+### 批量处理优化
+- **分段处理**：对于长文本，分段进行人化处理而不是一次性处理整个文档
+- **批量大小**：每次处理500-1000字符的段落，平衡效率和质量
+- **缓存利用**：对于相同或相似文本段落，缓存已处理结果
+
+### 迭代效率
+- **早期停止**：当AIGC率改善低于1%时提前停止迭代
+- **增量改进**：每次迭代专注于解决最主要的AI特征，而不是全面重写
+- **智能重试**：如果某段文本多次迭代仍无法降低AIGC率，则跳过并标记
+
+### 资源管理
+- **内存优化**：处理大文档时，及时释放中间结果的内存
+- **超时控制**：每个文本段落的处理设置最大时间限制
+- **并发控制**：批量处理时限制并发数量，避免资源竞争

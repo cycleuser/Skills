@@ -31,6 +31,16 @@ Core rules:
 
 A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
 
+## Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `/architect design <task>` | Full architecture design for a task |
+| `/architect phase <n>` | Execute specific phase (1-6) |
+| `/architect iterate <module>` | Iterate on a specific module |
+| `/architect status` | Show current architecture status |
+| `/architect review` | Review and validate architecture |
+
 # Master Architect
 
 The supreme architect agent for complex software development projects.

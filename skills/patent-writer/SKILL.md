@@ -1,18 +1,21 @@
 ---
 name: patent-writer
-version: "1.0.0"
+version: "2.0.0"
 description: |
-  Patent writing assistant for Chinese patents with search, disclosure document writing, and workflow guidance.
+  Patent writing assistant for Chinese patents with search, disclosure document writing, workflow guidance, and strategic filing advice.
 
-  Triggers when: Writing a patent application, creating a patent disclosure document, conducting patent search and analysis, or planning patent strategy for a project.
+  Triggers when: Writing a patent application, creating a patent disclosure document, conducting patent search and analysis, planning patent filing strategy, or seeking guidance on the patent process timeline and requirements.
 
   Commands:
-  - /patent search <keywords> - Conduct patent search
-  - /patent disclosure <invention> - Write disclosure document
-  - /patent report <invention> - Generate self-search report
-  - /patent workflow - Show patent workflow
+  - /patent search <keywords> - Conduct patent search with analysis framework
+  - /patent disclosure <invention> - Write disclosure document with complete structure
+  - /patent report <invention> - Generate self-search report with blocking risk assessment
+  - /patent workflow - Show patent workflow with timeline and milestones
+  - /patent strategy <invention> - Provide filing strategy advice
+  - /patent check <document> - Check patent document compliance
+  - /patent examples - Show patent writing examples and best practices
 
-  Capabilities: Patent search platform guidance, disclosure document templates, patent three-property analysis, writing tips and best practices, workflow timeline estimation
+  Capabilities: Patent search platform guidance with analysis framework, disclosure document templates with complete structure, patent three-property analysis with blocking risk assessment, writing tips and best practices with quality checklist, workflow timeline estimation with strategic filing advice, self-search report generation, prior art analysis, novelty and inventiveness assessment, Chinese patent law compliance
 author: cycleuser
 license: MIT
 ---
@@ -32,52 +35,94 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 # Patent Writer
 
-Patent writing assistant for Chinese patent applications.
+Patent writing assistant for Chinese patent applications with comprehensive search, disclosure, and filing guidance.
 
 ## Quick Commands
 
-Four commands support the patent writing workflow. The `/patent search <keywords>` command provides patent search guidance. The `/patent disclosure <invention>` command writes a disclosure document. The `/patent report <invention>` command generates a self-search report. The `/patent workflow` command shows the patent workflow.
+| Command | Description |
+|---------|-------------|
+| `/patent search <keywords>` | Conduct patent search with analysis framework |
+| `/patent disclosure <invention>` | Write disclosure document with complete structure |
+| `/patent report <invention>` | Generate self-search report with blocking risk assessment |
+| `/patent workflow` | Show patent workflow with timeline and milestones |
+| `/patent strategy <invention>` | Provide filing strategy advice |
+| `/patent check <document>` | Check patent document compliance |
+| `/patent examples` | Show patent writing examples and best practices |
 
-## Patent Workflow
+## Patent Process Overview
 
+### Creation Phase (3-16 weeks)
+- **Week 1-4**: Patent search & analysis
+- **Week 2-8**: Write disclosure document
+- **Week 3-12**: Agent drafts patent application
+- **Week 4-16**: Review & revise
+
+### Examination Phase (11-38 months)
+- **<1 week**: Application & acceptance
+- **3-18 months**: Preliminary review & publication
+- **6-18 months**: Substantive examination
+- **2 months**: Patent grant
+
+**Total timeline**: 11-38 months
+
+## Patent Search Methodology
+
+### Search Strategy
+1. **Define Search Scope**: Identify key technical terms, define technical field, list competitors, determine time range (usually last 20 years)
+2. **Choose Search Platforms**: CNIPA (Chinese patents), Shanghai IP (Chinese), Google Patents (Global), USPTO (US), EPO Espacenet (European)
+3. **Construct Search Queries**: Use Boolean operators `(keyword1 OR keyword2) AND (keyword3 OR keyword4)`, classification codes (CPC/IPC), assignee filters, date ranges
+4. **Filter and Analyze**: Remove irrelevant results, categorize by relevance, identify closest prior art, document key findings
+
+### Three-Property Check
+- **Novelty**: Is the invention new? Has it been disclosed anywhere before?
+- **Inventiveness**: Is it non-obvious? Would a skilled person easily derive it?
+- **Utility**: Can it be manufactured? Does it solve a technical problem?
+
+### Blocking Risk Assessment
+- **HIGH**: Prior art covers key features, recommend abandoning or significantly modifying
+- **MEDIUM**: Some overlap with prior art, possible design-around options
+- **LOW**: Minimal overlap with prior art, proceed with filing
+
+## Disclosure Document Structure
+
+### Standard Template
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      PATENT WRITING WORKFLOW                         │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐          │
-│  │    SEARCH    │───▶│    WRITE     │───▶│   SUBMIT     │          │
-│  │   检索分析   │    │   撰写交底书 │    │   代理提交   │          │
-│  │   1-4 weeks  │    │   1-4 weeks  │    │   1-4 weeks  │          │
-│  └──────────────┘    └──────────────┘    └──────────────┘          │
-│                                                                      │
-│                           ▼                                          │
-│                   ┌──────────────┐                                   │
-│                   │    REVIEW    │                                   │
-│                   │   国知局审查 │                                   │
-│                   │  11-38 months│                                   │
-│                   └──────────────┘                                   │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+1. 发明名称 (Title): [Concise, accurate reflection of technical solution]
+2. 技术领域 (Technical Field): [Field of invention]
+3. 背景技术 (Background Art): [Existing technology and its shortcomings]
+4. 发明内容 (Invention Content):
+   - 发明目的 (Purpose): [Problem to be solved]
+   - 技术方案 (Technical Solution): [Detailed description of solution]
+   - 有益效果 (Beneficial Effects): [Advantages over prior art]
+5. 附图说明 (Drawing Description): [Brief description of figures]
+6. 具体实施方式 (Detailed Description): [Specific implementation methods]
+7. 权利要求概要 (Claims Outline): [Main claim points]
+8. 关键词 (Keywords): [3-5 keywords]
 ```
 
-## Timeline Estimation
-
-The patent process has two main phases. The creation phase includes patent search and analysis (1-4 weeks), patent writing (1-4 weeks), agent drafting (1-4 weeks), and review and revision (0-4 weeks), totaling 3-16 weeks. The examination phase includes application and acceptance (under 1 week), preliminary review and publication (3-18 months), substantive examination (6-18 months), and patent grant (2 months). The total timeline ranges from 11-38 months.
+### Writing Guidelines
+- **Title**: Concise, accurate, specify method/system/device appropriately
+- **Technical Field**: Start broad, narrow down to specific problem
+- **Background**: Identify gap in current solutions, be specific about problems
+- **Summary**: Three parts - purpose, solution with essential features, benefits with concrete improvements
+- **Detailed Description**: Include references to drawings, step-by-step procedures, multiple embodiments with alternatives
+- **Claims**: Independent claims with essential features, dependent claims for alternatives
 
 ## Key Principles
 
 ### When to Start Writing?
+The optimal timing for patent filing is during project research when you can conduct patent search alongside research. File **before** implementation since patent protects ideas, not implementation. Most importantly, file **before any public announcement** since public disclosure before filing destroys novelty.
 
-The optimal timing for patent filing is during project research when you can conduct patent search alongside research. File before implementation since patent protects ideas, not implementation. Most importantly, file before any public announcement since public disclosure before filing destroys novelty.
+### Critical Timing Rules
+1. **File Before Announcement**: Public disclosure before filing destroys novelty
+2. **Don't Wait for Implementation**: File early in research, not after full implementation
+3. **File Early in Research**: Consider filing at research milestones to secure broader scope
 
 ### Patent Three Properties (专利三性)
-
-The three properties that define a patentable invention are novelty (新颖性), which means not publicly disclosed before; inventiveness (创造性), which means non-obvious to a skilled person; and utility (实用性), which means can be made and used.
-
-### Common Mistakes to Avoid
-
-Four common mistakes compromise patent applications. Waiting until project completion delays filing unnecessarily. Making a public announcement before filing destroys novelty. Conducting insufficient prior art search weakens the application's novelty claim. Providing poor technical description makes it difficult for the patent attorney and examiner to understand the invention.
+The three properties that define a patentable invention are:
+- **Novelty (新颖性)**: Not publicly disclosed before filing
+- **Inventiveness (创造性)**: Non-obvious to a skilled person
+- **Utility (实用性)**: Can be made and used
 
 ## Patent Search Platforms
 
@@ -89,35 +134,80 @@ Four common mistakes compromise patent applications. Waiting until project compl
 - URL: https://www.shanghaiip.cn/search/#/home
 - No login required
 
+### International Platforms
+- **Google Patents**: Global patent search
+- **USPTO**: US patent database
+- **EPO Espacenet**: European patent database
+
 ## Deliverables
 
 ### 1. Patent Disclosure Document (专利交底书)
-
-The disclosure document is written by the inventor for the patent attorney. Key sections include title of invention, technical field, background art, summary of invention, detailed description, claims outline, and drawings.
+The disclosure document is written by the inventor for the patent attorney. Key sections include title of invention, technical field, background art, summary of invention, detailed description, claims outline, drawings, and complete implementation examples.
 
 ### 2. Self-Search Report (自检索报告)
-
 The self-search report checks if the patent has blocking risks. Its purpose is to clarify patent writing ideas, help the agent understand patent novelty, and improve the approval rate.
 
-## Writing Tips
+## Writing Best Practices
 
-Four tips improve patent disclosure quality. First, draw more diagrams since a picture is worth a thousand words. Second, provide examples to help the agent and examiner understand the invention. Third, emphasize advantages with clear benefits over prior art. Fourth, be specific and avoid vague descriptions.
+### Core Principles
+1. **Clarity Over Complexity**: Use simple, direct language instead of technical jargon
+2. **Specificity Over Generality**: Provide concrete parameters, ranges, and examples
+3. **Completeness Over Brevity**: Include sufficient detail for a skilled person to reproduce
+
+### Section-by-Section Tips
+- **Title**: Specific, complete, concise (10-25 characters), avoid marketing language
+- **Background**: Start broad, narrow down, identify actual problems, avoid being too long
+- **Summary**: Three-part structure (purpose-solution-benefits), be specific about improvements
+- **Detailed Description**: Reference drawings, step-by-step, multiple embodiments, working examples, alternatives
+
+### Drawing Guidelines
+- **Flowcharts**: For methods and processes, use standard symbols, number each step
+- **Block Diagrams**: For systems, show connections, label each module
+- **Structural Diagrams**: For devices, show physical components, include dimensions if relevant
+
+## Filing Strategy
+
+### Provisional vs. Non-provisional
+- **Provisional**: Quick filing, 12-month priority, not examined, expires if not converted
+- **Non-provisional**: Full examination, can mature to patent, higher cost, longer timeline
+
+### Priority Claims
+Within 12 months of first filing, you can claim priority to earlier applications and file in multiple countries. After 12 months, you cannot claim priority and may lose novelty if disclosed.
+
+## Quality Assurance
+
+### Common Mistakes to Avoid
+1. **Insufficient Disclosure**: Don't use "conventional methods", provide specific details
+2. **Missing Alternatives**: Always provide multiple implementation approaches
+3. **Inconsistent Terminology**: Use same terms consistently throughout
+4. **Ambiguous Language**: Avoid "approximately", "etc.", subjective statements
+5. **Too Narrow/Narrow**: Balance scope breadth with supportable claims
+
+### Quality Checklist
+- Background covers relevant prior art
+- Problem clearly identified  
+- Solution fully described with specifics
+- Advantages specific and convincing
+- Multiple embodiments provided
+- Drawings clear and complete
+- Claims supported by description
+- No undefined or inconsistent terms
+- Clear, concise, and technically accurate
 
 ## Rules
+- [rules/patent-search.md](rules/patent-search.md) - Patent search methodology with analysis framework
+- [rules/disclosure-document.md](rules/disclosure-document.md) - Complete disclosure document structure and examples  
+- [rules/patent-workflow.md](rules/patent-workflow.md) - Full patent workflow with timeline and milestones
+- [rules/writing-tips.md](rules/writing-tips.md) - Writing best practices with quality checklist
 
-- [rules/patent-search.md](rules/patent-search.md) - Patent search methodology
-- [rules/disclosure-document.md](rules/disclosure-document.md) - Disclosure document writing
-- [rules/patent-workflow.md](rules/patent-workflow.md) - Patent workflow details
-- [rules/writing-tips.md](rules/writing-tips.md) - Writing best practices
+## Reference Standards
+- Patent Law of the People's Republic of China
+- Implementing Regulations of the Patent Law
+- GB/T 7713-1987 Scientific and Technical Reports, Theses and Academic Papers
 
-## Reference
-
-- [Patent Writing Guide](https://github.com/yufeiminds/patent-writing-guide)
-- [USTC Disclosure Template](https://iat.ustc.edu.cn/u/cms/xjjs/202203/29084743bh3k.doc)
-
-## Best Practices
-
-1. Start early - Patent protects ideas, file before public disclosure
-2. Search thoroughly - Understand prior art landscape
-3. Write clearly - Help agent understand your invention
-4. Iterate with agent - Review and refine together
+## Best Practices Summary
+1. **Start Early**: File before public disclosure, begin during research phase
+2. **Search Thoroughly**: Use multiple platforms, construct comprehensive queries
+3. **Write Clearly**: Help agent understand your technical innovation with specifics
+4. **Plan Strategically**: Consider filing timeline, priority claims, and scope breadth
+5. **Iterate with Agent**: Review and refine together for optimal results

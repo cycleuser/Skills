@@ -55,15 +55,17 @@ Before writing technique, there is academic spirit. These principles shape every
 
 ## Quick Commands
 
-| Command | Purpose |
-|---------|---------|
+| Command | Description |
+|---------|-------------|
 | `/paper new <topic>` | Topic analysis, gap identification, contribution mapping |
 | `/paper search <keywords>` | Literature search and organization |
 | `/paper cite` | Format citations in target style |
-| `/paper structure` | Generate organic paper outline (not template) |
+| `/paper structure` | Generate organic paper outline |
 | `/paper review` | Review + polish + reduce AIGC markers |
 | `/paper detect <text>` | Analyze AIGC features and suggest fixes |
 | `/paper zh <topic>` | Chinese journal article (CCF/知网) |
+| `/paper figures` | Generate publication-quality SVG/PDF figures |
+| `/paper rebuttal` | Draft reviewer response letter |
 
 ## Writing Workflow
 
@@ -394,6 +396,42 @@ When using opencode to write papers, context management is critical:
 7. **Never fabricate citations** — use `/paper search` to find real papers, then cite with specific references.
 
 See `rules/opencode-experience.md` for detailed session planning, context management strategies, common failure modes, and revision request workflows.
+
+## Performance and Resource Management
+
+### Context Window Optimization
+- **Section-by-section approach**: Never paste entire 8-page papers into one prompt. Work 1-2 sections per session.
+- **Matrix compression**: Compress 20-paper literature reviews into 40-line matrices instead of pasting full abstracts.
+- **Outline as context anchor**: Use 3-5 line outline instead of full paper text for continuity.
+
+### Literature Search Efficiency  
+- **Multi-source parallel search**: Run Google Scholar, arXiv, DBLP searches simultaneously
+- **Citation mining**: Extract references from 3-5 key papers to find related work
+- **Targeted queries**: Use specific method names, dataset names, rather than broad topics.
+
+### Figure Generation Performance
+- **Template reuse**: Use `paper_style.py` template for consistent styling across all figures
+- **Batch export**: Generate SVG and PDF versions in single export operation
+- **Script preservation**: Always include reproduce script for auditability.
+
+### AIGC Detection Optimization
+- **Incremental checking**: Run `/paper detect` on individual sections rather than full papers
+- **Focus areas**: Check abstract, methodology, and conclusion sections most carefully
+- **Iteration budget**: Limit to 2-3 AIGC reduction iterations per section to avoid overfitting.
+
+## Integration with Other Skills
+
+### Software Project Documentation
+When writing papers about software projects, combine with `/python-project-developer` for technical implementation details. Use `/python-project develop` to structure the software project and generate documentation that can be referenced in academic papers. The ToolResult pattern from python-project-developer can be cited as an example of robust API design.
+
+### Technical Implementation Patterns
+For papers discussing AI coding agents or software development tools, reference `/agent-patterns` from coding-agent-patterns skill. This provides concrete examples of core loop patterns, context management strategies, tool execution safety, and multi-provider abstraction that can be discussed in academic contexts.
+
+### Code Quality and Review
+Combine with `/humanizer` to improve the readability of code snippets in papers. Use `/humanize` on code examples to make them more accessible to readers. The AIGC detection patterns from humanizer complement the anti-AI-patterns in academic writing.
+
+### Project Planning and Architecture
+For papers describing complex software systems, use `/architect` from master-architect skill to plan the system architecture that will be documented in the paper. This ensures the technical implementation aligns with the academic contribution.
 
 ## Rules
 

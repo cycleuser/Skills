@@ -39,14 +39,15 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 ## Quick Commands
 
-| 命令/Command | 功能/Function |
-|-------------|--------------|
-| `/修仙 <任务>` | 启动不眠不休执行 |
-| `/修仙 <任务> --budget large` | 指定预算启动 |
-| `/修仙 status` | 查看修仙状态 |
-| `/修仙 log` | 查看修炼日志 |
-| `/sleepless <task>` | Start sleepless execution |
-| `/sleepless status` | Check status |
+| Command | Description |
+|---------|-------------|
+| `/修仙 <任务>` | Start sleepless execution |
+| `/修仙 <任务> --budget <级别>` | Start with budget level |
+| `/修仙 status` | Check sleepless status |
+| `/修仙 log` | View sleepless log |
+| `/sleepless <task>` | Start sleepless execution (English) |
+| `/sleepless <task> --budget <level>` | Start with budget level (English) |
+| `/sleepless status` | Check status (English) |
 
 ## 核心铁律
 
