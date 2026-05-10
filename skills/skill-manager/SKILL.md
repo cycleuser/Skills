@@ -1,6 +1,6 @@
 ---
 name: skill-manager
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Central skill registry and management system, auto-loaded on session start for skill discovery and invocation.
 
@@ -176,6 +176,28 @@ The skill-manager works with all other skills. Use `/skills` to see the complete
 ### Cross-skill reference broken
 - **Symptom**: Skill A references `/command` from Skill B, but command doesn't exist
 - **Fix**: Run `/skills` to verify both skills are registered; check the referenced skill's Quick Commands table for correct command syntax
+
+## Usage Examples
+
+### Loading a Skill
+```
+/skills                    # List all available skills
+/skill academic-writer     # Load the academic-writer skill
+/skill help humanizer      # Show detailed help for humanizer
+```
+
+### Refreshing the Registry
+```
+/skill reload              # Rescan and update the skill registry
+/skills                    # Verify the updated list
+```
+
+## Edge Cases
+
+- **Skill directory name mismatch**: If a skill's directory name differs from its `name` field in frontmatter, the SKILL.md name takes priority for `/skill <name>`
+- **Duplicate skill names**: If two skills share the same name, the first discovered by glob takes priority; manually rename to resolve
+- **Corrupt SKILL.md**: If frontmatter is malformed, the skill is skipped in the registry with a warning to stderr
+- **Missing rules/ directory**: Skills without a rules/ directory are still registered; missing rule file references are noted as warnings
 
 ## Version History
 

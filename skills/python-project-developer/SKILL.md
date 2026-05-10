@@ -1,6 +1,6 @@
 ---
 name: python-project-developer
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Complete Python multi-project development specification for CLI/GUI tools with unified API, OpenAI function-calling integration, and PyPI publishing.
 
@@ -358,3 +358,56 @@ Use `/commit` from git workflow skills to create well-formed git commits for pro
 ## Verification Checklist
 
 Before considering a project complete, verify the following items. The editable install should succeed with `pip install -e .`. The version flag should output the correct version with `toolname -V`. The help command should show unified flags with `toolname --help`. The ToolResult import should work with `from projectname import ToolResult`. The TOOLS import should work with `from projectname.tools import TOOLS`. The test suite should pass with `pytest tests/test_unified_api.py -v`. The README should contain both Python API and Agent sections. Screenshots should be generated in the `images/` directory.
+
+## Usage Examples
+
+### Quick Start
+```
+/python-project init mytool
+/python-project structure --modules core,cli,gui
+/python-project api --pattern ToolResult
+```
+
+### Full Project Setup
+```
+/python-project init "DataAnalyzer" --description "Multi-format data analysis tool"
+/python-project cli --flags "V,v,o,json,q"
+/python-project test --framework pytest --cov
+/python-project publish --repo github
+```
+
+## Troubleshooting
+
+### Editable install fails
+- **Symptom**: `pip install -e .` fails with dependency resolution errors
+- **Fix**: Check pyproject.toml version constraints; use `pip install -e ".[dev]"` for development deps; ensure Python version matches `requires-python`
+
+### CLI entry point not found after install
+- **Symptom**: `command not found: mytool` after successful install
+- **Fix**: Verify `[project.scripts]` section in pyproject.toml has correct `module:function` path; reinstall with `pip install -e . --force`
+
+### Test suite fails after structure generation
+- **Symptom**: Generated test files have import errors
+- **Fix**: Check that `__init__.py` exists in test directories; verify package name matches import path; run `/python-project test --validate`
+
+## Edge Cases
+
+- **Namespace packages**: Multi-repo namespace packages (no `__init__.py`) need PEP 420 configuration; use `--namespace` flag
+- **Binary extensions**: Cython/C extensions need build-time dependency declarations in `[build-system]`
+- **Data files**: Non-code data (templates, config, assets) must be declared in `[tool.setuptools.package-data]`
+- **Entry point conflicts**: Multiple installed packages with same command name — use console_scripts prefix namespacing
+- **Cross-platform paths**: Use `pathlib.Path` not string paths; avoid backslash assumptions
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, CLI/GUI project scaffolding, ToolResult API pattern |
+| 1.1.0 | 2026-05-09 | Added safety rules, integration, examples, troubleshooting, edge cases |
+
+## See Also
+
+- `/agent-patterns` from **coding-agent-patterns** — ToolResult pattern and agent integration
+- `/planner design` from **software-planner** — Pre-development planning
+- `/paper` from **academic-writer** — Document project design decisions
+- `/iterate` from **iteration-manager** — Iterative testing of project modules

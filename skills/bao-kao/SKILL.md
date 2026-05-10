@@ -1,6 +1,6 @@
 ---
 name: bao-kao
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Enrollment guidance assistant that searches official data for cross-referenced analysis and practical advice on college entrance and graduate school applications.
 
@@ -562,6 +562,26 @@ webfetch: https://gaokao.chsi.com.cn  (阳光高考)
 - **新高考省份**: 3+1+2 / 3+3 选科要求不同，需要匹配专业选考科目要求
 - **中外合作办学**: 学费高，录取线通常低于同校本部，需单独标注
 - **征集志愿**: 补录分数波动大，不能作为主要参考
+
+## 使用示例 (Usage Examples)
+
+### 高考报考咨询
+```
+/报考 2026年清华大学计算机科学与技术专业在北京的录取分数线和排名要求
+/enroll "Peking University economics major admission requirements for 2026"
+```
+
+### 专业分析
+```
+/专业 人工智能
+/major "Data Science" --prospect employment
+```
+
+### 学校对比
+```
+/学校 浙江大学 --compare 上海交通大学
+/school "Fudan University" --major "临床医学" --year 2025
+```
 
 ## 版本历史
 

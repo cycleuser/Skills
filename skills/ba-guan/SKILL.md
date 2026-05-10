@@ -1,6 +1,6 @@
 ---
 name: ba-guan
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Pre-publish review with multi-layer deep analysis for code quality assurance before release.
 
@@ -265,6 +265,35 @@ Patch (修订号):
 | change_groups | 10 | 最大变更组数/Max groups |
 | reviewers | 5 | 审查角色数/Reviewers |
 | coverage_threshold | 70% | 测试覆盖阈值/Coverage threshold |
+
+## 常见问题与排查 / Troubleshooting
+
+### 审查无变更可发现 / No changes detected
+- **症状/Symptom**: `/把关 check` 报告0个变更 / reports zero changes
+- **解决/Fix**: 检查 `git diff --stat` 是否有变更；确认分支追踪正确；使用 `/把关 check --unstaged` 包含未暂存变更
+
+### 审查角色冲突建议 / Conflicting review recommendations
+- **症状/Symptom**: 架构师和开发者给出相反建议 / Architect and Developer give opposite recommendations
+- **解决/Fix**: 使用 `/把关 --synthesize` 触发综合器汇总；手动审查冲突点；设定优先级：安全 > 架构 > 测试 > 文档
+
+### 逐变更审查超时 / Per-change review timeout
+- **症状/Symptom**: 单次变更审查超过5分钟上限 / Single change review exceeds 5min limit
+- **解决/Fix**: 减少每个变更组的文件数；使用 `/把关 --max-files 5` 限制每组文件数；增加 `--timeout` 参数
+
+## 边界情况 / Edge Cases
+
+- **空仓库首次发布**: 绕过错层分析，只做整体评审和文档检查
+- **大量变更(>100文件)**: 自动分组到10个智能体上限；超过部分排队处理
+- **Monorepo发布**: 使用 `--scope <package>` 限定审查范围到单个包
+- **紧急发布**: 使用 `/把关 --urgent` 跳过文档审查层，仅做安全+架构审查
+- **回滚发布**: 比较回滚前后的diff，标记回滚引入的新风险
+
+## 版本历史 / Version History
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，三层审查架构 |
+| 1.1.0 | 2026-05-09 | 添加安全规则，集成，排查，边界情况，3个rule文件 |
 
 ## See Also / 相关技能
 

@@ -1,6 +1,6 @@
 ---
 name: an-jian
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Security review for skills before installation, detecting dangerous patterns and assessing risk levels.
 
@@ -428,3 +428,38 @@ fetch('http://...', {...})  # 发送请求
     ↓
 失败/Fail → 取消安装/Cancel
 ```
+
+## 常见问题与排查 / Troubleshooting
+
+### 扫描结果过多 / Too many scan results
+- **症状/Symptom**: `/安检 scan` 返回数百条警报，难以筛选 / Returns hundreds of alerts, hard to triage
+- **解决/Fix**: 使用 `--min-severity high` 只显示高危；使用 `/安检 scan --priority network,credentials` 按类型过滤；分目录逐步扫描
+
+### 误报率高 / High false positive rate
+- **症状/Symptom**: 安全标记了无害代码 / Safe code flagged as dangerous
+- **解决/Fix**: 使用 `/安检 fix --whitelist <pattern>` 添加白名单规则；检查规则匹配严格度 `--strictness moderate`
+
+### 大仓库扫描超时 / Large repo scan timeout
+- **症状/Symptom**: 超过10,000文件时扫描超时 / Scan times out on repos >10,000 files
+- **解决/Fix**: 使用 `--shard` 分片扫描；排除 node_modules/.git/__pycache__ 目录；使用 `--incremental` 增量扫描
+
+## 边界情况 / Edge Cases
+
+- **自解压安装脚本**: 检测到 `curl|bash` 模式 → 标记为 `CRITICAL` 风险，要求手动审计
+- **内嵌二进制**: 技能包含 base64 编码的二进制 → 标记为 `HIGH` 风险，要求声明用途
+- **跨平台脚本**: 检测到 Windows 和 Unix 命令混用 → 标记为 `MEDIUM`，需确认兼容性
+- **加密矿工程序**: 检测到 `stratum+tcp://` 或高CPU使用模式 → 标记为 `CRITICAL`，直接阻止
+- **凭证泄露残留**: 检测到 API key 或 token 模式 → 标记为 `CRITICAL`，建议立即轮换密钥
+
+## 版本历史 / Version History
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，7项安全检查 |
+| 1.1.0 | 2026-05-09 | 添加安全规则，集成，性能管理，排查，边界情况，audit-format.md |
+
+## 相关技能
+
+- `/把关` from **ba-guan** — 发布前审查中的安全审计层
+- `/审视` from **shen-shi** — 仓库代码只读审计模式
+- `/修炼` from **skill-refiner** — 修炼过程中修复安全缺陷

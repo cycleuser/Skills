@@ -1,6 +1,6 @@
 ---
 name: iteration-manager
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Iterative testing, verification, and improvement supervisor for code quality assurance.
 
@@ -251,6 +251,35 @@ Agent: Resuming from iteration #3...
 ## Best Practices
 
 Five practices guide effective iteration. First, start with baseline by running initial tests to establish metrics. Second, focus on one area by prioritizing critical failures first. Third, track progress by comparing metrics across iterations. Fourth, know when to stop by avoiding over-optimization. Fifth, document changes by keeping track of what was improved.
+
+## Troubleshooting
+
+### Quality metrics not converging
+- **Symptom**: `/iterate status` shows metrics oscillating without improvement trend
+- **Fix**: Increase iteration count `--convergence-window 5` for wider sample; check if test suite is non-deterministic; add `--metric-weight` to prioritize stable metrics
+
+### Test suite too slow for rapid iteration
+- **Symptom**: Each iteration runs for hours, making iterative cycles impractical
+- **Fix**: Run `/iterate <n> --fast` to execute only smoke tests per iteration; run full suite every Nth iteration with `--full-suite-every 5`
+
+### Iteration consumes too much budget without results
+- **Symptom**: Many iterations run but improvement delta is below 1%
+- **Fix**: Check if early stopping threshold is too low; use `/iterate stop` to manually terminate; review iteration strategy with `--strategy review`
+
+## Edge Cases
+
+- **Flaky tests**: Non-deterministic test results cause false convergence — tag flaky tests with `@flaky`; exclude from quality metrics calculation
+- **Performance benchmarks**: Benchmark tests need warm-up iterations — set `--warmup 3` to exclude first 3 runs from metrics
+- **Cross-branch iteration**: Testing changes across multiple git branches — use `--branch <branch>` to target specific branch
+- **Generated code validation**: Iteratively improving AI-generated code — use `--validate-output` to add output correctness checks beyond unit tests
+- **Zero-change iterations**: If change delta is literally zero, auto-detected as "stuck" and iteration is terminated
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, convergence detection, quality metrics |
+| 1.1.0 | 2026-05-09 | Added safety rules, integration, troubleshooting, edge cases |
 
 ## See Also
 

@@ -1,6 +1,6 @@
 ---
 name: project-rebuilder
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Project rebuilding skill that references existing projects to rewrite core features from scratch with team parallel review and persistent execution.
 

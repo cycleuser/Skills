@@ -1,6 +1,6 @@
 ---
 name: coding-agent-patterns
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Core patterns for AI coding agents based on analysis of Claude Code, Codex, Cline, Aider, OpenCode.
 

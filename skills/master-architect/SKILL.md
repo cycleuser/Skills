@@ -1,6 +1,6 @@
 ---
 name: master-architect
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Top-tier software architect agent for complex multi-stage project development with strict quality gates and iterative refinement.
 
@@ -283,6 +283,52 @@ Review and validate current architecture.
 ## Best Practices
 
 Five principles guide the architecture process. First, never skip phases because each phase builds on the previous one. Second, quality gates are mandatory with no exceptions. Third, iterate until excellence and settle for nothing less than 90%. Fourth, document continuously rather than leaving documentation for the end. Fifth, validate assumptions by testing early and testing often.
+
+## Usage Examples
+
+### Full Architecture Design
+```
+/architect design "E-commerce platform with microservices"
+/architect phase 1  # Requirement Analysis
+/architect phase 2  # Architecture Design
+/architect iterate payment-service  # Iterate on payment module until quality gate passes
+/architect phase 3  # Task Decomposition
+```
+
+### Iterative Module Development
+```
+/architect iterate auth-service --max-iterations 5 --quality-gate score>85
+/architect iterate auth-service --focus security --review
+```
+
+## Troubleshooting
+
+### Quality gate never passes
+- **Symptom**: Module iteration loops indefinitely without meeting quality threshold
+- **Fix**: Lower quality gate temporarily to `--quality-gate score>60`; identify specific failing sub-criteria; adjust iteration strategy with `--strategy targeted`
+
+### Phase exit criteria unclear
+- **Symptom**: Unclear when a phase is done and ready for next phase
+- **Fix**: Run `/architect review` which checks all exit criteria explicitly; use `--exit-checklist` to see remaining items per phase
+
+### Architecture design too abstract
+- **Symptom**: Design phase produces high-level diagrams but no actionable module specs
+- **Fix**: Use `/architect design <task> --detail full` for API-level decomposition; add `--implementation-notes` to generate pseudo-code for each module
+
+## Edge Cases
+
+- **Legacy system integration**: Existing system with no docs — use `/architect design --reverse-engineer` to infer architecture from code
+- **Regulatory compliance**: Systems with SOC2/HIPAA/GDPR — add compliance requirements in Phase 1; each quality gate includes compliance check
+- **Multi-team parallel development**: Use `/architect phase 3 --team-size 4` to generate parallel-safe task decomposition with clear module boundaries
+- **Architecture migration**: Greenfield vs brownfield — use `--mode migration` to generate transition architecture with intermediate states
+- **Real-time constraints**: Systems with latency SLOs — Phase 2 includes latency budget allocation per component
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2026-04-01 | Initial version, 6-phase workflow, quality gates, task decomposition |
+| 1.1.0 | 2026-05-09 | Added safety rules, integration, examples, troubleshooting, edge cases |
 
 ## See Also
 

@@ -1,6 +1,6 @@
 ---
 name: sleepless
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Sleepless autonomous execution skill that never stops until the task is 100% complete, with self-healing and forced delivery guarantees.
 
@@ -626,3 +626,8 @@ on_error(error):
 | never_ask | true | 永不询问（不可变） |
 | never_pause | true | 永不暂停（不可变） |
 | force_deliver | true | 强制交付（不可变） |
+
+## 相关技能
+
+- `/强力迭代` from **power-iterate** — 带预算管理的持续迭代
+- `/自控` from **zi-kong** — 跨会话上下文持久化，适用于多会话任务

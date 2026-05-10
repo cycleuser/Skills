@@ -1,6 +1,6 @@
 ---
 name: zi-kong
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Self-controlled autonomous iteration for opencode itself with cross-session memory and safe rollback.
 
@@ -562,3 +562,38 @@ def rollback(self, snapshot_id: str) -> bool:
 | max_changes_per_loop | 10 | 每轮最大变更/Max changes per loop |
 | require_confirm_risk | high | 需要确认的风险级别/Risk level for confirm |
 | enable_rollback | true | 启用回滚/Enable rollback |
+
+## 常见问题与排查 / Troubleshooting
+
+### 跨会话恢复失败 / Cross-session recovery fails
+- **症状/Symptom**: `/自控 resume` 无法恢复之前的进度 / Cannot resume previous progress
+- **解决/Fix**: 检查持久化文件是否损坏；使用 `/自控 log` 查看最后保存点；如果状态文件丢失，使用 `/自控 --rebuild-state` 从日志重建
+
+### 决策树爆炸 / Decision tree explosion
+- **症状/Symptom**: 决策分支过多导致上下文溢出 / Too many decision branches cause context overflow
+- **解决/Fix**: 使用 `--max-depth 3` 限制决策树深度；定期使用 `/自控 pause` 修剪不必要的分支；合并相似分支
+
+### 自审查循环 / Self-review loop
+- **症状/Symptom**: 自审查发现的问题反复出现无法根治 / Self-review finds same issues repeatedly
+- **解决/Fix**: 提升修复策略等级（补丁→重构）；记录问题模式到 `rules/safety.md`；如果3轮后无改善，降低该问题优先级
+
+## 边界情况 / Edge Cases
+
+- **会话中断恢复**: opencode崩溃后，自动从最后检查点恢复，跳过已完成的迭代
+- **多实例冲突**: 检测到多个自控实例同时运行 → 后者排队等待，前者持有锁
+- **预算精确耗尽**: 预算耗尽时有未提交的变更 → 自动创建检查点并保存，下次自动恢复
+- **回滚链断裂**: 检查点文件损坏 → 跳过该检查点，使用上一个有效检查点
+- **混合语言记忆**: 中英混合的状态数据 → 分别存储，恢复时按语言重建上下文
+
+## 版本历史 / Version History
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，自控循环，跨会话记忆，预算管理 |
+| 1.1.0 | 2026-05-09 | 添加安全规则，性能管理，排查，边界情况，memory/budget/safety/self-review规则文件 |
+
+## 相关技能
+
+- `/修仙` from **sleepless** — 不眠不休执行，适用于扩展的自控会话
+- `/强力迭代` from **power-iterate** — 预算管理的迭代框架
+- `/修炼` from **skill-refiner** — 将自控改进能力应用于其他技能

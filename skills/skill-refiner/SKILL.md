@@ -250,3 +250,8 @@ depth：standard，修炼深度，可选 quick/standard/deep
 target_score：80，目标综合评分
 max_iterations：5，最大迭代次数
 aspects：all，修炼维度，可选 all 或指定维度
+
+## 相关技能
+
+- `/skills` from **skill-manager** — 浏览技能注册表找到需要修炼的技能
+- `/安检` from **an-jian** — 在部署修炼过的技能前执行安全审计

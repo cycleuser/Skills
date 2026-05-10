@@ -1,6 +1,6 @@
 ---
 name: he-bing
-version: "1.0.0"
+version: "1.1.0"
 description: |
   Complete PR lifecycle management from worktree creation through implementation, commits, PR creation, verification loop, to merge and cleanup.
 
@@ -349,6 +349,35 @@ git pull origin "$BASE_BRANCH"
 | base_branch | dev | 目标分支/Target branch |
 | worktree_parent | ../ | 工作树父目录/Parent dir |
 | max_review_cycles | 5 | 最大审查循环/Max cycles |
+
+## 常见问题与排查 / Troubleshooting
+
+### Worktree创建失败 / Worktree creation fails
+- **症状/Symptom**: `git worktree add` 报错路径已存在或权限不足
+- **解决/Fix**: 清理旧worktree: `git worktree prune`；检查磁盘空间 `df -h`；使用 `/合并 --cleanup` 清理过期worktree
+
+### PR验证循环卡住 / PR verification stuck in loop
+- **症状/Symptom**: CI通过但审批人没有响应 / CI passes but no reviewer response
+- **解决/Fix**: 检查PR是否分配正确的reviewer；使用 `/合并 check --notify` 发送提醒；如果超过48h，提请其他reviewer
+
+### 合并冲突 / Merge conflicts
+- **症状/Symptom**: 自动合并失败，存在不可自动解决的冲突
+- **解决/Fix**: 使用 `/合并 --resolve` 启动冲突解决模式；先rebase base branch再重试；标记需要手动解决的冲突块
+
+## 边界情况 / Edge Cases
+
+- **Force push保护**: 检测到 `--force` 时要求双重确认；禁止对 main/master 的force push
+- **PR分支被删除**: 远程分支已被合并后删除 — 从本地worktree恢复，使用 `--recover` 重建
+- **超大PR (>500 files)**: 使用 `--split` 拆分为多个小PR；建议审查按模块分组
+- **Draft PR转换**: Draft转换为Ready后，重新触发全部验证流程
+- **跨仓库PR**: 涉及多个仓库的变更使用 `/合并 --cross-repo` 协调多个PR的合并顺序
+
+## 版本历史 / Version History
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，5阶段PR工作流 |
+| 1.1.0 | 2026-05-09 | 添加安全规则，性能管理，排查，边界情况，3个rule文件 |
 
 ## See Also / 相关技能
 

@@ -1,6 +1,6 @@
 ---
 name: software-planner
-version: "1.0.0"
+version: "1.0.1"
 description: |
   Comprehensive software development planning and implementation skill for multi-interface Python applications with academic research integration.
 
@@ -409,3 +409,9 @@ touch project_name/packagename/{__init__.py,__main__.py,cli.py,gui.py,app.py,cor
 # Create test files
 touch project_name/tests/{__init__.py,conftest.py,test_core.py}
 ```
+
+## See Also
+
+- `/python-project` from **python-project-developer** — Implement planned project structure
+- `/architect design` from **master-architect** — Detailed architecture decomposition
+- `/agent-patterns` from **coding-agent-patterns** — Integration patterns for multi-interface applications

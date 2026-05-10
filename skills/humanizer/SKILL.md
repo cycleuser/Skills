@@ -312,6 +312,46 @@ language：auto，语言选择，可选 auto/zh/en
 - **超时控制**：每个文本段落的处理设置最大时间限制
 - **并发控制**：批量处理时限制并发数量，避免资源竞争
 
+## 使用示例 / Usage Examples
+
+```
+/人话 "人工智能技术正在深刻改变我们的生活方式，从智能家居到自动驾驶，AI 的应用无处不在。"
+/humanize "The implementation of machine learning algorithms has significantly improved the efficiency of data processing pipelines."
+/人话 --style formal "本文提出了一种基于深度学习的新型图像识别方法，在多个基准数据集上取得了最优性能。"
+/detect "Furthermore, it is noteworthy that the aforementioned methodology demonstrates considerable efficacy."
+/demo
+```
+
+## 常见问题与排查 / Troubleshooting
+
+### AIGC率不降反升 / AIGC rate increases after humanization
+- **症状/Symptom**: 人化处理后检测率反而升高 / Detection rate rises after humanization
+- **解决/Fix**: 过度修改可能引入新的AI模式；减少 `max_iterations` 至3轮；使用 `--style casual` 增加变化幅度；检查是否替换成了另一个AI模型的特征词
+
+### 语义被改变 / Original meaning altered
+- **症状/Symptom**: 人化后技术内容不准确 / Technical content inaccurate after humanization
+- **解决/Fix**: 设置 `preserve_meaning: strict` 严格保留关键术语；技术类段落使用 `--style formal` 减少改动幅度；使用 `/detect` 逐段检查而非全文
+
+### 长文本处理超时 / Long text processing timeout
+- **症状/Symptom**: 超过5000字的文本人化处理超时 / Text >5000 chars times out
+- **解决/Fix**: 分段处理，每段500-1000字；使用 `/人话 --batch` 批处理模式；增加 `max_iterations: 5` 减少迭代次数
+
+## 边界情况 / Edge Cases
+
+- **代码块处理**: 代码块完全保留原样，不执行任何人化处理
+- **数学公式**: LaTeX公式保留原样，仅人化周围说明文字
+- **多语言混合文本**: 中英混合文本分别用两种策略处理；标注语言边界
+- **引用/对话**: 直接引语和对话保持原样，不改变引用内容
+- **敏感内容**: 医疗、法律、金融专业术语保持不动，仅调整表达方式
+- **最大保留模式**: 如果文本本身AIGC率低于 `target_rate`，不执行任何修改并标注"已达目标"
+
+## 版本历史 / Version History
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| 1.0.0 | 2026-04-01 | 初始版本，AIGC检测和基础人化处理 |
+| 1.4.0 | 2026-05-09 | 添加安全规则，集成，性能管理，示例，排查，边界情况，6个rule文件 |
+
 ## See Also / 相关技能
 
 - `/简写` from **brief-write** — 带反AI模式的博客风格写作 / Blog-style writing with anti-AI patterns

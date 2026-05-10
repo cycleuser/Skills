@@ -221,6 +221,27 @@ Within 12 months of first filing, you can claim priority to earlier applications
 - **Pre-existing publications**: If the inventor published a paper before filing, check novelty grace period (6 months in China for certain exhibitions/conferences)
 - **Employee invention**: If invention was made within scope of employment, employer typically owns rights unless contract states otherwise
 
+## Usage Examples
+
+### Patent Search
+```
+/patent search "wireless charging alignment mechanism" --class H02J
+/patent search "transformer attention pruning" --sources cnipa,uspto,epo
+```
+
+### Disclosure Document
+```
+/patent disclosure "A method for adaptive beamforming in 5G MIMO systems using reinforcement learning"
+/patent report "blockchain-based supply chain traceability" --depth full
+```
+
+### Strategy & Workflow
+```
+/patent strategy --international --type invention
+/patent workflow --urgent --provisional
+/patent check --scope claims,draftsmanship
+```
+
 ## Version History
 
 | Version | Date | Changes |

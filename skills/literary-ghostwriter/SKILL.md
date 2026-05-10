@@ -230,6 +230,22 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - **Anachronism**: If modern expressions leak into classical styles, maintain a "forbidden words" list per author
 - **Over-imitation**: If the text becomes parody rather than homage, reduce signature phrases to 1-2 per page
 
+## Usage Examples / 使用示例
+
+### Chinese Literature / 中文创作
+```
+/文豪 鲁迅 "故乡的冬天，雪花无声地落在青瓦上"
+/文豪 金庸 "大漠孤烟，一剑西来"
+/文豪 老舍 "胡同里的早晨，豆汁儿的香气飘过"
+```
+
+### Western Literature / 西方创作
+```
+/literary shakespeare "The tempest raged against the castle walls"
+/literary calvino "The city unfolded like a page in an invisible book"
+/literary zweig "She walked through the crowded station, a stranger among thousands"
+```
+
 ## Version History / 版本历史
 
 | Version | Date | Changes |
