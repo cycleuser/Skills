@@ -298,6 +298,14 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - **列表/表格**: 保持结构不变，仅调整措辞
 - **跨语言写作**: 如果原文中文但要求英文输出，同时应用语言转换和风格调整
 
+## AIGC-Aware Output
+
+本技能生成文本必须通过AIGC检测（0-15%为专业级，16-30%为可接受）：
+- 禁止"一眼AI"模式：三段式总结、均匀句长、"值得注意的是"、排比句式
+- 必须使用用户博客式口语表达，技术内容用短句直说，不加过渡废话
+- 改写时颠覆句式而非仅替换同义词，保留技术准确性前提下用博主语气重写
+- 参考规则详见 `rules/anti-aigc.md`（→ ai-patterns-avoid.md）
+
 ## 版本历史
 
 | 版本 | 日期 | 变更 |
