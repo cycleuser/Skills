@@ -278,12 +278,13 @@ AI的发展前景值得期待，但风险同样不可忽视。关键在于如何
 
 ## Rules
 
-- rules/ai-features.md：AI文本特征识别规则
-- rules/humanization.md：口语化人化策略
-- rules/formal-humanization.md：书面化人化策略
-- rules/iteration.md：迭代优化流程
-- rules/examples.md：更多示例和案例
-- rules/detection-methods.md：AIGC检测方法总结
+- [rules/ai-features.md](rules/ai-features.md) - AI文本特征识别规则（核心反AIGC检测规则）
+- [rules/anti-aigc.md](rules/anti-aigc.md) - AIGC检测核心规则入口（→ ai-features.md）
+- [rules/humanization.md](rules/humanization.md) - 口语化人化策略
+- [rules/formal-humanization.md](rules/formal-humanization.md) - 书面化人化策略
+- [rules/iteration.md](rules/iteration.md) - 迭代优化流程
+- [rules/examples.md](rules/examples.md) - 更多示例和案例
+- [rules/detection-methods.md](rules/detection-methods.md) - AIGC检测方法总结
 
 ## 配置选项
 
