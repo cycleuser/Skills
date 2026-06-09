@@ -195,6 +195,7 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 
 通用:
 - [rules/vocabulary.md](rules/vocabulary.md) - 风格词汇库
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 文学创作反AIGC检测规则
 
 ## Style Verification / 风格验证
 
@@ -245,6 +246,19 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 /literary calvino "The city unfolded like a page in an invisible book"
 /literary zweig "She walked through the crowded station, a stranger among thousands"
 ```
+
+## AIGC-Aware Output
+
+Literary works face the most sensitive AIGC detection. Each author's spiritual core must be authentically captured, not surface-level vocabulary imitation. Literary text must not show AI-typical patterns: uniform rhythm, direct emotion declaration, mechanical structure, or excessive transitional words. See `rules/anti-aigc.md` for writer-specific anti-AIGC strategies.
+
+Key requirements per author:
+- Luxun: Cold observation over hot declaration; irony over exposition; omission over explanation
+- Laoshe: Beijing dialect as identity not decoration; humor from life observation not jokes
+- Jinyong: Martial arts as character extension not skill listing; four-character phrases serve atmosphere not stacking
+- Gulong: Extreme brevity is deliberate blankness; short sentences create rhythm not mechanical triplet
+- Shakespeare: Soliloquy shows inner contradiction not conclusion; poetic language reaches truth not decoration
+- Zweig: Microscopic psychological detail not panoramic; long sentences accumulate toward emotional release
+- Calvino: Precise fantasy not exhaustive description; mathematical logic meets imagination genuinely
 
 ## Version History / 版本历史
 

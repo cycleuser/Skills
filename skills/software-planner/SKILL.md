@@ -375,6 +375,16 @@ project_name/
 - **Embedded/constrained**: `--domain embedded` adds memory budget and dependency size limits
 - **Empty project seed**: If no prior code exists, `/planner design <name> --seed` generates minimal template alongside architecture
 
+## AIGC-Aware Output
+
+Software planning documents must be project-specific with concrete numbers and constraints, not universal template text. See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
+
+Key requirements:
+- Requirements must include quantified constraints, not "good user experience"
+- Module descriptions must include line count targets and dependency direction
+- Technology choices must include rejection reasons for alternatives
+- Every "excellent/robust/powerful" must be replaced with measurable criteria
+
 ## Version History
 
 | Version | Date | Changes |
@@ -388,6 +398,7 @@ project_name/
 - [rules/interface-design.md](rules/interface-design.md) - CLI/GUI/Web patterns
 - [rules/documentation.md](rules/documentation.md) - README requirements
 - [rules/sample-data.md](rules/sample-data.md) - Test data creation
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 软件规划反AIGC检测规则
 
 ## Verification Checklist
 

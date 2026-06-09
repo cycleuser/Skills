@@ -341,6 +341,7 @@ git pull origin "$BASE_BRANCH"
 - [rules/worktree.md](rules/worktree.md) - 工作树管理/Worktree
 - [rules/commit-atomic.md](rules/commit-atomic.md) - 原子提交/Atomic Commits
 - [rules/verification.md](rules/verification.md) - 验证循环/Verification
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## 配置选项/Configuration
 
@@ -371,6 +372,15 @@ git pull origin "$BASE_BRANCH"
 - **超大PR (>500 files)**: 使用 `--split` 拆分为多个小PR；建议审查按模块分组
 - **Draft PR转换**: Draft转换为Ready后，重新触发全部验证流程
 - **跨仓库PR**: 涉及多个仓库的变更使用 `/合并 --cross-repo` 协调多个PR的合并顺序
+
+## AIGC检测意识 / AIGC-Aware Output
+
+合并报告和PR描述必须包含具体命令、量化判断条件和数字状态，不能用"进展顺利""已完成大部分"等空洞表述。参见 `rules/anti-aigc.md` 了解流程文档的反AIGC规则。
+
+核心要求：
+- 每个操作步骤必须可直接复制粘贴执行
+- 判断条件必须量化：用退出码、百分比、具体数值，不用"通过""足够"
+- 状态报告必须用数字：11/15、73%，不用"大部分""一些"
 
 ## 版本历史 / Version History
 

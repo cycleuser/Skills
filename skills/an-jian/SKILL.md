@@ -394,6 +394,7 @@ fetch('http://...', {...})  # 发送请求
 - [rules/risk-assessment.md](rules/risk-assessment.md) - 风险评估/Risk Assessment
 - [rules/fix-strategies.md](rules/fix-strategies.md) - 修复策略/Fix Strategies
 - [rules/audit-format.md](rules/audit-format.md) - 审计格式/Audit Format
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 安全审计反AIGC检测规则
 
 ## 配置选项/Configuration
 
@@ -450,6 +451,14 @@ fetch('http://...', {...})  # 发送请求
 - **跨平台脚本**: 检测到 Windows 和 Unix 命令混用 → 标记为 `MEDIUM`，需确认兼容性
 - **加密矿工程序**: 检测到 `stratum+tcp://` 或高CPU使用模式 → 标记为 `CRITICAL`，直接阻止
 - **凭证泄露残留**: 检测到 API key 或 token 模式 → 标记为 `CRITICAL`，建议立即轮换密钥
+
+## AIGC检测意识 / AIGC-Aware Output
+
+安全审计报告必须为每个风险等级提供CVSS评分或具体依据，修复方案必须包含具体代码修改。参见 `rules/anti-aigc.md` 了解安全审计的反AIGC规则。
+
+核心要求：
+- 不写"此风险等级为高"，写"风险等级HIGH：curl|bash模式可在任意主机执行代码，影响100%用户，CVSS评分9.8"
+- 修复方案必须包含具体代码修改，不只是"建议修复"
 
 ## 版本历史 / Version History
 

@@ -600,6 +600,14 @@ on_error(error):
 - **多任务冲突**: 检测到多个修仙实例时，新的排队等待，旧的继续执行
 - **关键操作前确认**: 涉及 rm -rf、git push --force、删除生产数据时，暂停并记录待确认
 
+## AIGC检测意识
+
+修仙交付报告中的自愈记录必须包含具体错误、根因和修复方案，不能用"遇到了错误并自动修复"。参见 `rules/anti-aigc.md` 了解流程文档的反AIGC规则。
+
+核心要求：
+- 自愈记录必须写明具体错误、根因和修复：不写"自动修复"，写"Redis连接超时（ConnectionRefusedError）→改为内存队列[降级]"
+- 交付报告必须列出具体文件和完成度，不用"大部分完成"
+
 ## 版本历史
 
 | 版本 | 日期 | 变更 |
@@ -612,6 +620,7 @@ on_error(error):
 - [rules/autonomous-loop.md](rules/autonomous-loop.md) - 永动循环 / Eternal Loop
 - [rules/eternal-drive.md](rules/eternal-drive.md) - 强制完成 & 零退出 / Force Complete & Zero Exit
 - [rules/task-omnipotence.md](rules/task-omnipotence.md) - 全任务模式 / All Task Modes
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## 配置选项
 

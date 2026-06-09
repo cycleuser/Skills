@@ -271,6 +271,7 @@ Review and validate current architecture.
 - [rules/task-decomposition.md](rules/task-decomposition.md)
 - [rules/iteration-protocol.md](rules/iteration-protocol.md)
 - [rules/quality-gates.md](rules/quality-gates.md)
+- [rules/anti-aigc.md](rules/anti-aigc.md) - Technical document anti-AIGC detection rules
 
 ## Integration with Other Skills
 
@@ -322,6 +323,10 @@ Five principles guide the architecture process. First, never skip phases because
 - **Multi-team parallel development**: Use `/architect phase 3 --team-size 4` to generate parallel-safe task decomposition with clear module boundaries
 - **Architecture migration**: Greenfield vs brownfield — use `--mode migration` to generate transition architecture with intermediate states
 - **Real-time constraints**: Systems with latency SLOs — Phase 2 includes latency budget allocation per component
+
+## AIGC-Aware Output
+
+Architecture documents must contain specific technical decisions with exclusion reasons, not generic "modular design" descriptions. Every technology choice must explain what was rejected and why. Performance claims must include numbers. Uncertain areas must be explicitly marked as tradeoffs. See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
 
 ## Version History
 

@@ -340,6 +340,15 @@ def build_system_prompt() -> str:
 - **Extremely large repos**: Repo maps for 100k+ file repos — use hierarchical collapsing to keep map representation bounded
 - **Token counting mismatch**: Different providers count tokens differently — normalize to standard token count with 10% margin
 
+## AIGC-Aware Output
+
+Technical pattern documentation must describe patterns with specific implementation details and tradeoffs, not generic architecture descriptions. See `rules/anti-aigc.md` for anti-AIGC detection rules.
+
+Key requirements:
+- Pattern descriptions must include specific token counts, timing data, and failure scenarios
+- Code examples must show real implementation constraints, not idealized snippets
+- Tradeoffs must be explicitly stated, not just listing "advantages"
+
 ## Version History
 
 | Version | Date | Changes |
@@ -353,6 +362,7 @@ def build_system_prompt() -> str:
 - [rules/tool-safety.md](rules/tool-safety.md) - Security patterns
 - [rules/multi-provider.md](rules/multi-provider.md) - LLM abstraction
 - [rules/memory-systems.md](rules/memory-systems.md) - Agent memory patterns
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 技术文档反AIGC检测规则
 
 ## Integration with Other Skills
 

@@ -551,6 +551,7 @@ def rollback(self, snapshot_id: str) -> bool:
 - [rules/budget.md](rules/budget.md) - 预算控制/Budget Control
 - [rules/safety.md](rules/safety.md) - 安全机制/Safety Mechanisms
 - [rules/self-review.md](rules/self-review.md) - 自我审查/Self-Review
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## 配置选项/Configuration
 
@@ -584,6 +585,14 @@ def rollback(self, snapshot_id: str) -> bool:
 - **预算精确耗尽**: 预算耗尽时有未提交的变更 → 自动创建检查点并保存，下次自动恢复
 - **回滚链断裂**: 检查点文件损坏 → 跳过该检查点，使用上一个有效检查点
 - **混合语言记忆**: 中英混合的状态数据 → 分别存储，恢复时按语言重建上下文
+
+## AIGC检测意识
+
+自控迭代的状态报告和决策日志必须包含具体决策理由和量化状态，不能用"选择了JWT""预算使用合理"等空洞表述。参见 `rules/anti-aigc.md` 了解流程文档的反AIGC规则。
+
+核心要求：
+- 决策记录必须标注具体理由和排除选项：不写"选择了JWT"，写"选择JWT而非Session——理由：(1)分布式API不需要Redis共享状态；(2)移动端无Cookie限制。[自决]"
+- 状态报告必须用数字：完成11/15任务（73%），不用"大部分完成"
 
 ## 版本历史 / Version History
 

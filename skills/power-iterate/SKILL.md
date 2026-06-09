@@ -172,6 +172,7 @@ xlarge：240min，500k token，适用场景为完整系统。
 - rules/task-decomposition.md：任务分解规则
 - rules/autonomous-loop.md：自主执行循环
 - rules/budget-manager.md：预算管理规则
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## 配置选项
 
@@ -203,6 +204,14 @@ checkpoint_interval：5，检查点间隔（任务数）。
 - **超大型项目**: 指定 `--scope <module>` 限定迭代范围
 - **跨语言项目**: 每种语言独立评估指标，汇总时取加权平均
 - **历史代码退改**: 检测到回退时自动创建检查点，支持回滚
+
+## AIGC检测意识
+
+强力迭代的决策假设和状态报告必须具体可执行，不能用"假设用户需要X"。参见 `rules/anti-aigc.md` 了解流程文档的反AIGC规则。
+
+核心要求：
+- 假设必须标注[假设:理由]：不写"使用Python"，写"[假设:用户未指定技术栈，Python生态最成熟]"
+- 最终报告必须包含具体完成度和待改进项，不用"进展顺利"
 
 ## 版本历史
 

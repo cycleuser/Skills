@@ -310,6 +310,7 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - 用户博客：`../../blog`
 - 风格规则：`rules/user-style.md`
 - 写作禁忌：`rules/ai-patterns-avoid.md`
+- AIGC检测规则：`rules/anti-aigc.md`（同 ai-patterns-avoid.md）
 
 ## See Also / 相关技能
 

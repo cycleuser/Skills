@@ -257,6 +257,7 @@ Patch (修订号):
 - [rules/change-detection.md](rules/change-detection.md) - 变更检测/Change Detection
 - [rules/review-roles.md](rules/review-roles.md) - 审查角色/Review Roles
 - [rules/version-bump.md](rules/version-bump.md) - 版本规则/Version Rules
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 分析报告反AIGC检测规则
 
 ## 配置选项/Configuration
 
@@ -287,6 +288,16 @@ Patch (修订号):
 - **Monorepo发布**: 使用 `--scope <package>` 限定审查范围到单个包
 - **紧急发布**: 使用 `/把关 --urgent` 跳过文档审查层，仅做安全+架构审查
 - **回滚发布**: 比较回滚前后的diff，标记回滚引入的新风险
+
+## AIGC-Aware Output / AIGC检测意识
+
+Review reports must contain specific evidence (file paths, line numbers) and actionable fixes, not generic "needs improvement" statements. Every finding must have priority P0/P1/P2 classification. See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
+
+核心要求：
+- 每个问题必须附文件路径和行号
+- 不写"建议改进代码质量"，写"core/auth.py:47 的SQL注入，攻击者可绕过认证——P0，必须修了再上线"
+- 重要问题5段话详细分析，次要问题1句带过
+- 修复建议必须可操作，包含具体命令或代码修改
 
 ## 版本历史 / Version History
 

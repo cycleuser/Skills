@@ -167,6 +167,7 @@ Step 5: 合规审核
 - [rules/formatting-rules.md](rules/formatting-rules.md) - GB/T 9704-2012 formatting rules
 - [rules/writing-guidelines.md](rules/writing-guidelines.md) - Writing guidelines
 - [rules/templates.md](rules/templates.md) - Document templates
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 公文写作反AIGC检测规则
 
 ## Writing Principles
 
@@ -233,6 +234,17 @@ XX单位
 - **标题要素缺失**: 标题必须包含发文机关、事由、文种三要素
 - **主送机关遗漏**: 确保所有需要执行或知悉的机关都列在主送栏
 - **附件标注遗漏**: 正文中提及的附件必须在附件说明中标注
+
+## AIGC-Aware Output
+
+Official documents (公文) must be GB/T 9704-2012 compliant AND avoid template-filling AI patterns. Good 公文 reads like "领导的意思很明确"; AI 公文 reads like "this paragraph could go in any notice". See `rules/anti-aigc.md` for complete detection rules.
+
+Key requirements:
+- Every deployment must have deadline, responsible person, and specific quantities
+- Replace "进一步加强" with concrete action + timeline: "6月底前完成527处隐患排查"
+- Replace "切实做好" with specific measure: "4月15日前完成3支应急队伍组建"
+- Break paragraph-opening symmetry: not every paragraph starts with "加强/强化/做好/严格"
+- Eliminate "进一步/持续/深入/切实" when frequency exceeds 3 per 1000 characters
 
 ## 版本历史
 

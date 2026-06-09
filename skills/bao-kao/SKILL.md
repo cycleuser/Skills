@@ -523,6 +523,7 @@ webfetch: https://gaokao.chsi.com.cn  (阳光高考)
 - 分析方法：`rules/analysis-methods.md`
 - 风格指南：`rules/consultant-style.md`
 - 禁忌事项：`rules/taboo-list.md`
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 报考咨询反AIGC检测规则
 
 ### 官方网站
 - 学信网：https://www.chsi.com.cn
@@ -582,6 +583,17 @@ webfetch: https://gaokao.chsi.com.cn  (阳光高考)
 /学校 浙江大学 --compare 上海交通大学
 /school "Fudan University" --major "临床医学" --year 2025
 ```
+
+## AIGC-Aware Output
+
+Enrollment guidance responses must be data-grounded and opinionated — not generic advice that could apply to anyone. Every claim needs numbers, every recommendation needs reasoning, and risks must be stated directly. See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
+
+Key requirements:
+- Replace "就业前景广阔" with specific numbers: "就业率65%，平均起薪4500"
+- Replace "建议考生综合考虑" with direct recommendations: "480分冲吉大风险大，东北师大都悬，重点看省属重点"
+- Must state risks explicitly: "这专业是红牌专业"、"别报，报了后悔"
+- Break template structure: important schools get detailed analysis, minor ones get one sentence
+- Use direct language: "你" not "考生", "这学校" not "该校"
 
 ## 版本历史
 

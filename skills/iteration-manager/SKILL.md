@@ -241,6 +241,7 @@ Agent: Resuming from iteration #3...
 - [rules/testing-protocol.md](rules/testing-protocol.md) - Testing execution protocol
 - [rules/quality-metrics.md](rules/quality-metrics.md) - Quality scoring system
 - [rules/iteration-workflow.md](rules/iteration-workflow.md) - Detailed workflow
+- [rules/anti-aigc.md](rules/anti-aigc.md) - Iteration report anti-AIGC detection rules
 
 ## Integration with Other Skills
 
@@ -273,6 +274,10 @@ Five practices guide effective iteration. First, start with baseline by running 
 - **Cross-branch iteration**: Testing changes across multiple git branches — use `--branch <branch>` to target specific branch
 - **Generated code validation**: Iteratively improving AI-generated code — use `--validate-output` to add output correctness checks beyond unit tests
 - **Zero-change iterations**: If change delta is literally zero, auto-detected as "stuck" and iteration is terminated
+
+## AIGC-Aware Output
+
+Iteration reports must include specific metrics with before/after numbers, not vague "improvement observed". Every finding must be specific: "SQL injection in /auth/login line 47" not "security issues found". Fix suggestions must be actionable: "change X to Y" not "consider improving". See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
 
 ## Version History
 

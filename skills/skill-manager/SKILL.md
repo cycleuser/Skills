@@ -68,6 +68,7 @@ Six git workflow skills are available. The commit skill creates well-formed git 
 ## Skill Registry
 
 Full registry available at: [rules/registry.md](rules/registry.md)
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## How Skills Work
 
@@ -198,6 +199,10 @@ The skill-manager works with all other skills. Use `/skills` to see the complete
 - **Duplicate skill names**: If two skills share the same name, the first discovered by glob takes priority; manually rename to resolve
 - **Corrupt SKILL.md**: If frontmatter is malformed, the skill is skipped in the registry with a warning to stderr
 - **Missing rules/ directory**: Skills without a rules/ directory are still registered; missing rule file references are noted as warnings
+
+## AIGC-Aware Output
+
+Skill registry descriptions must be specific about capabilities, not generic "comprehensive" or "powerful" statements. See `rules/anti-aigc.md` for anti-AIGC detection rules applicable to technical documentation.
 
 ## Version History
 

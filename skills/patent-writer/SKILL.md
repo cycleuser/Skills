@@ -242,6 +242,17 @@ Within 12 months of first filing, you can claim priority to earlier applications
 /patent check --scope claims,draftsmanship
 ```
 
+## AIGC-Aware Output
+
+Patent documents face AIGC scrutiny from patent examiners. Every generated text must comply with anti-AIGC rules to ensure natural, professional writing that avoids detectable AI patterns. See `rules/anti-aigc.md` for complete detection rules and counter-strategies.
+
+Key requirements:
+- No "本发明的目的在于..." template openings; state the specific technical problem directly
+- Replace "综上所述，具有以下有益效果" with specific technical improvement data
+- Every parameter range must include experimental basis, not just arbitrary boundaries
+- Background art must reference specific patent numbers, not vague "近年来得到了广泛关注"
+- Claims must break mechanical parallel structure; each claim should address a distinct technical dimension
+
 ## Version History
 
 | Version | Date | Changes |
@@ -254,6 +265,7 @@ Within 12 months of first filing, you can claim priority to earlier applications
 - [rules/disclosure-document.md](rules/disclosure-document.md) - Complete disclosure document structure and examples  
 - [rules/patent-workflow.md](rules/patent-workflow.md) - Full patent workflow with timeline and milestones
 - [rules/writing-tips.md](rules/writing-tips.md) - Writing best practices with quality checklist
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 专利文书反AIGC检测规则
 
 ## Reference Standards
 - Patent Law of the People's Republic of China

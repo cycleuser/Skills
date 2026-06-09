@@ -110,6 +110,14 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - **引用外部资源**: 技能引用了非标准路径的资源时，修炼前需要验证路径有效性
 - **技能依赖链**: 如果技能A引用技能B，修炼A前需要确保B已达标
 
+## AIGC检测意识
+
+技能修炼报告的AIGC率评估是修炼的必要维度之一。修炼后的技能生成的文本必须通过AIGC检测。参见 `rules/anti-aigc.md` 了解流程文档的反AIGC规则。
+
+核心要求：
+- 评分必须附带具体改进点和证据：不写"可读性78→82"，写"可读性78→82（+4）：精简了SKILL.md从450行到380行"
+- 不写"质量有所提升"，写具体的度量变化
+
 ## 版本历史
 
 | 版本 | 日期 | 变更 |
@@ -241,6 +249,7 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - rules/improvement.md：改进策略
 - rules/validation.md：验证方法
 - rules/templates.md：模板库
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 流程文档反AIGC检测规则
 
 ## 配置选项
 

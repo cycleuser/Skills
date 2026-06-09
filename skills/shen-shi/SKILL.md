@@ -185,6 +185,7 @@ Each Issue/PR = 1 background task
 - [rules/evidence.md](rules/evidence.md) - 证据规则/Evidence Rules
 - [rules/classification.md](rules/classification.md) - 问题分类/Classification
 - [rules/report-format.md](rules/report-format.md) - 报告格式/Report Format
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 分析报告反AIGC检测规则
 
 ## 配置选项/Configuration
 
@@ -220,6 +221,15 @@ Each Issue/PR = 1 background task
 - **Deleted comments**: Placeholder text may contain "[deleted]" — skip these in sentiment analysis
 - **Bot-generated issues**: Issues from bots (dependabot, stale bot) flagged as `automated` type
 - **Issue templates**: Template text in issue body skipped for analysis, only user-filled content used
+
+## AIGC-Aware Output / AIGC检测意识
+
+GitHub triage analysis must include permalink evidence for every claim, specific priority classification, and actionable recommendations. No generic "this seems like a bug" without code-level evidence. See `rules/anti-aigc.md` for anti-AIGC detection rules.
+
+核心要求：
+- 每个判断必须有GitHub permalink作为证据
+- 不写"这个问题涉及多个方面"，写具体分类和优先级P0/P1/P2
+- 建议必须可操作，包含具体修复方案或指派建议
 
 ## Version History / 版本历史
 

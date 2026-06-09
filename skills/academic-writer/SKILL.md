@@ -498,7 +498,7 @@ For papers describing complex software systems, use `/architect` from master-arc
 
 ## Rules
 
-- [rules/anti-ai-patterns.md](rules/anti-ai-patterns.md) - AIGC detection evasion for academic text
+- [rules/anti-ai-patterns.md](rules/anti-ai-patterns.md) - AIGC检测规避与反AI模式 (primary anti-AIGC rules for academic text)
 - [rules/writing-style.md](rules/writing-style.md) - Natural academic voice guidelines
 - [rules/literature-search.md](rules/literature-search.md) - Literature search protocol
 - [rules/citation-format.md](rules/citation-format.md) - Citation formatting rules

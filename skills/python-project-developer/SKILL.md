@@ -314,6 +314,7 @@ print(result.metadata)   # Metadata including version
 - [rules/api-pattern.md](rules/api-pattern.md) - API design patterns
 - [rules/tools-integration.md](rules/tools-integration.md) - Function-calling patterns
 - [rules/testing-guide.md](rules/testing-guide.md) - Testing best practices
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 代码与开发文档反AIGC检测规则
 
 ## Pre-Commit Checklist
 
@@ -397,6 +398,17 @@ Before considering a project complete, verify the following items. The editable 
 - **Data files**: Non-code data (templates, config, assets) must be declared in `[tool.setuptools.package-data]`
 - **Entry point conflicts**: Multiple installed packages with same command name — use console_scripts prefix namespacing
 - **Cross-platform paths**: Use `pathlib.Path` not string paths; avoid backslash assumptions
+
+## AIGC-Aware Output
+
+Code, documentation, and commit messages must avoid detectable AI patterns. Code should have specific variable names, targeted error handling, and comments explaining "why" not "what". See `rules/anti-aigc.md` for complete anti-AIGC detection rules.
+
+Key requirements:
+- README must include limitations (what the tool does NOT do), not just features
+- Comments must explain design decisions, not repeat code
+- Commit messages must be specific: "fix: handle empty CSV in aggregate()" not "fix: fix bug"
+- API docs must include runnable examples, not just parameter descriptions
+- Variable names must be project-specific, not generic (data, result, item)
 
 ## Version History
 

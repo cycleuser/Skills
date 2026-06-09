@@ -402,6 +402,15 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - **Large file handling / 大文件处理**: Files >5MB analyzed as "external assets", not rebuilt — only references tracked
 - **Concurrent rebuilds / 并发重建**: Two rebuilds on same project auto-sequentialize via checkpoint lock; second waits for first to complete
 
+## AIGC-Aware Output
+
+Project analysis and rebuild reports must contain specific evidence with line numbers and code references, not generic assessments. See `rules/anti-aigc.md` for anti-AIGC rules applicable to analysis reports.
+
+Key requirements:
+- Every feature assessment must include complexity score with justification
+- Analysis conclusions must reference specific file paths and line numbers
+- Priority classifications (P0/P1/P2) must be backed by specific risks, not "important" or "nice-to-have"
+
 ## Version History / 版本历史
 
 | Version / 版本 | Date / 日期 | Changes / 变更 |
@@ -415,6 +424,7 @@ A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode'
 - [rules/team-review.md](rules/team-review.md) - 团队并行审查流程
 - [rules/ralph-execution.md](rules/ralph-execution.md) - 持久执行机制
 - [rules/checkpoint.md](rules/checkpoint.md) - 进度保存与恢复
+- [rules/anti-aigc.md](rules/anti-aigc.md) - 分析报告反AIGC检测规则
 
 ---
 
