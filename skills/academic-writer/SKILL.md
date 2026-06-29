@@ -20,20 +20,12 @@ description: |
   Capabilities: AIGC-aware academic writing, natural academic voice, literature search from Google Scholar/arXiv/DBLP/Semantic Scholar, citation formatting (IEEE/ACM/APA/GB-T7714), paper structure generation, mathematical notation, Chinese academic publishing, SVG/PDF figure generation, reviewer response drafting, iterative review with AIGC rate reduction, opencode-specific collaborative writing patterns
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载，避免跨技能重复维护。
 
 # Academic Writer
 
@@ -460,6 +452,21 @@ For papers describing complex software systems, use `/architect` from master-arc
 /paper rebuttal --reviewer-1 "add ablation study on attention heads" --reviewer-2 "compare with method X"
 /paper review --check all --fix auto
 ```
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 编造引用/伪造文献 | **CRITICAL** | 学术不端，论文被拒甚至学术处分 |
+| 使用"首先其次再次最后"机械递进 | **CRITICAL** | AIGC检测极高权重命中 |
+| 生成PNG/JPEG图表而非SVG/PDF | HIGH | 不满足投稿分辨率要求 |
+| 泛泛说"significant improvement"无具体数字 | HIGH | 审稿人不信，也触发AIGC检测 |
+| 摘要写成长篇摘要而非150-200词 | HIGH | 违反多数会议投稿要求 |
+| 全确定语气 — 不标注局限性和不确定性 | HIGH | 审稿人会挑出来，AIGC检测命中 |
+| 一次性将整篇论文塞入一个prompt | HIGH | 上下文溢出，质量下降 |
+| Related work写成论文列表而非按思想组织 | MEDIUM | 审稿人看出模板痕迹 |
+| 引用格式混用 | MEDIUM | 格式分被扣 |
+| Caption只描述图表内容不写关键发现 | MEDIUM | 图表无法独立理解 |
 
 ## Troubleshooting
 

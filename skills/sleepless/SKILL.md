@@ -18,20 +18,12 @@ description: |
   Capabilities: Eternal autonomous loop with no voluntary exit, forced delivery mechanism, error self-healing, path switching on failure, cross-session persistence, all task modes support (dev/fix/refactor/test/doc/iterate/integrate/explore)
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载。
 
 # 修仙 (Sleepless)
 
@@ -568,6 +560,18 @@ on_error(error):
 → 生成交付报告（标注 [待打磨]）
 → 绝不空手而归
 ```
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 无退出条件 (真正的永不停机) | **CRITICAL** | 资源耗尽 |
+| 不保存检查点 | **CRITICAL** | 进度全部丢失 |
+| 同一错误无限重试不加变化 | HIGH | 死循环 |
+| 不在跨session间持久化状态 | HIGH | 重启后从零开始 |
+| 路径切换但保留相同假设 | HIGH | 在新路径上重复旧错误 |
+| 不记录错误日志 | MEDIUM | 无法事后分析 |
+| 不使用task模式切换 (永远在同一上下文) | MEDIUM | 上下文膨胀，质量下降 |
 
 ## 常见问题与排查
 

@@ -4,7 +4,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **21 Production-Ready Skills** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
+- **22 Skills (including adversarial planning)** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
 - **32 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
@@ -36,6 +36,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **an-jian** | Skill security review | Security analysis |
 | **zi-kong** | Autonomous iteration | Self-controlling work |
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
+| **shuang-chong** | Adversarial 5-persona planning (single model) | Complex project stress-testing |
 
 ## Installation
 
@@ -114,6 +115,7 @@ After installation, use these commands in OpenCode:
 | `/pr` | PR workflow |
 | `/security <skill>` | Security review |
 | `/auto <task>` | Autonomous iteration |
+| `/adversarial <task>` | Adversarial planning |
 | `/skills` | List all skills |
 
 ### Command Examples
@@ -166,10 +168,13 @@ After installation, use these commands in OpenCode:
 /review 这篇文章的内容需要把关
 
 # Security review
-/security oh-my-openagent
+/security <skill-path>
 
 # Autonomous iteration
 /auto Build a Python CLI tool
+
+# Adversarial planning
+/adversarial Design a fault-tolerant distributed message queue
 
 **Note:** Chinese commands are also available. See [README_CN.md](README_CN.md) for Chinese documentation.
 
@@ -232,6 +237,7 @@ targeting AAAI 2024.
 |-------|---------|
 | master-architect | Top-tier architecture design and iterative development |
 | software-planner | Multi-interface project planning (CLI+GUI+Web) |
+| shuang-chong | Adversarial cross-critique planning |
 
 ### Development
 

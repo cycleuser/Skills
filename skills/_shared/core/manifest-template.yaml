@@ -1,0 +1,45 @@
+# manifest.yaml 参考模板 (Shared Manifest Template)
+
+name: <skill-name>
+version: 1.0.0
+description: >
+  Declarative manifest for the static/dynamic split. SKILL.md uses this to
+  decide which fragments to load for a given request.
+
+always_load:
+  # Shared layer — 所有技能通用
+  - ../_shared/core/safety-rules.md
+  - ../_shared/core/anti-aigc.md
+  - ../_shared/core/design-principles.md
+  # Skill-local core — 本技能核心
+  - static/core/stance.md
+  - static/core/workflow.md
+
+axes:
+  # 轴1：按某个维度区分不同变体
+  axis1:
+    detect: |
+      从用户输入中检测 axis1 的值。如果无法确定，使用 default。
+      如果用户未明确选择且无默认值时，提问一个简洁问题后停止。
+    values:
+      option_a: static/fragments/axis1/option_a.md
+      option_b: static/fragments/axis1/option_b.md
+    default: option_a
+    multi: false  # false=单选，true=可多选
+
+  # 轴2：另一个维度
+  axis2:
+    detect: |
+      检测方法...
+    values:
+      type_x: static/fragments/axis2/type_x.md
+      type_y: static/fragments/axis2/type_y.md
+    default: type_x
+    multi: true
+
+references:
+  on_demand:
+    - condition: 具体的触发条件描述
+      path: references/specific-reference.md
+    - condition: 用户遇到X问题时
+      path: references/troubleshooting-x.md

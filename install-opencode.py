@@ -40,6 +40,16 @@ SKILLS = [
     "humanizer",
     "literary-ghostwriter",
     "skill-refiner",
+    "brief-write",
+    "bao-kao",
+    "sleepless",
+    "an-jian",
+    "ba-guan",
+    "he-bing",
+    "shen-shi",
+    "project-rebuilder",
+    "zi-kong",
+    "shuang-chong",
 ]
 
 COMMANDS = [
@@ -55,6 +65,10 @@ COMMANDS = [
     "humanize",
     "literary",
     "refine",
+    "write",
+    "enroll",
+    "rebuild",
+    "adversarial",
     # Chinese commands
     "架构",
     "开发",
@@ -68,6 +82,15 @@ COMMANDS = [
     "人话",
     "文豪",
     "修炼",
+    "简写",
+    "报考",
+    "安检",
+    "把关",
+    "合并",
+    "审视",
+    "项目重建",
+    "自控",
+    "双重",
 ]
 
 
@@ -180,10 +203,19 @@ def install_from_local(source_dir: Path, install_dir: Path, skills: Optional[lis
     
     install_dir.mkdir(parents=True, exist_ok=True)
     
+    # Install _shared/ directory if it exists
+    shared_src = source_skills / "_shared"
+    if shared_src.exists():
+        shared_dest = install_dir / "_shared"
+        if shared_dest.exists():
+            shutil.rmtree(shared_dest)
+        shutil.copytree(shared_src, shared_dest)
+        print(f"  ✓ Installed: _shared/ (common resources)")
+    
     if skills:
         skill_list = skills
     else:
-        skill_list = [d.name for d in source_skills.iterdir() if d.is_dir() and (d / "SKILL.md").exists()]
+        skill_list = [d.name for d in source_skills.iterdir() if d.is_dir() and (d / "SKILL.md").exists() and d.name != "_shared"]
     
     installed = []
     failed = []
@@ -505,12 +537,17 @@ def main():
             print("=" * 60)
             print()
             print("Available commands:")
-            print("  /architect <task>  - Architecture design")
-            print("  /python-dev <task> - Python development")
-            print("  /plan <task>       - Software planning")
-            print("  /iterate <task>    - Iterative testing")
-            print("  /academic <task>   - Academic writing")
-            print("  /skills            - List all skills")
+            print("  /architect <task>    - Architecture design")
+            print("  /python-dev <task>   - Python development")
+            print("  /plan <task>         - Software planning")
+            print("  /iterate <task>      - Iterative testing")
+            print("  /academic <task>     - Academic writing")
+            print("  /adversarial <task>  - Adversarial planning")
+            print("  /skills              - List all skills")
+            print("  /安检 /security       - Security review")
+            print("  /把关 /review         - Pre-publish review")
+            print("  /审视 /analyze        - GitHub triage")
+            print("  /双重 /adversarial    - Adversarial planning")
             print()
         else:
             sys.exit(1)

@@ -20,20 +20,12 @@ description: |
   Capabilities: True autonomous while(true) loop, cross-session context persistence, self-review after each iteration, budget control with time/token management, parallel task handling, decision tree for autonomous choices, rollback mechanism for safe iteration
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载。
 
 # 自控 (Self-Controlled Iteration)
 
@@ -563,6 +555,18 @@ def rollback(self, snapshot_id: str) -> bool:
 | max_changes_per_loop | 10 | 每轮最大变更/Max changes per loop |
 | require_confirm_risk | high | 需要确认的风险级别/Risk level for confirm |
 | enable_rollback | true | 启用回滚/Enable rollback |
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 不执行自审查 (跳过self-review) | **CRITICAL** | 迭代方向可能错误 |
+| 不保存跨session上下文 | **CRITICAL** | 重启后失去所有进度 |
+| 回滚后不记录回滚原因 | HIGH | 可能在同一点再次失败 |
+| 决策树不更新 (使用陈旧决策) | HIGH | 在已变化的条件下做旧决策 |
+| 并行任务无协调机制 | HIGH | 任务冲突或资源竞争 |
+| 不设置预算上限 | MEDIUM | 无限消耗资源 |
+| 暂停后不记录恢复点 | MEDIUM | 恢复时丢失上下文 |
 
 ## 常见问题与排查 / Troubleshooting
 

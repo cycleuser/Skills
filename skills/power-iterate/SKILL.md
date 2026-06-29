@@ -13,20 +13,12 @@ description: |
   Capabilities: Fully autonomous decision-making without user confirmation, automatic requirement understanding and evaluation design, automatic iteration path planning, time/token budget management, periodic progress reporting
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载，避免跨技能重复维护。
 
 ## Quick Commands
 
@@ -183,6 +175,18 @@ token_limit：100000，Token限制。
 budget_level：medium，预算级别，可选 tiny/small/medium/large/xlarge。
 max_iterations：50，最大迭代次数。
 checkpoint_interval：5，检查点间隔（任务数）。
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 无预算上限的无限循环 (while(true) without budget) | **CRITICAL** | 资源耗尽，系统崩溃 |
+| 跳过回滚检查点 | **CRITICAL** | 错误无法恢复 |
+| 不报告进度 (静默迭代) | HIGH | 用户不知道状态 |
+| 在迭代中不检查质量指标 | HIGH | 可能在错误方向浪费预算 |
+| 单次迭代做太多变更 | HIGH | 难以定位引入的问题 |
+| 不设置最大迭代次数 | HIGH | 永远不会终止 |
+| Token预算设置为远超实际的数字 | MEDIUM | 预算抑制机制失效 |
 
 ## 常见问题与排查
 

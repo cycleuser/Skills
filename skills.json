@@ -2,10 +2,18 @@
   "version": "2.0.0",
   "repository": "https://github.com/cycleuser/Skills",
   "install_url": "https://raw.githubusercontent.com/cycleuser/Skills/main",
+  "shared": {
+    "path": "skills/_shared",
+    "description": "Shared resources across skills — safety rules, anti-AIGC rules, design principles, templates",
+    "contents": {
+      "core": ["safety-rules.md", "anti-aigc.md", "design-principles.md", "skill-template.md", "manifest-template.yaml"]
+    }
+  },
   "skills": [
     {
       "name": "skill-manager",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Central skill registry and management system",
       "auto_load": true,
       "priority": 0,
@@ -14,6 +22,7 @@
     {
       "name": "master-architect",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Top-tier software architect agent for complex multi-stage development",
       "auto_load": false,
       "priority": 100,
@@ -28,6 +37,7 @@
     {
       "name": "python-project-developer",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Complete Python multi-project development specification for CLI/GUI tools",
       "auto_load": false,
       "priority": 50,
@@ -42,6 +52,7 @@
     {
       "name": "software-planner",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Comprehensive software development planning for Python projects",
       "auto_load": false,
       "priority": 50,
@@ -55,6 +66,7 @@
     {
       "name": "coding-agent-patterns",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Core patterns for AI coding agents",
       "auto_load": false,
       "priority": 40,
@@ -68,6 +80,7 @@
     {
       "name": "iteration-manager",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Iterative testing and improvement supervisor",
       "auto_load": false,
       "priority": 30,
@@ -80,6 +93,7 @@
     {
       "name": "academic-writer",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Academic paper writing assistant for top-tier conferences",
       "auto_load": false,
       "priority": 20,
@@ -93,6 +107,7 @@
     {
       "name": "patent-writer",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Patent writing assistant for Chinese patents",
       "auto_load": false,
       "priority": 15,
@@ -106,6 +121,7 @@
     {
       "name": "official-document-writer",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Official document writing assistant based on GB/T 9704-2012",
       "auto_load": false,
       "priority": 10,
@@ -119,6 +135,7 @@
     {
       "name": "power-iterate",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Autonomous continuous iteration until time or token budget exhausted",
       "auto_load": false,
       "priority": 200,
@@ -131,6 +148,7 @@
     {
       "name": "humanizer",
       "version": "1.1.0",
+      "status": "Stable",
       "description": "AI text humanization - convert AI-generated text into natural human language",
       "auto_load": false,
       "priority": 25,
@@ -145,6 +163,7 @@
     {
       "name": "literary-ghostwriter",
       "version": "2.0.0",
+      "status": "Beta",
       "description": "Literary ghostwriter - write in 7 masters' styles (Shakespeare/Zweig/Calvino/Luxun/Laoshe/Jinyong/Gulong)",
       "auto_load": false,
       "priority": 15,
@@ -162,6 +181,7 @@
     {
       "name": "skill-refiner",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Skill refinement - polish and improve skills iteratively",
       "auto_load": false,
       "priority": 5,
@@ -175,6 +195,7 @@
     {
       "name": "brief-write",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Brief write skill - write in user's blog style with direct, colloquial, sincere expression",
       "auto_load": false,
       "priority": 10,
@@ -186,6 +207,7 @@
     {
       "name": "bao-kao",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Enrollment consultation skill - Zhang Xuefeng style gaokao/postgraduate enrollment guidance with official data search",
       "auto_load": false,
       "priority": 15,
@@ -199,6 +221,7 @@
     {
       "name": "sleepless",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "Sleepless - autonomous execution skill that never stops, never asks, forces completion across all task modes",
       "auto_load": false,
       "priority": 300,
@@ -211,6 +234,7 @@
     {
       "name": "an-jian",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "安检 - Security review for skills before installation, checking for dangerous commands, credential leaks, and other risks",
       "auto_load": false,
       "priority": 50,
@@ -223,6 +247,7 @@
     {
       "name": "ba-guan",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "把关 - Pre-publish review with multi-layer deep analysis: per-change review, 5-role holistic review, and synthesis assessment",
       "auto_load": false,
       "priority": 100,
@@ -231,6 +256,7 @@
     {
       "name": "he-bing",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "合并 - Complete PR lifecycle: worktree, implement, commits, PR, verify, merge",
       "auto_load": false,
       "priority": 80,
@@ -239,6 +265,7 @@
     {
       "name": "shen-shi",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "审视 - Read-only GitHub triage for issues and PRs with evidence-based analysis reports",
       "auto_load": false,
       "priority": 30,
@@ -247,6 +274,7 @@
     {
       "name": "project-rebuilder",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "项目重建 - Reference existing projects and rebuild core features from scratch with team review and ralph execution modes",
       "auto_load": false,
       "priority": 90,
@@ -260,12 +288,22 @@
     {
       "name": "zi-kong",
       "version": "1.0.0",
+      "status": "Beta",
       "description": "自控 - Self-controlled autonomous iteration for opencode itself with cross-session memory and self-review",
       "auto_load": false,
       "priority": 350,
       "rules": [
         "autonomous-loop.md"
       ]
+    },
+    {
+      "name": "shuang-chong",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "Adversarial dual-scrutiny planning - single model 5-persona cross-critique debate (3 rounds) for maximum rigor planning",
+      "auto_load": false,
+      "priority": 75,
+      "rules": []
     }
   ]
 }

@@ -107,11 +107,20 @@ def install_from_local(source_dir: Path, install_dir: Path, skills: Optional[lis
     # Create install directory
     install_dir.mkdir(parents=True, exist_ok=True)
     
+    # Install _shared/ directory if it exists
+    shared_src = source_skills / "_shared"
+    if shared_src.exists():
+        shared_dest = install_dir / "_shared"
+        if shared_dest.exists():
+            shutil.rmtree(shared_dest)
+        shutil.copytree(shared_src, shared_dest)
+        print(f"  ✓ Installed: _shared/ (common resources)")
+    
     # Get list of skills to install
     if skills:
         skill_list = skills
     else:
-        skill_list = [d.name for d in source_skills.iterdir() if d.is_dir() and (d / "SKILL.md").exists()]
+        skill_list = [d.name for d in source_skills.iterdir() if d.is_dir() and (d / "SKILL.md").exists() and d.name != "_shared"]
     
     installed = []
     failed = []
@@ -158,6 +167,22 @@ def install_from_github(install_dir: Path, skills: Optional[list] = None) -> boo
             "coding-agent-patterns",
             "iteration-manager",
             "academic-writer",
+            "patent-writer",
+            "official-document-writer",
+            "power-iterate",
+            "humanizer",
+            "literary-ghostwriter",
+            "skill-refiner",
+            "brief-write",
+            "bao-kao",
+            "sleepless",
+            "an-jian",
+            "ba-guan",
+            "he-bing",
+            "shen-shi",
+            "project-rebuilder",
+            "zi-kong",
+            "shuang-chong",
         ]
     
     installed = []

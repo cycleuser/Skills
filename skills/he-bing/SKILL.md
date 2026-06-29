@@ -19,20 +19,12 @@ description: |
   Capabilities: Worktree management, feature implementation, atomic commits, PR creation, verification loop (CI + Review + Approval), merge and cleanup
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载。
 
 # 合并 (Work With PR)
 
@@ -350,6 +342,19 @@ git pull origin "$BASE_BRANCH"
 | base_branch | dev | 目标分支/Target branch |
 | worktree_parent | ../ | 工作树父目录/Parent dir |
 | max_review_cycles | 5 | 最大审查循环/Max cycles |
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 在main分支上直接开发而非创建worktree/分支 | **CRITICAL** | 污染主分支，难以回滚 |
+| 未经CI通过就合并PR | **CRITICAL** | 破坏主分支 |
+| 跳过代码审查直接合并 | HIGH | 质量问题未被发现 |
+| 一个PR包含多个不相关变更 | HIGH | 难以审查，回滚困难 |
+| PR描述为空或只有标题 | HIGH | 审查者不知道变更意图 |
+| force push已推送的分支 | HIGH | 审查历史丢失 |
+| 合并后不清理worktree | MEDIUM | 磁盘空间浪费 |
+| 不验证PR模板字段 | MEDIUM | 元数据不完整 |
 
 ## 常见问题与排查 / Troubleshooting
 

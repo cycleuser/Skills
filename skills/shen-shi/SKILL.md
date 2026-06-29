@@ -18,26 +18,22 @@ description: |
   Capabilities: GitHub data reading, issue classification, evidence collection with permalinks, report generation, parallel background processing
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载。
 
 # 审视 (GitHub Triage)
 
 GitHub 只读审查技能。分析开放的 Issues 和 PRs，生成有证据支持的报告。
 
 Read-only GitHub analysis skill. Analyzes open issues and PRs with evidence-backed reports.
+
+<role>
+Read-only GitHub triage orchestrator. Fetch open issues/PRs, classify, spawn 1 background task per item. Each task analyzes and writes a report file. ZERO GitHub mutations.
+</role>
 
 ## Quick Commands
 
@@ -105,21 +101,46 @@ https://github.com/{owner}/{repo}/blob/{commit_sha}/{path}#L{start}-L{end}
 | 1 | {title} | {status} | {ci} | {date} |
 ```
 
-### Phase 2: 并行分析/Parallel Analysis
+### Phase 2: Spawn Background Tasks
 
-```
-每个 Issue/PR = 1 个后台任务
-Each Issue/PR = 1 background task
+**1 ISSUE/PR = 1 BACKGROUND TASK. NO EXCEPTIONS.**
 
-任务分配/Assignment:
-- Issues → /tmp/{datetime}/issue-{N}.md
-- PRs → /tmp/{datetime}/pr-{N}.md
+| Rule | Value |
+|------|-------|
+| Execution | All tasks in parallel |
+| Output | `/tmp/{YYYYMMDD-HHmmss}/issue-{N}.md` or `pr-{N}.md` |
+| Evidence | Every claim requires a GitHub permalink |
 
-分析内容/Analysis:
-1. 问题分类/Classification (bug/feature/question)
-2. 优先级评估/Priority (P0/P1/P2)
-3. 相关代码定位/Code Location
-4. 建议行动方案/Recommended Action
+#### Classification
+
+| Type | Detection |
+|------|-----------|
+| `ISSUE_QUESTION` | `[Question]`, `?`, "how to" / "why does" |
+| `ISSUE_BUG` | `[Bug]`, error messages, stack traces, unexpected behavior |
+| `ISSUE_FEATURE` | `[Feature]`, `[RFE]`, `Feature Request` |
+| `ISSUE_OTHER` | Anything else |
+| `PR_BUGFIX` | Title starts with `fix`, branch contains `fix/`/`bugfix/` |
+| `PR_OTHER` | Everything else |
+
+#### Per-Item Report Template
+
+Each task writes to `{REPORT_DIR}/{issue|pr}-{number}.md`:
+
+```markdown
+# Issue #{number}: {title}
+**Type:** {QUESTION|BUG|FEATURE|OTHER} | **Author:** {author} | **Created:** {createdAt}
+
+## Summary
+[1-2 sentence summary with permalink evidence]
+
+## Findings
+- [Finding with permalink](https://github.com/{REPO}/blob/{SHA}/{path}#L{N})
+
+## Recommended Action
+[Specific, actionable next step]
+
+## Evidence Trail
+[All permalinks used in this report]
 ```
 
 ### Phase 3: 报告汇总/Summary Report
@@ -186,6 +207,8 @@ Each Issue/PR = 1 background task
 - [rules/classification.md](rules/classification.md) - 问题分类/Classification
 - [rules/report-format.md](rules/report-format.md) - 报告格式/Report Format
 - [rules/anti-aigc.md](rules/anti-aigc.md) - 分析报告反AIGC检测规则
+- [../_shared/core/anti-aigc.md](../_shared/core/anti-aigc.md) - 通用反AIGC检测规则（共享层）
+- [../_shared/core/design-principles.md](../_shared/core/design-principles.md) - 共享设计原则
 
 ## 配置选项/Configuration
 
@@ -194,6 +217,36 @@ Each Issue/PR = 1 background task
 | parallel_tasks | 10 | 最大并行任务数/Max parallel tasks |
 | output_dir | /tmp | 报告输出目录/Report output dir |
 | include_closed | false | 是否包含已关闭/Include closed |
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 任何 GitHub 写入操作 (comment/close/merge/review/label) | **CRITICAL** | 违反只读原则 |
+| 声明无 permalink 证据 | **CRITICAL** | 报告不可信 |
+| 多个 Issue/PR 合并为一个分析 | HIGH | 丢失单个项的分析深度 |
+| 不使用后台任务 (串行分析) | HIGH | 大仓库超时 |
+| 分支名而非 commit SHA 用于 permalink | HIGH | 链接可能失效 |
+| 猜测问题根因而非搜索代码库 | HIGH | 报告不准确 |
+| 不写报告到 `{REPORT_DIR}` | MAJOR | 输出丢失 |
+| 跳过数据收集阶段直接分析 | MAJOR | 缺少上下文 |
+
+## Zero-Action Policy (强化版)
+
+```
+【FORBIDDEN - 绝对禁止】
+gh issue comment / gh issue close / gh issue edit / gh issue reopen
+gh pr comment / gh pr merge / gh pr review / gh pr edit / gh pr close
+gh api -X POST / gh api -X PUT / gh api -X PATCH / gh api -X DELETE
+git push / git checkout / git fetch / git pull / git worktree
+curl -X POST to GitHub API
+
+【ALLOWED - 允许】
+gh issue view / gh pr view / gh api (GET only)
+git log / git show / git blame / git diff
+Write - 仅写入报告文件到临时目录
+Grep / Read / Glob - 搜索代码库
+```
 
 ## Troubleshooting / 排查
 

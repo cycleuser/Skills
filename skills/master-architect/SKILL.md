@@ -16,20 +16,12 @@ description: |
   Capabilities: Six-phase architecture with quality gates, requirement analysis, architecture design, task decomposition, iterative development, integration and validation, documentation generation
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载，避免跨技能重复维护。
 
 ## Quick Commands
 
@@ -301,6 +293,20 @@ Five principles guide the architecture process. First, never skip phases because
 /architect iterate auth-service --max-iterations 5 --quality-gate score>85
 /architect iterate auth-service --focus security --review
 ```
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 跳过某个阶段 | **CRITICAL** | 缺少必要的分析/设计/分解基础 |
+| 质量门不通过仍继续 | **CRITICAL** | 后续阶段基于不稳固基础 |
+| 无限迭代而不设上限 | **CRITICAL** | 永远不会完成 |
+| 架构文档用万能形容词 (不写具体数字/折衷/排除理由) | HIGH | AIGC检测率高，设计不可执行 |
+| 技术选型无排除理由 | HIGH | 读者不知道为什么不选替代方案 |
+| 模块迭代无退出标准 | HIGH | 无限循环 |
+| 不标注不确定性和折衷 | HIGH | 后续开发者踩坑 |
+| 一次性读入全量代码而非逐模块分析 | HIGH | 上下文溢出 |
+| 文档留到最后写 | MEDIUM | 细节遗忘 |
 
 ## Troubleshooting
 

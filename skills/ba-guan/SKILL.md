@@ -16,22 +16,35 @@ description: |
   Capabilities: Detect unpublished changes, per-change deep analysis, multi-role review (architect/developer/tester/security/docs), version suggestion, release risk assessment
 author: cycleuser
 license: MIT
+status: Beta
 ---
 
 ## Safety Rules
 
-**Critical**: Read and follow [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md) for all bash/command execution.
-
-Core rules:
-1. **Always set explicit `timeout` on bash calls** — 30s for tests, 60s for installs, never default
-2. **Never run unscoped full test suites** — use `-k` or file paths to limit scope
-3. **Never use `rm -rf` without variable guards**, `curl|bash`, `sudo`, or `kill -9`
-4. **Infinite loops must have hard timeout + budget limits** — no unbounded while(True)
-5. **Redirect stdin** with `< /dev/null` for non-interactive commands
-
-A bash timeout that triggers SIGKILL corrupts the terminal FD, crashes opencode's TUI, and forces a GUI restart.
+参见 [_shared/core/safety-rules.md](../_shared/core/safety-rules.md) — 所有安全规则从共享层加载。
 
 # 把关 (Pre-Publish Review)
+
+<role>
+Pre-publish review orchestrator. Three-layer deep analysis: per-change review (up to 10 agents), holistic multi-role review (5 roles), synthesis (1 agent). Supports npm, Python (PyPI), and generic project release gates.
+</role>
+
+## Release Risk Taxonomy
+
+| Risk Level | Criteria | Action |
+|-----------|----------|--------|
+| SAFE | Routine changes, well-tested, no breaking changes | Ready to publish |
+| CAUTION | Significant changes but manageable risk | Review findings, publish with monitoring |
+| RISKY | Large surface area, insufficient testing | Fix blocking issues before publish |
+| BLOCK | Critical issues found | Do NOT publish |
+
+## Audit Layers
+
+| Layer | Scope | Question |
+|-------|-------|----------|
+| Per-Change | Each logical change group individually | Is this change correct and safe? |
+| Holistic | Full changeset, cross-module | Do changes work together? |
+| Synthesis | Overall release | Is this release ready? |
 
 发布前核弹级审查。三层审查确保发布质量。
 Nuclear-grade pre-publish review. Three-layer review ensures release quality.
@@ -116,32 +129,46 @@ git diff "v${PUBLISHED}"..HEAD --stat
 ...
 ```
 
-### Phase 2: 逐变更审查/Per-Change Review
+### Phase 2: Per-Change Review (Up to 10 Agents)
 
-```markdown
-## 变更审查报告/Change Review - {scope}
+Each change group gets its own parallel review agent. Agents receive only their group's diff.
 
-**变更类型/Type**: {feat/fix/refactor}
+```
+## Per-Change Review: {GROUP_NAME}
+
+**变更类型/Type**: {feat/fix/refactor/docs}
 **影响文件/Files**: {file_list}
-**代码变更/Changes**: +{added}/-{removed}
+**Release Layer**: {npm|pypi|generic}
 
-### 正确性/Correctness
-- [ ] 逻辑正确/Logic correct
-- [ ] 边界处理/Edge cases
-- [ ] 错误处理/Error handling
+### Correctness / 正确性
+- [ ] Logic correct for 3+ scenarios — trace through the code
+- [ ] Edge cases handled (empty/null/large/concurrent)
+- [ ] Error handling proper — no empty catch, no swallowed promises
+- [ ] Breaking changes? If YES, what breaks and for whom?
+- [ ] Hardcoded credentials or secrets? BLOCK immediately
 
-### 测试覆盖/Test Coverage
-- [ ] 有单元测试/Unit tests
-- [ ] 有集成测试/Integration tests
-- [ ] 边界测试/Edge case tests
+### Test Coverage / 测试覆盖
+- [ ] Unit tests for new/changed behavior
+- [ ] Tests meaningful (not coverage padding)
+- [ ] Regression tests for bug fixes
 
-### 代码质量/Code Quality
-- [ ] 命名清晰/Clear naming
-- [ ] 函数简短/Short functions
-- [ ] 无重复代码/No duplication
+### Code Quality / 代码质量
+- [ ] Type safety — no `as any`, `@ts-ignore`, `@ts-expect-error`
+- [ ] Follows existing patterns in the file/package
+- [ ] No introduced duplication
+- [ ] Imports/exports clean — no side effects
 
-### 证据链接/Evidence Links
-- [文件链接](https://github.com/...)#L10-L50
+### Evidence Links / 证据链接
+- [文件](https://github.com/...)#L10-L50 — specific changed code
+- [提交](https://github.com/.../commit/abc) — relevant commit
+
+### Verdict / 判定
+**{PASS | FAIL | CAUTION}**
+**Risk: {SAFE | CAUTION | RISKY | BLOCK}**
+**Has Breaking Changes: {YES | NO}**
+
+### Blocking Issues / 阻塞问题
+[Issues that MUST be fixed before publish. Empty if PASS.]
 ```
 
 ### Phase 3: 整体审查/Holistic Review
@@ -266,6 +293,44 @@ Patch (修订号):
 | change_groups | 10 | 最大变更组数/Max groups |
 | reviewers | 5 | 审查角色数/Reviewers |
 | coverage_threshold | 70% | 测试覆盖阈值/Coverage threshold |
+
+## Anti-Patterns / 反模式
+
+| 违规 | 严重度 | 后果 |
+|------|--------|------|
+| 不等所有审查代理完成就给出结论 | **CRITICAL** | 审查不完整 |
+| 跳过 Phase 0 (变更检测) 直接审查 | **CRITICAL** | 遗漏未发布变更 |
+| 串行执行审查而非并行 | HIGH | 大型变更超时 |
+| 跳过一个审查层次（三层缺一不可） | HIGH | 审查盲区 |
+| 将多个不相关变更放入一组 | HIGH | 稀释深度分析 |
+| 审查报告只有描述无证据（无文件路径和行号） | HIGH | 报告无法验证 |
+| 有阻绝问题(BLOCK)仍建议发布 | **CRITICAL** | 上线即故障 |
+| 不执行整体审查就进入综合评估 | HIGH | 缺少跨模块视角 |
+| 不区分发布层（npm/pypi/generic）使用统一模板 | MEDIUM | 遗漏平台特有风险 |
+
+## Verdict Logic / 判定逻辑
+
+```
+BLOCK if:
+  - Any per-change agent found CRITICAL blocking issues
+  - Holistic review failed on security or correctness
+  - Breaking changes without migration plan
+
+RISKY if:
+  - Multiple per-change agents returned FAIL or CAUTION
+  - Holistic review passed but with significant findings
+  - Large surface area changes (>500 lines)
+
+CAUTION if:
+  - A few minor issues flagged
+  - Holistic review passed cleanly
+  - Medium surface area (100-500 lines)
+
+SAFE if:
+  - All per-change agents passed
+  - Holistic review passed on all roles
+  - Small surface area (<100 lines) OR well-tested
+```
 
 ## 常见问题与排查 / Troubleshooting
 
