@@ -6,7 +6,13 @@
     "path": "skills/_shared",
     "description": "Shared resources across skills — safety rules, anti-AIGC rules, design principles, templates",
     "contents": {
-      "core": ["safety-rules.md", "anti-aigc.md", "design-principles.md", "skill-template.md", "manifest-template.yaml"]
+      "core": [
+        "safety-rules.md",
+        "anti-aigc.md",
+        "design-principles.md",
+        "skill-template.md",
+        "manifest-template.yaml"
+      ]
     }
   },
   "skills": [
@@ -17,7 +23,9 @@
       "description": "Central skill registry and management system",
       "auto_load": true,
       "priority": 0,
-      "rules": ["registry.md"]
+      "rules": [
+        "registry.md"
+      ]
     },
     {
       "name": "master-architect",
@@ -304,6 +312,21 @@
       "auto_load": false,
       "priority": 75,
       "rules": []
+    },
+    {
+      "name": "tianbiao",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "填表 - Template-preserving form filler: copies original Word/Excel template and fills data into the correct cells while keeping original fonts, borders, merged cells and layout",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "workflow.md",
+        "format-preservation.md",
+        "data-integrity.md",
+        "writing-analysis.md",
+        "anti-aigc.md"
+      ]
     }
   ]
 }

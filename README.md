@@ -4,7 +4,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **22 Skills (including adversarial planning)** - Covering architecture, development, testing, writing, patents, official documents, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
+- **23 Skills (including adversarial planning)** - Covering architecture, development, testing, writing, patents, official documents, template-preserving form filling, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
 - **32 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
@@ -37,6 +37,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **zi-kong** | Autonomous iteration | Self-controlling work |
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 | **shuang-chong** | Adversarial 5-persona planning (single model) | Complex project stress-testing |
+| **tianbiao** | Template-preserving form filler | Filling formatted forms/reports |
 
 ## Installation
 
@@ -116,6 +117,7 @@ After installation, use these commands in OpenCode:
 | `/security <skill>` | Security review |
 | `/auto <task>` | Autonomous iteration |
 | `/adversarial <task>` | Adversarial planning |
+| `/tianbiao <template> <data>` | Template-preserving form filling |
 | `/skills` | List all skills |
 
 ### Command Examples

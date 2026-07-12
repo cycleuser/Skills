@@ -1,6 +1,6 @@
 # Skill Registry
 
-Complete registry of all 22 available skills.
+Complete registry of all 23 available skills.
 
 ## Registry Format
 
@@ -417,6 +417,37 @@ rules:
 
 ---
 
+### tianbiao
+
+```yaml
+name: tianbiao
+version: "1.0.0"
+location: skills/tianbiao/SKILL.md
+description: |
+  填表 - Template-preserving form filler. Copies an existing Word/Excel
+  template and fills real data into the correct cells while keeping the
+  ORIGINAL fonts, borders, merged cells and layout. Never rebuilds tables.
+triggers:
+  - Filling official forms/reports based on a fixed template
+  - Output must match the original template format exactly
+  - Converting .doc/.xls templates and populating them with data
+commands:
+  - /填表 <模板> <数据> - Fill template preserving format
+  - /填表 convert <文件> - Convert legacy template to editable format
+  - /填表 inspect <模板> - Map template structure & fonts
+  - /填表 check <文档> - Verify fidelity & data integrity
+  - /tianbiao <template> <data> - English command
+  - /tianbiao convert|inspect|check - English subcommands
+rules:
+  - workflow.md
+  - format-preservation.md
+  - data-integrity.md
+  - writing-analysis.md
+  - anti-aigc.md
+```
+
+---
+
 ## Patent & Legal
 
 ### patent-writer
@@ -629,12 +660,13 @@ rules:
 | Quality & Security | 2 | an-jian, ba-guan |
 | Git Workflow | 1 | he-bing |
 | Writing | 5 | academic-writer, humanizer, literary-ghostwriter, brief-write, official-document-writer |
+| Document & Forms | 1 | tianbiao |
 | Patent & Legal | 1 | patent-writer |
 | Consultation | 1 | bao-kao |
 | Autonomous Execution | 3 | sleepless, power-iterate, zi-kong |
 | Skill Management | 1 | skill-refiner |
 | GitHub Tools | 1 | shen-shi |
-| **Total** | **22** | |
+| **Total** | **23** | |
 
 ## Quick Reference Tables
 
@@ -653,6 +685,7 @@ rules:
 | literary-ghostwriter | Literary style imitation (7 masters) |
 | brief-write | User blog style imitation |
 | official-document-writer | Chinese government documents (GB/T 9704-2012) |
+| tianbiao | Template-preserving form/report filling |
 
 ### Development Skills
 
