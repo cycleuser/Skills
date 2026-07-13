@@ -328,5 +328,17 @@
         "anti-aigc.md"
       ]
     }
-  ]
+  ],
+  "docx-to-knowledge": {
+    "name": "docx-to-knowledge",
+    "version": "1.0.0",
+    "description": "Converts .docx to self-contained searchable HTML knowledge bases",
+    "path": "skills/docx-to-knowledge",
+    "commands": [
+      "/知识库 <docx>",
+      "/知识库 extract <docx>",
+      "/知识库 clean <json>",
+      "/知识库 generate <json>"
+    ]
+  }
 }
