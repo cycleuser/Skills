@@ -19,6 +19,7 @@ always_load:
 | `core/design-principles.md` | 所有技能 | 共享设计原则：一手来源、显式胜过隐式、上下文感知、输出优先、可扩展 |
 | `core/skill-template.md` | 新技能创建 | 技能创建模板、文件清单、状态标签规范 |
 | `core/manifest-template.yaml` | 复杂技能 | 静态/动态分层 manifest 模板，声明 axes、always_load、references.on_demand |
+| `memory/` | 所有技能 | **共享记忆系统** — per-skill 持久化 key-value 存储，跨会话状态保持。详见 `memory/README.md` |
 
 ## 何时放入 `_shared/`
 
