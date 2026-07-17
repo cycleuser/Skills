@@ -1,6 +1,6 @@
 ---
 name: he-bing
-version: "1.1.0"
+version: "1.2.0"
 description: |
   Complete PR lifecycle management from worktree creation through implementation, commits, PR creation, verification loop, to merge and cleanup.
 

@@ -49,6 +49,28 @@ for ti, t in enumerate(d.tables):
 
 ## Step 3 — 准备数据 Prepare Data
 
+数据来源有两种，按情况选用：
+
+### 3a. 从非结构化资料提取（PDF/图片/扫描件/混合文件包）
+
+当用户给的是一堆参考资料文件（不是结构化表格），先用文本提取流程。详见 [text-extraction.md](text-extraction.md)。
+
+```python
+# 按文件类型路由提取器
+from pathlib import Path
+for f in Path(data_dir).iterdir():
+    text = route_and_extract(f)   # 自动选 PDF文本层/OCR/Office解析
+    cleaned = clean_ocr_text(text)  # 错行纠正、OCR纠错
+    save_intermediate(f, cleaned)   # 保存到 /tmp/tianbiao-extract-{ts}/
+# 结构化为字段-值映射
+structured = structure_extracted_text(all_cleaned_text, target_fields)
+```
+
+提取后必须校验：关键数字回查原文位置、字段完整性、数值合理性。
+提取不出来的字段列入"需人工补"清单。
+
+### 3b. 从结构化源文件提取（点名册/成绩表）
+
 从源文件提取结构化数据（点名册 `.xls` 用 `xlrd`，成绩表 `.xlsx` 用 `openpyxl`）。
 
 若模板要求的某项分数在源数据里没有直接列，需**反推计算公式**：用已知的分项和结果做最小误差搜索，并用**全体样本**验证吻合（允许四舍五入的 ±1 差异）。示例：
@@ -93,6 +115,7 @@ python3 scripts/fill_docx_template.py verify "输出.docx"
 |------|------|
 | `/填表 convert <文件>` | Step 1 |
 | `/填表 inspect <模板>` | Step 2 |
+| `/填表 extract <资料目录>` | Step 3a（从非结构化资料提取文本） |
 | `/填表 <模板> <数据>` | Step 3–4（含必要的数据反推） |
 | `/填表 check <文档>` | Step 5 |
 

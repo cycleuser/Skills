@@ -254,18 +254,24 @@
     },
     {
       "name": "ba-guan",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "status": "Beta",
-      "description": "把关 - Pre-publish review with multi-layer deep analysis: per-change review, 5-role holistic review, and synthesis assessment",
+      "description": "把关 - Pre-publish review with AI attribution detection (ODS-inspired), risk-weighted scoring, review-tier routing, multi-layer deep analysis",
       "auto_load": false,
       "priority": 100,
-      "rules": []
+      "rules": [
+        "change-detection.md",
+        "ai-attribution.md",
+        "review-roles.md",
+        "version-bump.md",
+        "anti-aigc.md"
+      ]
     },
     {
       "name": "he-bing",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "status": "Beta",
-      "description": "合并 - Complete PR lifecycle: worktree, implement, commits, PR, verify, merge",
+      "description": "合并 - Complete PR lifecycle: worktree, implement, commits (with AI trailer preservation), PR, verify, merge",
       "auto_load": false,
       "priority": 80,
       "rules": []
@@ -315,13 +321,14 @@
     },
     {
       "name": "tianbiao",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "status": "Beta",
-      "description": "填表 - Template-preserving form filler: copies original Word/Excel template and fills data into the correct cells while keeping original fonts, borders, merged cells and layout",
+      "description": "填表 - Template-preserving form filler: extracts text from reference materials (PDF/OCR/images), corrects misaligned lines and OCR errors, then fills data into Word/Excel templates while keeping original fonts, borders, merged cells and layout",
       "auto_load": false,
       "priority": 50,
       "rules": [
         "workflow.md",
+        "text-extraction.md",
         "format-preservation.md",
         "data-integrity.md",
         "writing-analysis.md",

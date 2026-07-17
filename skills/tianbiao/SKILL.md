@@ -1,22 +1,24 @@
 ---
 name: tianbiao
-version: "1.0.0"
+version: "1.1.0"
 description: |
-  Template-preserving form/report filler. Copies an existing Word/Excel template, fills real data into the correct cells while keeping the ORIGINAL fonts, borders, merged cells and layout — never rebuilds from scratch.
+  Template-preserving form/report filler. Extracts text from mixed reference materials (PDF/OCR/images/Office), corrects misaligned lines and OCR errors, then fills the content into a Word/Excel template while keeping the ORIGINAL fonts, borders, merged cells and layout — never rebuilds from scratch.
 
-  Triggers when: Filling official forms/reports based on a fixed template (成绩单、试卷质量分析表、成绩分析表、过程性评价档案、考查课报告、各类表格), when output MUST match the original template format exactly, or when converting .doc/.xls templates and populating them with data.
+  Triggers when: Filling official forms/reports based on a fixed template (成绩单、试卷质量分析表、成绩分析表、过程性评价档案、考查课报告、各类表格), extracting text from reference materials (PDF/扫描件/图片) then filling into template, when output MUST match the original template format exactly, or when converting .doc/.xls templates and populating them with data.
 
   Commands:
   - /填表 <模板> <数据> - Fill a template with data, preserving format
   - /填表 convert <文件> - Convert .doc/.xls template to editable .docx/.xlsx
   - /填表 inspect <模板> - Map a template's tables/cells/fonts before filling
+  - /填表 extract <资料目录> - Extract text from reference materials (PDF/OCR/images)
   - /填表 check <文档> - Verify filled doc format fidelity & data integrity
   - /tianbiao <template> <data> - English command for template-preserving fill
   - /tianbiao convert <file> - Convert legacy template to editable format
   - /tianbiao inspect <template> - Map template structure & fonts
+  - /tianbiao extract <dir> - Extract text from reference materials
   - /tianbiao check <doc> - Verify fidelity & data integrity
 
-  Capabilities: In-place cell filling on original templates, .doc/.xls to .docx/.xlsx conversion via LibreOffice, font/border/merge preservation, compact roster tables with repeating headers and non-splitting rows, formula reverse-engineering from source data, format-fidelity verification, bilingual Chinese-English operation
+  Capabilities: Text extraction from PDF/images/Office (pdfplumber/pymupdf/PaddleOCR/Tesseract), OCR error correction and misaligned-line fixing, in-place cell filling on original templates, .doc/.xls to .docx/.xlsx conversion via LibreOffice, font/border/merge preservation, compact roster tables with repeating headers and non-splitting rows, formula reverse-engineering from source data, format-fidelity verification, bilingual Chinese-English operation
 author: cycleuser
 license: MIT
 status: Beta
@@ -41,10 +43,12 @@ The one rule that matters: **copy the original template, drop text into the righ
 | `/填表 <模板> <数据>` | 按模板填充数据，保持格式 |
 | `/填表 convert <文件>` | 将 .doc/.xls 模板转为可编辑的 .docx/.xlsx |
 | `/填表 inspect <模板>` | 填写前先摸清模板的表格/单元格/字体结构 |
+| `/填表 extract <资料目录>` | 从参考资料（PDF/图片/扫描件）提取文本并纠正 |
 | `/填表 check <文档>` | 校验填好的文档格式保真度与数据一致性 |
 | `/tianbiao <template> <data>` | Fill template preserving format |
 | `/tianbiao convert <file>` | Convert legacy template to editable format |
 | `/tianbiao inspect <template>` | Map template structure & fonts |
+| `/tianbiao extract <dir>` | Extract text from reference materials (PDF/OCR/images) |
 | `/tianbiao check <doc>` | Verify fidelity & data integrity |
 
 ## 核心理念 / Core Philosophy
@@ -68,9 +72,13 @@ Step 2  摸底 Inspect
   读出模板每个表的可见单元格结构（含 gridSpan/vMerge）、每个关键单元格的字体 rPr。
   确认"哪一行哪一列填什么"，特别注意合并单元格导致的逻辑网格 vs 可见网格差异。
 
-Step 3  备数据 Prepare Data
-  从源文件（点名册/成绩表/统计导出）提取结构化数据。
-  必要时反推计算公式（如 平时=0.2×课堂+0.4×作业均+0.4×测验），并用全体样本验证吻合。
+Step 3  准备数据 Prepare Data（两条路径）
+  3a. 非结构化资料 → 文本提取 + OCR + 错行纠正 → 结构化字段
+      按文件类型路由提取器（PDF文本层/OCR/Office解析），纠正OCR错字和错行，
+      校验关键数字回查原文位置，未提取字段列入"需人工补"。详见 rules/text-extraction.md
+  3b. 结构化源文件 → 直接读取 + 公式反推
+      点名册/成绩表等结构化数据，必要时反推计算公式（如平时=0.2×课堂+0.4×作业均+0.4×测验），
+      用全体样本验证吻合。
 
 Step 4  填充 Fill
   打开原模板 docx，按可见单元格索引 vcells(table, row_idx) 定位并写入。
@@ -101,6 +109,7 @@ Step 5  校验 Verify
 ## Rules
 
 - [rules/workflow.md](rules/workflow.md) - 完整五步工作流与命令行操作
+- [rules/text-extraction.md](rules/text-extraction.md) - 从非结构化资料提取文本、OCR识别、错行纠正
 - [rules/format-preservation.md](rules/format-preservation.md) - 保格式的具体 OOXML 技术（可见单元格、字体继承、明细表防散架）
 - [rules/data-integrity.md](rules/data-integrity.md) - 数据提取、公式反推与校验
 - [rules/writing-analysis.md](rules/writing-analysis.md) - 分析类表格文字的填写原则（客观、实事求是、尊重学情、不甩锅）
@@ -135,6 +144,7 @@ Step 5  校验 Verify
 | 版本 | 日期 | 变更 |
 |------|------|------|
 | 1.0.0 | 2026-07-12 | 初始版本：模板保真填表工作流、可复用脚本、五步法与校验 |
+| 1.1.0 | 2026-07-17 | 新增文本提取能力：从非结构化资料（PDF/图片/扫描件）提取文本、OCR识别、错行纠正、OCR纠错，新增 text-extraction.md 规则 |
 
 ## See Also / 相关技能
 

@@ -1,8 +1,9 @@
 ---
 name: ba-guan
-version: "1.1.0"
+version: "1.2.0"
 description: |
   Pre-publish review with multi-layer deep analysis for code quality assurance before release.
+  Now with AI attribution detection (ODS-inspired), risk-weighted scoring, and review-tier routing.
 
   Triggers when: Preparing to publish an npm package, needing pre-release review, or checking code change quality.
 
@@ -11,9 +12,10 @@ description: |
   - /把关 check - Check unpublished changes
   - /把关 version - Suggest version bump
   - /把关 report - Generate review report
+  - /把关 attribution - Show AI attribution summary
   - /review <task> - English command for pre-publish review
 
-  Capabilities: Detect unpublished changes, per-change deep analysis, multi-role review (architect/developer/tester/security/docs), version suggestion, release risk assessment
+  Capabilities: Detect unpublished changes, AI attribution detection (Co-Authored-By/Assisted-by trailers), per-change deep analysis, multi-role review (architect/developer/tester/security/docs), risk-weighted scoring, review-tier routing (auto/standard/elevated), version suggestion, release risk assessment
 author: cycleuser
 license: MIT
 status: Beta
@@ -57,9 +59,11 @@ Nuclear-grade pre-publish review. Three-layer review ensures release quality.
 | `/把关 check` | 检查未发布变更 |
 | `/把关 version` | 建议版本升级 |
 | `/把关 report` | 生成审查报告 |
+| `/把关 attribution` | 查看 AI 归属汇总 |
 | `/review` | Start full pre-publish review |
 | `/review check` | Check unpublished changes |
 | `/review version` | Suggest version bump |
+| `/review attribution` | Show AI attribution summary |
 
 ## 三层审查架构/Three-Layer Review
 
@@ -68,10 +72,15 @@ Nuclear-grade pre-publish review. Three-layer review ensures release quality.
 │                    发布前三层审查/Pre-Publish Review                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                      │
+│  Phase 0: 检测变更 + AI 归属/Detect Changes + AI Attribution         │
+│  ├── 变更列表/Change list                                            │
+│  ├── AI trailer 解析/Parse Co-Authored-By & Assisted-by              │
+│  └── AI 参与度计算/Compute AI participation ratio                    │
+│                                                                      │
 │  Layer 1: 逐变更审查/Per-Change (最多 10 个智能体)                      │
 │  ├── 变更组 A 深度分析/Group A deep analysis                         │
 │  ├── 变更组 B 深度分析/Group B deep analysis                         │
-│  └── ...                                                              │
+│  └── ... (含 AI 归属字段 + 风险乘数)                                   │
 │                                                                      │
 │  Layer 2: 整体审查/Holistic (5 角色并行/5 roles)                       │
 │  ├── 架构师/Architect: 架构合规性                                     │
@@ -81,6 +90,8 @@ Nuclear-grade pre-publish review. Three-layer review ensures release quality.
 │  └── 文档/Docs: 文档完整性                                            │
 │                                                                      │
 │  Layer 3: 综合评估/Synthesis (1 个智能体)                               │
+│  ├── 风险加权评分/Risk-weighted scoring (AI 参与度 × 基础债务)           │
+│  ├── 审查分级路由/Review-tier routing (auto/standard/elevated)        │
 │  └── 汇总所有审查结果，给出发行建议/Summary & recommendation           │
 │                                                                      │
 └─────────────────────────────────────────────────────────────────────┘
@@ -88,7 +99,7 @@ Nuclear-grade pre-publish review. Three-layer review ensures release quality.
 
 ## 审查流程/Review Workflow
 
-### Phase 0: 检测未发布变更/Detect Changes
+### Phase 0: 检测未发布变更 + AI 归属/Detect Changes + AI Attribution
 
 ```bash
 # 获取已发布版本/Get published version
@@ -105,7 +116,12 @@ git diff --name-only "v${PUBLISHED}"..HEAD
 
 # 获取变更统计/Get diff stats
 git diff "v${PUBLISHED}"..HEAD --stat
+
+# AI 归属检测/AI attribution detection
+git log "v${PUBLISHED}"..HEAD --grep="Co-Authored-By.*noreply" --grep="Assisted-by.*Claude\|Copilot\|GPT\|Gemini\|Aider\|Qwen\|DeepSeek\|Kimi\|Doubao\|Baichuan\|GLM\|Zhipu" --oneline
 ```
+
+归属信号解析详见 [rules/ai-attribution.md](rules/ai-attribution.md)。
 
 ### Phase 1: 变更分组/Group Changes
 
@@ -213,19 +229,34 @@ Each change group gets its own parallel review agent. Agents receive only their 
 
 **版本建议/Version**: {patch/minor/major}
 **发布风险/Risk**: {低/Low/中/Medium/高/High}
+**AI 参与度/AI Participation**: {X}/{Y} commits ({percentage}%)
+**AI 风险乘数/AI Risk Multiplier**: {1.0x ~ 1.5x}
+**审查分级/Review Tier**: {auto/standard/elevated}
 
 ### 审查汇总/Summary
-| 层次/Layer | 状态/Status | 问题数/Issues |
-|-----------|------------|--------------|
-| 逐变更/Per-Change | ✅/⚠️ | {count} |
-| 整体/Holistic | ✅/⚠️ | {count} |
-| 综合/Synthesis | ✅/⚠️ | {count} |
+| 层次/Layer | 状态/Status | 问题数/Issues | AI 参与/AI |
+|-----------|------------|--------------|-----------|
+| 逐变更/Per-Change | ✅/⚠️ | {count} | {percentage}% |
+| 整体/Holistic | ✅/⚠️ | {count} | — |
+| 综合/Synthesis | ✅/⚠️ | {count} | — |
+
+### 风险加权评分/Risk-Weighted Score
+技术债 = (基础债务) × (AI 风险乘数)
+- 基础债务: {base_debt} (高危×3 + 中危×1 + 覆盖率缺口×0.5 + 重复×0.3)
+- AI 乘数: {multiplier} (基于 {percentage}% AI 参与度)
+- 最终得分: {final_score} (越低越好，0 = 无债务)
+
+### 审查分级路由/Review Tier Routing
+- Tier: {auto | standard | elevated}
+- 理由: {为何路由到此分级}
+- 动作: {auto-merge | standard review | request extra reviewers}
 
 ### 发布清单/Checklist
 - [ ] 所有 P0 问题已解决/All P0 resolved
 - [ ] 测试覆盖率达标/Coverage达标
 - [ ] 文档已更新/Docs updated
 - [ ] 版本号已升级/Version bumped
+- [ ] AI 归属已确认/AI attribution verified
 
 ### 决策/Decision
 {可以发布/Ready / 需要修复/Fix needed / 不建议发布/Not ready}
@@ -264,11 +295,11 @@ Patch (修订号):
 ```
 用户/User: /把关
 
-→ Phase 0: 检测未发布变更/Detect changes
-→ Phase 1: 变更分组/Group changes
-→ Phase 2: 逐变更审查/Per-change review (parallel)
+→ Phase 0: 检测变更 + AI 归属/Detect changes + AI attribution
+→ Phase 1: 变更分组（含 AI 归属字段）/Group changes with attribution
+→ Phase 2: 逐变更审查/Per-change review (parallel, with risk multiplier)
 → Phase 3: 整体审查/Holistic review (5 roles)
-→ Phase 4: 综合评估/Synthesis
+→ Phase 4: 综合评估 + 风险加权评分 + 审查分级路由/Synthesis + scoring + routing
 → 输出发行建议/Output recommendation
 ```
 
@@ -282,6 +313,7 @@ Patch (修订号):
 ## Rules
 
 - [rules/change-detection.md](rules/change-detection.md) - 变更检测/Change Detection
+- [rules/ai-attribution.md](rules/ai-attribution.md) - AI 归属检测/AI Attribution Detection
 - [rules/review-roles.md](rules/review-roles.md) - 审查角色/Review Roles
 - [rules/version-bump.md](rules/version-bump.md) - 版本规则/Version Rules
 - [rules/anti-aigc.md](rules/anti-aigc.md) - 分析报告反AIGC检测规则
@@ -293,6 +325,10 @@ Patch (修订号):
 | change_groups | 10 | 最大变更组数/Max groups |
 | reviewers | 5 | 审查角色数/Reviewers |
 | coverage_threshold | 70% | 测试覆盖阈值/Coverage threshold |
+| ai_attribution | true | 是否检测 AI 归属/Enable AI attribution detection |
+| ai_risk_multiplier_max | 1.5 | AI 风险乘数上限/Max risk multiplier |
+| review_tier_routing | true | 启用审查分级路由/Enable tier routing |
+| elevated_ai_threshold | 0.6 | AI 参与度触发 elevated 的阈值 |
 
 ## Anti-Patterns / 反模式
 
@@ -315,22 +351,39 @@ BLOCK if:
   - Any per-change agent found CRITICAL blocking issues
   - Holistic review failed on security or correctness
   - Breaking changes without migration plan
+  - AI 参与安全文件(auth/permissions/crypto)且无人工确认 — elevated tier 必须
 
 RISKY if:
   - Multiple per-change agents returned FAIL or CAUTION
   - Holistic review passed but with significant findings
   - Large surface area changes (>500 lines)
+  - AI 参与度 > 60% 且有中危以上 issue
 
 CAUTION if:
   - A few minor issues flagged
   - Holistic review passed cleanly
   - Medium surface area (100-500 lines)
+  - AI 参与度 > 30% 但无高危 issue → standard tier
 
 SAFE if:
   - All per-change agents passed
   - Holistic review passed on all roles
   - Small surface area (<100 lines) OR well-tested
+  - AI 参与度 < 30% 且无高危 → auto tier 候选
 ```
+
+## Review Tier Routing / 审查分级路由
+
+基于 AI 参与度和质量信号，自动路由审查等级（详见 [rules/ai-attribution.md](rules/ai-attribution.md)）：
+
+| Tier | 触发条件 | 动作 |
+|------|---------|------|
+| **auto** | AI<30% + 无高危 + <200行 | 跳过人工审查，CI 通过即合并 |
+| **standard** | 默认 | 标准审查流程 |
+| **elevated** | AI>60% + 有高危，或 AI 触及安全文件 | 请求额外 reviewer，必须人工确认 |
+
+**核心原则：用 AI 不是罪。** AI 参与度只作为风险乘数（1.0~1.5x），不直接判定 BLOCK。
+干净的 100% AI 变更（无 issue、测试充分）得分接近 0，可走 auto tier。
 
 ## 常见问题与排查 / Troubleshooting
 
@@ -370,6 +423,7 @@ Review reports must contain specific evidence (file paths, line numbers) and act
 |------|------|------|
 | 1.0.0 | 2026-04-01 | 初始版本，三层审查架构 |
 | 1.1.0 | 2026-05-09 | 添加安全规则，集成，排查，边界情况，3个rule文件 |
+| 1.2.0 | 2026-07-17 | 引入 ODS 方法论：AI 归属检测（Co-Authored-By/Assisted-by trailer 解析）、风险加权评分、审查分级路由（auto/standard/elevated）、新增 ai-attribution.md 规则 |
 
 ## See Also / 相关技能
 

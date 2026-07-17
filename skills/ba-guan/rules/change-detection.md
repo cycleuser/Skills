@@ -132,9 +132,38 @@ The following are **not** breaking:
 - Deprecating (without removing) a feature
 - Internal implementation change with same external behavior
 
+## AI Attribution Extraction / AI 归属提取
+
+变更检测后立即执行 AI 归属信号提取。详见 [ai-attribution.md](ai-attribution.md)。
+
+```bash
+# 在 Phase 0 变更检测后，提取 AI 归属信号
+# 检测 Co-Authored-By 和 Assisted-by trailer
+git log "v${PUBLISHED}"..HEAD --pretty=format:"%H%n%B%n---END---" | \
+  awk '/---END---/{print ""; next} {print}' | \
+  grep -B1 -E "^(Co-Authored-By|Assisted-by|Generated-by):.*(noreply|Claude|Copilot|Cursor|GPT|Gemini|Aider|Qwen|DeepSeek|Kimi|Doubao|Baichuan|GLM|Zhipu)"
+
+# 统计 AI 参与度
+TOTAL=$(git log "v${PUBLISHED}"..HEAD --oneline | wc -l)
+AI_COMMITS=$(git log "v${PUBLISHED}"..HEAD --grep="Co-Authored-By.*noreply" --grep="Assisted-by.*Claude\|Copilot\|GPT\|Gemini\|Aider\|Qwen\|DeepSeek\|Kimi\|Doubao\|Baichuan\|GLM\|Zhipu" --oneline | wc -l)
+echo "AI 参与度: ${AI_COMMITS}/${TOTAL} ($(( AI_COMMITS * 100 / TOTAL )))%"
+```
+
+归属信号注入变更分组，作为风险加权的输入：
+
+```markdown
+## 变更分组 + AI 归属/Change Groups with Attribution
+
+### 新功能/Features (feat)
+| 范围/Scope | 文件/Files | 行数/Lines | AI 参与/AI | 风险乘数/Risk |
+|-----------|-----------|-----------|-----------|--------------|
+| auth | +150/-30 | +120 | Claude 3.5 | 1.3x |
+| api | +80/-10 | +70 | — (人工) | 1.0x |
+```
+
 ## Change Impact Analysis / 变更影响分析
 
-For each change group, assess impact radius:
+For each change group, assess impact radius (含 AI 归属字段):
 
 ```markdown
 ## Change Group: {name}
@@ -142,6 +171,8 @@ For each change group, assess impact radius:
 **Files**: {file_count} files, +{added}/-{removed} lines
 **Severity**: {critical|high|medium|low}
 **Breaking**: {yes/no/uncertain}
+**AI Attribution**: {tool/model | 人工 | mixed}
+**AI Risk Multiplier**: {1.0x ~ 1.5x}
 **Affected modules**: {list modules touched}
 **Risk areas**: {list areas that could be affected}
 
@@ -149,4 +180,5 @@ For each change group, assess impact radius:
 - Direct consumers: {who calls this code}
 - Transitive effects: {what depends on direct consumers}
 - Config/deploy impact: {does this need config/deploy changes}
+- AI-assisted review depth: {standard | elevated if AI + security files}
 ```

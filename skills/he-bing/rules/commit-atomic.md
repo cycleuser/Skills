@@ -73,6 +73,27 @@ Migration: access response.data instead of response directly
 2. **Breaking changes**: `BREAKING CHANGE: description`
 3. **Co-authors**: `Co-authored-by: Name <email>`
 4. **One per line** for multiple references
+5. **保留 AI 归属 trailer**: AI 工具自动添加的 `Co-Authored-By: Claude <noreply@anthropic.com>` 或 `Assisted-by: Claude:claude-3.5-sonnet` 等 trailer **不得删除**。这些是机器可读的归属信号，被 `/把关` 的 AI 归属检测（ODS 方法论）消费，用于风险加权评分和审查分级路由。Squash merge 时务必保留 trailer。
+
+## AI Attribution Trailer Preservation / AI 归属 Trailer 保留
+
+AI 工具（Claude Code、Copilot、Cursor 等）自动添加的归属 trailer 是治理信号，不得抹除：
+
+```
+# 保留这些 trailer (Co-Authored-By 风格)
+Co-Authored-By: Claude <noreply@anthropic.com>
+Co-Authored-By: GitHub Copilot <noreply@github.com>
+
+# 保留这些 trailer (Linux kernel 风格)
+Assisted-by: Claude:claude-3.5-sonnet
+Assisted-by: Copilot:gpt-4
+
+# Squash merge 时保留 trailer
+git merge --squash feature-branch
+git commit --amend  # 手动保留 trailer，不要用 -m 覆盖
+```
+
+**为什么不能删？** `/把关` 技能依赖这些 trailer 计算 AI 参与度、风险乘数和审查分级。抹掉 trailer 等于让 AI 代码"隐身"，审查系统失去信号源。详见 `ba-guan/rules/ai-attribution.md`。
 
 ## Splitting Large Changes / 拆分大型变更
 
