@@ -2,6 +2,7 @@
 name: academic-guide
 description: Search doctoral dissertations for a given academic field, compile professional sites and databases with description and update frequency, preserve complete search records, and independently verify every citation link before including in the final report. Use when user wants to explore a new research field, search for recent doctoral dissertations, find authoritative professional websites and databases for a discipline, or needs to verify and format academic citations with clickable links.
 license: MIT
+compatibility: opencode
 ---
 
 ## Safety Rules
