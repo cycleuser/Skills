@@ -1,25 +1,7 @@
 ---
 name: academic-guide
-version: "1.1.0"
-description: |
-  学术导览 — 帮助初学者入门新学科领域。搜索博士论文、整理专业站点、记录搜索过程、验证每条引用。
-
-  Triggers when: 用户想入门新学科、需要领域概览、搜索博士论文、整理权威专业站点、或需要验证引用链接。
-
-  Commands:
-  - /学术导览 <领域名称> - 完整四步学术导览流程
-  - /导览 论文 <领域> - 仅搜索博士论文
-  - /导览 站点 <领域> - 仅整理专业站点
-  - /导览 验证 <报告文件> - 仅验证参考文献链接
-  - /AcademicGuide <field> - Full English workflow
-  - /guide dissertations <field> - Search dissertations only
-  - /guide sites <field> - Compile professional sites only
-  - /guide verify <report> - Verify citations only
-
-  Capabilities: 博士论文搜索（ProQuest/CNKI/NDLTD/Google Scholar），多标签标注免费/机构/封闭获取，预印本搜索，专业站点与数据库发现，原始搜索记录保全，参考文献逐条链接验证，规范引用格式输出，中英双语支持
-author: cycleuser
+description: Search doctoral dissertations for a given academic field, compile professional sites and databases with description and update frequency, preserve complete search records, and independently verify every citation link before including in the final report. Use when user wants to explore a new research field, search for recent doctoral dissertations, find authoritative professional websites and databases for a discipline, or needs to verify and format academic citations with clickable links.
 license: MIT
-status: Beta
 ---
 
 ## Safety Rules
