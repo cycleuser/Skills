@@ -240,16 +240,30 @@
       ]
     },
     {
-      "name": "an-jian",
-      "version": "1.0.0",
+      "name": "tianbiao",
+      "version": "1.1.0",
       "status": "Beta",
-      "description": "安检 - Security review for skills before installation, checking for dangerous commands, credential leaks, and other risks",
+      "description": "填表 - Template-preserving form filler: extracts text from reference materials (PDF/OCR/images), corrects misaligned lines and OCR errors, then fills data into Word/Excel templates while keeping original fonts, borders, merged cells and layout",
       "auto_load": false,
       "priority": 50,
       "rules": [
-        "dangerous-patterns.md",
-        "fix-strategies.md",
-        "risk-assessment.md"
+        "workflow.md",
+        "text-extraction.md",
+        "format-preservation.md",
+        "data-integrity.md",
+        "writing-analysis.md",
+        "anti-aigc.md"
+      ]
+    },
+    {
+      "name": "wang-ke",
+      "version": "1.1.0",
+      "status": "Beta",
+      "description": "网课助手 - Auto mouse keeper for online course platforms: direct browser control via Selenium, system mouse micro-movement via pyautogui, or Tampermonkey script",
+      "auto_load": false,
+      "priority": 20,
+      "rules": [
+        "platform-config.md"
       ]
     },
     {
@@ -332,6 +346,22 @@
         "format-preservation.md",
         "data-integrity.md",
         "writing-analysis.md",
+        "anti-aigc.md"
+      ]
+    },
+    {
+      "name": "academic-guide",
+      "version": "1.1.0",
+      "status": "Beta",
+      "description": "学术导览 - Academic field navigator: search doctoral dissertations, compile professional sites, preserve search records, verify every citation independently",
+      "auto_load": false,
+      "priority": 20,
+      "rules": [
+        "dissertation-search.md",
+        "professional-sites.md",
+        "search-records.md",
+        "citation-verification.md",
+        "output-format.md",
         "anti-aigc.md"
       ]
     }

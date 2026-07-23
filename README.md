@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **23 Skills (including adversarial planning)** - Covering architecture, development, testing, writing, patents, official documents, template-preserving form filling, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, and more
-- **32 Commands** - English and Chinese commands supported
+- **24 Skills (including academic guide)** - Covering architecture, development, testing, writing, patents, official documents, template-preserving form filling, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, academic field navigation, and more
+- **36 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -38,6 +38,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 | **shuang-chong** | Adversarial 5-persona planning (single model) | Complex project stress-testing |
 | **tianbiao** | Template-preserving form filler | Filling formatted forms/reports |
+| **academic-guide** | Academic field navigator & citation verifier | New field exploration |
 
 ## Installation
 
@@ -118,6 +119,10 @@ After installation, use these commands in OpenCode:
 | `/auto <task>` | Autonomous iteration |
 | `/adversarial <task>` | Adversarial planning |
 | `/tianbiao <template> <data>` | Template-preserving form filling |
+| `/AcademicGuide <field>` | Academic field navigation |
+| `/guide dissertations <field>` | Search dissertations only |
+| `/guide sites <field>` | Compile sites only |
+| `/guide verify <report>` | Verify citations only |
 | `/skills` | List all skills |
 
 ### Command Examples
@@ -177,6 +182,12 @@ After installation, use these commands in OpenCode:
 
 # Adversarial planning
 /adversarial Design a fault-tolerant distributed message queue
+
+# Academic field navigation
+/AcademicGuide computational linguistics
+/guide dissertations "quantum computing"
+/guide sites bioinformatics
+/guide verify /path/to/report.md
 
 **Note:** Chinese commands are also available. See [README_CN.md](README_CN.md) for Chinese documentation.
 
