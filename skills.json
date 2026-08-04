@@ -187,6 +187,26 @@
       ]
     },
     {
+      "name": "literary-master",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "文宗 - Corpus-grounded master writer craft system: 4-layer craft (voice/character/story/style) x 4-axis index (movement/era/national school/author). 40+ author signatures, 20+ movements, era grammar, based on deep analysis of 559 public-domain classics + 292 Nobel works",
+      "auto_load": false,
+      "priority": 16,
+      "rules": [
+        "corpus-guide.md",
+        "movements.md",
+        "eras.md",
+        "national-schools.md",
+        "voice-and-style.md",
+        "character-building.md",
+        "story-engineering.md",
+        "scene-dialogue.md",
+        "author-signatures.md",
+        "anti-aigc.md"
+      ]
+    },
+    {
       "name": "skill-refiner",
       "version": "1.0.0",
       "status": "Beta",
