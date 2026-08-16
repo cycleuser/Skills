@@ -384,6 +384,20 @@
         "output-format.md",
         "anti-aigc.md"
       ]
+    },
+    {
+      "name": "docx-editor",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "Docx 文档编辑 - Lossless DOCX unpack/edit/repack toolkit: treats .docx as a ZIP of OOXML parts, edits raw XML with lxml, on save copies every UNMODIFIED part byte-for-byte, only re-serialises edited parts",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "workflow.md",
+        "format-preservation.md",
+        "editable-targets.md",
+        "edge-cases.md"
+      ]
     }
   ],
   "docx-to-knowledge": {

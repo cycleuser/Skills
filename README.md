@@ -38,6 +38,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **power-iterate** | Autonomous continuous iteration | Time/token budget work |
 | **shuang-chong** | Adversarial 5-persona planning (single model) | Complex project stress-testing |
 | **tianbiao** | Template-preserving form filler | Filling formatted forms/reports |
+| **docx-editor** | Lossless DOCX unpack/edit/repack | Editing docx while keeping format byte-identical |
 | **academic-guide** | Academic field navigator & citation verifier | New field exploration |
 
 ## Installation
@@ -119,6 +120,9 @@ After installation, use these commands in OpenCode:
 | `/auto <task>` | Autonomous iteration |
 | `/adversarial <task>` | Adversarial planning |
 | `/tianbiao <template> <data>` | Template-preserving form filling |
+| `/docxedit <file>` | Lossless DOCX editing |
+| `/docxedit unpack <file>` | Unpack .docx into a folder |
+| `/docxedit pack <dir> <out>` | Repack a folder into .docx |
 | `/AcademicGuide <field>` | Academic field navigation |
 | `/guide dissertations <field>` | Search dissertations only |
 | `/guide sites <field>` | Compile sites only |
