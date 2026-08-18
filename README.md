@@ -39,6 +39,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **shuang-chong** | Adversarial 5-persona planning (single model) | Complex project stress-testing |
 | **tianbiao** | Template-preserving form filler | Filling formatted forms/reports |
 | **docx-editor** | Lossless DOCX unpack/edit/repack | Editing docx while keeping format byte-identical |
+| **research-figure** | Sketch-to-SVG figure generator | Scientific flowcharts with zero overlaps |
 | **academic-guide** | Academic field navigator & citation verifier | New field exploration |
 
 ## Installation

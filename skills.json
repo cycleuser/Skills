@@ -398,6 +398,19 @@
         "editable-targets.md",
         "edge-cases.md"
       ]
+    },
+    {
+      "name": "research-figure",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "科研画图 - Scientific figure generator: reads a hand-drawn sketch with a vision LLM, extracts structured layout JSON, maps to a grid-based SVG template (overlap-free by construction), auto-validates for overlaps/overflow/clipping, iteratively refines until 0 failures",
+      "auto_load": false,
+      "priority": 40,
+      "rules": [
+        "workflow.md",
+        "vision-to-prompt.md",
+        "layout-spec.md"
+      ]
     }
   ],
   "docx-to-knowledge": {
