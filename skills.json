@@ -411,6 +411,18 @@
         "vision-to-prompt.md",
         "layout-spec.md"
       ]
+    },
+    {
+      "name": "doc-to-docx",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "Pure-Python .doc -> .docx converter (no LibreOffice/Word/antiword), preserving text, Chinese fonts, formatting, page setup and tables.",
+      "rules": [
+        "workflow.md",
+        "binary-format.md",
+        "fidelity-map.md",
+        "edge-cases.md"
+      ]
     }
   ],
   "docx-to-knowledge": {

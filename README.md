@@ -41,6 +41,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **docx-editor** | Lossless DOCX unpack/edit/repack | Editing docx while keeping format byte-identical |
 | **research-figure** | Sketch-to-SVG figure generator | Scientific flowcharts with zero overlaps |
 | **academic-guide** | Academic field navigator & citation verifier | New field exploration |
+| **doc-to-docx** | Pure-Python .doc → .docx converter (no LibreOffice/Word) | Converting legacy Word binary files |
 
 ## Installation
 
@@ -128,6 +129,10 @@ After installation, use these commands in OpenCode:
 | `/guide dissertations <field>` | Search dissertations only |
 | `/guide sites <field>` | Compile sites only |
 | `/guide verify <report>` | Verify citations only |
+| `/doc2docx <file.doc>` | Convert legacy .doc → .docx (pure Python) |
+| `/doc2docx batch <dir>` | Batch-convert .doc files in a directory |
+| `/doc2docx inspect <file.doc>` | Inspect a .doc structure |
+| `/doc2docx check <out.docx>` | Verify a produced .docx |
 | `/skills` | List all skills |
 
 ### Command Examples

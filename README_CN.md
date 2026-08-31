@@ -31,6 +31,7 @@
 | **docx-editor (Docx 文档编辑)** | 无损 DOCX 解包/编辑/重新打包 | 改文档内容但格式逐字节不变 |
 | **research-figure (科研画图)** | 草图→读图→网格SVG→校验0覆盖 | 科研流程图/架构图生成 |
 | **academic-guide (学术导览)** | 学科入门导览与引用验证 | 新领域探索 |
+| **doc-to-docx (Doc 转 Docx)** | 纯 Python 转换 .doc→.docx（不依赖 Word/LibreOffice） | 老版 Word 二进制文件转换 |
 
 ## 安装
 
@@ -109,6 +110,10 @@ ls ~/.config/opencode/skills/
 | `/导览 论文 <领域>` | 仅搜索博士论文 |
 | `/导览 站点 <领域>` | 仅整理专业站点 |
 | `/导览 验证 <报告>` | 仅验证引用链接 |
+| `/转docx <文件.doc>` | 纯 Python 转换 .doc → .docx（不装 Word/LibreOffice） |
+| `/doc2docx batch <目录>` | 批量转换目录下全部 .doc |
+| `/doc2docx inspect <文件.doc>` | 查看 .doc 结构 |
+| `/doc2docx check <输出.docx>` | 校验生成的 .docx |
 
 ### 命令示例
 
