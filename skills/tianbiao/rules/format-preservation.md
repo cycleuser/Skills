@@ -87,11 +87,59 @@ set_multi_paragraph_cell(cell,
 - 用户要 `.doc` → docx 填好后 `soffice --convert-to doc`（LibreOffice 保表格）。
 - 绝不用 textutil 生成 doc/docx 交付件（拍平表格）。
 
+## 8. 值区本身是合并区域（推荐表/申报表常见）
+
+很多表（评优推荐表、职称申报表）的值区本身就是合并单元格：如"所在单位"值区跨 3 列、"事迹"值区跨 8 列。此时 `vcells()` 拿到的值区是一个 `_Cell`（横跨多个逻辑网格位），用 `row.cells[i]` 任意位置访问返回的是**同一个 tc**。
+
+先打印结构再填，避免误判：
+
+```python
+def dump_structure(table):
+    for ri, row in enumerate(table.rows):
+        seen = {}
+        parts = []
+        for ci, cell in enumerate(row.cells):
+            key = id(cell._tc)
+            if key in seen:
+                parts.append(f"[{seen[key]}<-合并]")
+            else:
+                seen[key] = ci
+                parts.append(f"({ci}:{cell.text.strip()[:10]})")
+        print(f"R{ri}: " + " ".join(parts))
+# 输出示例: R2: (0:所在单位) (1:) [1<-合并] [1<-合并] (4:推荐名称) [4<-合并] (6:) [6<-合并] [6<-合并]
+# 即: 所在单位值区=grid位1-3，推荐名称值区=grid位6-8。填值时访问 row.cells[1] 和 row.cells[6] 即可。
+```
+
+## 9. 大单元格保尾（签字行/日期不被覆盖）
+
+事迹/主要事迹类大单元格常在底部自带"负责人签字：＿＿ 年 月 日"。清空重写会把尾部一起冲掉。处理：
+
+- 先读原 cell 文本，定位尾部标记（"负责人签字""组长签字""学校公章""年 月 日"）。
+- 写法：正文按行 `add_paragraph` 写入，**最后补回尾部标记**（`keep_tail` 参数）。
+- 校验：重新打开读取 cell 文本，确认尾部仍在。
+
+```python
+def set_cell_keep_tail(cell, body, tail="负责人签字："):
+    # 清空 cell 段落与 run → 按 body 行 add_paragraph（宋体）→ 末尾 add_paragraph(tail)
+```
+
+## 10. 多行写入字体设置
+
+清空重写时中文字体必须走 eastAsia，否则回落成 Calibri 中文变形：
+
+```python
+run.font.name = "Times New Roman"
+run._element.rPr.rFonts.set(qn("w:eastAsia"), "宋体")
+run.font.size = Pt(12)   # 小四
+```
+
 ## 自检清单 / Checklist
 
-- [ ] 用 `vcells()` 而非 `cell(r,c)` 定位
+- [ ] 用 `vcells()` 或 `id(cell._tc)` 去重定位（值区合并也能定位）
 - [ ] 填值继承原 rPr，去除示例 color/highlight
 - [ ] 分析段克隆模板段落样式，保留字体
+- [ ] 大单元格底部签字行/日期保尾（`keep_tail`）
+- [ ] 多行写入设 eastAsia 中文字体
 - [ ] 明细表带 `tblHeader` + `cantSplit` + 小字号
 - [ ] 表格数量/行列与模板一致
 - [ ] 输出为新文件，不覆盖模板

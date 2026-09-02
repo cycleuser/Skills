@@ -42,6 +42,10 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **research-figure** | Sketch-to-SVG figure generator | Scientific flowcharts with zero overlaps |
 | **academic-guide** | Academic field navigator & citation verifier | New field exploration |
 | **doc-to-docx** | Pure-Python .doc → .docx converter (no LibreOffice/Word) | Converting legacy Word binary files |
+| **verify-deliver** | Verify-before-deliver protocol | Self-checking every artifact before reporting |
+| **inventory-report** | Inventory & cross-source verification | Achievement/literature/content/roster inventories |
+| **batch-file-pipeline** | Batch file pipeline (orient/rename/convert/dedupe/verify) | Scanning certs, media & document batch processing |
+| **application-bundle** | Form + narrative + evidence bundle assembly | 评优/职称/课题/验收 application materials |
 
 ## Installation
 
@@ -173,7 +177,7 @@ After installation, use these commands in OpenCode:
 
 # Enrollment consultation
 /enroll 北京 高考 580分 能报什么学校
-/enroll 北京大学 法学硕士招生情况
+/enroll 某大学 法学硕士招生情况
 
 # Skill refinement
 /refine literary-ghostwriter

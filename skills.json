@@ -423,6 +423,58 @@
         "fidelity-map.md",
         "edge-cases.md"
       ]
+    },
+    {
+      "name": "verify-deliver",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "先验证后交付 - Verify-before-deliver protocol: real execution, reproducible self-checks (openable/content/fidelity/integrity/consistency), fix-verify loop, lossless confirmation, then report conclusions first. Applies to every artifact before reporting to user.",
+      "auto_load": false,
+      "priority": 10,
+      "rules": [
+        "checklists.md",
+        "fix-loop.md",
+        "reporting.md"
+      ]
+    },
+    {
+      "name": "inventory-report",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "盘点归纳 - Inventory & Report: define taxonomy, search a messy directory, cross-verify against multiple sources (stats xlsx / official PDF lists / certificate OCR, incl. robust WPS-xlsx fallback), output a categorized xlsx table + one-paragraph summary + optional docx report. Generalizes achievements/literature/content/roster inventories.",
+      "auto_load": false,
+      "priority": 30,
+      "rules": [
+        "taxonomy.md",
+        "verification.md",
+        "output.md"
+      ]
+    },
+    {
+      "name": "batch-file-pipeline",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "批量文件管道 - Batch File Pipeline: OCR box-geometry orientation detection & rotation correction, convention-based batch renaming, format conversion, SHA-256 dedupe, integrity verify. No-loss protocol: verify new files before touching originals. Generalizes scan/cert/media/document batch processing.",
+      "auto_load": false,
+      "priority": 30,
+      "rules": [
+        "orientation.md",
+        "naming.md",
+        "safety.md"
+      ]
+    },
+    {
+      "name": "application-bundle",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "申报材料包 - Application Bundle: assemble 'form + narrative + evidence' bundles (评优/职称/课题/验收). Fill merged-cell docx tables preserving format & signature tails, generate narrative docx, collect & embed evidence images (PDF->PNG), pack & name the bundle directory.",
+      "auto_load": false,
+      "priority": 40,
+      "rules": [
+        "table-filling.md",
+        "evidence.md",
+        "packing.md"
+      ]
     }
   ],
   "docx-to-knowledge": {
