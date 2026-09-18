@@ -49,7 +49,7 @@
 
 ## 输出位置
 所有数据文件位于：
-`/Users/fred/Documents/GitHub/cycleuser/Skills/skills/bao-kao/data/*/rank_tables/`
+`~/Documents/GitHub/cycleuser/Skills/skills/bao-kao/data/*/rank_tables/`
 
 ## 数据说明
 - 所有数据均来自教育在线网站 (gaokao.eol.cn)

@@ -2,16 +2,16 @@
 """从扁平 JSON 生成优雅 HTML（章节级 HTML，图片内联）"""
 import json, os, re
 
-JSON = '/Users/fred/Documents/GitHub/cycleuser/GangDan/knowledge/drone_handbook_final.json'
-for path in ['/Users/fred/Documents/GitHub/cycleuser/GangDan/knowledge/drone_handbook_full.json',
-             JSON]:
-    # copy final to full for gen_html compat
-    with open(JSON, encoding='utf-8') as f:
-        chapters = json.load(f)
+BASE = os.environ.get("KB_BASE", os.path.expanduser("~/KnowledgeBase"))
+TITLE = os.environ.get("KB_TITLE", "知识手册")
+JSON = os.environ.get("KB_JSON", os.path.join(BASE, "knowledge", "handbook_final.json"))
+FULL = os.path.join(BASE, "knowledge", "handbook_full.json")
 
-# Symlink final -> full
+with open(JSON, encoding='utf-8') as f:
+    chapters = json.load(f)
+
 import shutil
-shutil.copy(JSON, '/Users/fred/Documents/GitHub/cycleuser/GangDan/knowledge/drone_handbook_full.json')
+shutil.copy(JSON, FULL)
 
 def esc(s):
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
@@ -49,11 +49,10 @@ for ch in chapters:
 KB = json.dumps(chapters, ensure_ascii=False)
 
 # Write KB.js
-kb_js = 'var DRONE_KB=' + KB + ';'
-for p in ['/Users/fred/Documents/GitHub/cycleuser/blog/content/static/drone_kb.js',
-          '/Users/fred/Documents/GitHub/cycleuser/GangDan/drone_kb.js']:
-    with open(p, 'w', encoding='utf-8') as f:
-        f.write(kb_js)
+kb_js = 'var KB_DATA=' + KB + ';'
+OUT_KB_JS = os.path.join(BASE, 'knowledge_kb.js')
+with open(OUT_KB_JS, 'w', encoding='utf-8') as f:
+    f.write(kb_js)
 
 # HTML template
 html = f'''<!DOCTYPE html>
@@ -61,7 +60,7 @@ html = f'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>无人机驾驶员航空知识手册</title>
+<title>{TITLE}</title>
 <style>
 :root{{--bg:#fafbfc;--card:#fff;--text:#22262a;--muted:#6a737d;--border:#e4e8ec;--link:#1a6fc4;--accent:#f0f4ff;--hi:#fff3a1}}
 @media(prefers-color-scheme:dark){{:root{{--bg:#0d1117;--card:#151b24;--text:#c9d1d9;--muted:#8b949e;--border:#21262d;--link:#58a6ff;--accent:#162140;--hi:#5a4a00}}}}
@@ -105,9 +104,9 @@ mark.hl{{background:var(--hi);border-radius:3px;padding:0 1px}}
 <div class="overlay" id="overlay" onclick="toggleNav()"></div>
 <nav class="nav" id="nav">{nav_html}</nav>
 <div class="content" id="content">{content_html}</div>
-<script src="drone_kb.js"></script>
+<script src="knowledge_kb.js"></script>
 <script>
-var DRONE_KB=DRONE_KB||[];
+var KB_DATA=KB_DATA||[];
 function toggleNav(){{document.getElementById('nav').classList.toggle('hidden');document.getElementById('overlay').classList.toggle('show')}}
 function clearSearch(){{document.getElementById('search').value='';doSearch()}}
 function escRe(s){{return s.replace(/[.*+?\^${{}}()|[\\\\]\\\\\\\\]/g,'\\\\\\\\$&')}}
@@ -117,7 +116,7 @@ function doSearch(){{
   var q=document.getElementById('search').value.trim();
   if(!q){{location.reload();return}}
   var results=[],ql=q.toLowerCase();
-  DRONE_KB.forEach(function(ch){{
+  KB_DATA.forEach(function(ch){{
     var plain=ch.html.replace(/<[^>]+>/g,'').toLowerCase();
     var ci=plain.indexOf(ql);
     if(ci>=0)results.push({{ch:ch,ci:ci,plain:plain}})
@@ -143,11 +142,10 @@ document.getElementById('nav').addEventListener('click',function(ev){{
 </body>
 </html>'''
 
-for out in ['/Users/fred/Documents/GitHub/cycleuser/GangDan/drone_handbook.html',
-            '/Users/fred/Documents/GitHub/cycleuser/blog/content/static/无人机知识手册.html']:
-    with open(out, 'w', encoding='utf-8') as f:
-        f.write(html)
+OUT_HTML = os.path.join(BASE, 'handbook.html')
+with open(OUT_HTML, 'w', encoding='utf-8') as f:
+    f.write(html)
 
-print(f"HTML: {os.path.getsize('/Users/fred/Documents/GitHub/cycleuser/GangDan/drone_handbook.html')/1024:.0f} KB")
+print(f"HTML: {os.path.getsize(OUT_HTML)/1024:.0f} KB")
 print(f"Chapters: {len(chapters)}, Sections: {section_count}")
 print(f"Total images: {sum(c.get('images',0) for c in chapters)}")

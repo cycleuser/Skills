@@ -4,8 +4,8 @@ A collection of specialized skills for AI coding agents. These skills provide st
 
 ## Features
 
-- **24 Skills (including academic guide)** - Covering architecture, development, testing, writing, patents, official documents, template-preserving form filling, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, autonomous iteration, academic field navigation, and more
-- **36 Commands** - English and Chinese commands supported
+- **25 Skills (including academic guide)** - Covering architecture, development, testing, writing, patents, official documents, template-preserving form filling, text humanization, literary style imitation, blog style writing, enrollment consultation, skill refinement, project rebuilding, GitHub triage, review, PR workflow, security review, grounded anti-hallucination generation, autonomous iteration, academic field navigation, and more
+- **38 Commands** - English and Chinese commands supported
 - **OpenCode Compatible** - Native support for OpenCode's skill system
 - **Auto-Discovery** - Skills are automatically loaded based on context
 - **Modular Design** - Each skill is self-contained with rules and templates
@@ -43,6 +43,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **academic-guide** | Academic field navigator & citation verifier | New field exploration |
 | **doc-to-docx** | Pure-Python .doc → .docx converter (no LibreOffice/Word) | Converting legacy Word binary files |
 | **verify-deliver** | Verify-before-deliver protocol | Self-checking every artifact before reporting |
+| **you-ju** | Grounded generation (anti-hallucination) | Strict source-faithful RAG/summarization with per-step audit |
 | **inventory-report** | Inventory & cross-source verification | Achievement/literature/content/roster inventories |
 | **batch-file-pipeline** | Batch file pipeline (orient/rename/convert/dedupe/verify) | Scanning certs, media & document batch processing |
 | **application-bundle** | Form + narrative + evidence bundle assembly | 评优/职称/课题/验收 application materials |
@@ -137,6 +138,8 @@ After installation, use these commands in OpenCode:
 | `/doc2docx batch <dir>` | Batch-convert .doc files in a directory |
 | `/doc2docx inspect <file.doc>` | Inspect a .doc structure |
 | `/doc2docx check <out.docx>` | Verify a produced .docx |
+| `/grounded <task>` | Grounded anti-hallucination generation |
+| `/grounded audit <output>` | Audit existing output for hallucinations |
 | `/skills` | List all skills |
 
 ### Command Examples

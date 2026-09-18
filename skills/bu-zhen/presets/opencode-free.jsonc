@@ -1,0 +1,14 @@
+{
+  "$comment": "布阵 preset: 全 opencode 免费模型,零成本。用 scripts/apply_preset.py opencode-free 应用。",
+  "preset": "opencode-free",
+  "agents": {
+    "bz-orchestrator": { "model": "opencode/nemotron-3-ultra-free", "temperature": 0.3 },
+    "bz-oracle": { "model": "opencode/big-pickle", "temperature": 0.2 },
+    "bz-council": { "model": "opencode/big-pickle", "temperature": 0.3 },
+    "bz-explorer": { "model": "opencode/nemotron-3.5-lightning-free", "temperature": 0.2 },
+    "bz-librarian": { "model": "opencode/nemotron-3.5-lightning-free", "temperature": 0.2 },
+    "bz-designer": { "model": "opencode/mimo-v2.5-free", "temperature": 0.3 },
+    "bz-fixer": { "model": "opencode/muse-spark-1.3-contributor-free", "temperature": 0.2 },
+    "bz-observer": { "model": "opencode/mimo-v2.5-free", "temperature": 0.2 }
+  }
+}

@@ -103,7 +103,7 @@ This will rescan all skill directories and update the registry.
 
 ## Installation
 
-⚠️ **SAFETY NOTE**: The commands below follow safety rules — they download scripts for inspection before execution. Never pipe `curl` directly to `bash` without visual review. See [global-rules/bash-safety.md](file:///Users/fred/.config/opencode/skills/global-rules/rules/bash-safety.md).
+⚠️ **SAFETY NOTE**: The commands below follow safety rules — they download scripts for inspection before execution. Never pipe `curl` directly to `bash` without visual review. See [global-rules/bash-safety.md](../global-rules/rules/bash-safety.md).
 
 ### From GitHub (Recommended)
 

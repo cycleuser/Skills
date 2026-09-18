@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Refine knowledge base: merge image-label fragments into structured captions"""
-import re, json
+import re, json, os
 
-JSON = '/Users/fred/Documents/GitHub/cycleuser/GangDan/knowledge/drone_handbook_final.json'
+JSON = os.environ.get("KB_JSON", os.path.expanduser("~/KnowledgeBase/knowledge/handbook_final.json"))
 
 with open(JSON, encoding='utf-8') as f:
     chapters = json.load(f)

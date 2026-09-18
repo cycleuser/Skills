@@ -4,7 +4,7 @@ version: "1.0.0"
 description: |
   Converts .docx documents (manuals, textbooks, reference books) into self-contained, searchable, mobile-friendly HTML knowledge bases with embedded images, chapter navigation, and full-text search.
 
-  Triggers when: User provides a .docx file and requests a knowledge base, searchable HTML, mobile-friendly reader, or GangDan-compatible JSON.
+  Triggers when: User provides a .docx file and requests a knowledge base, searchable HTML, mobile-friendly reader, or a generic knowledge-base JSON.
 
   Commands:
   - /知识库 <docx路径> [输出目录] - Full pipeline: extract → clean → generate HTML + JSON + images
@@ -27,7 +27,7 @@ status: stable
 
 ## 核心定位
 
-将 .docx 格式的各类文档（手册、教材、参考书）转换为**自包含、可搜索、移动端友好的 HTML 知识库**。同时生成 GangDan 兼容的 JSON 知识库文件。
+将 .docx 格式的各类文档（手册、教材、参考书）转换为**自包含、可搜索、移动端友好的 HTML 知识库**。同时生成通用知识库兼容的 JSON 文件。
 
 ## Quick Commands
 
@@ -171,7 +171,7 @@ srch.oninput = function() {
 | 文件 | 说明 |
 |------|------|
 | `<name>.html` | 单文件知识库（6-8MB，自包含） |
-| `knowledge/<name>_full.json` | 结构化 JSON 知识库（GangDan 兼容） |
+| `knowledge/<name>_full.json` | 结构化 JSON 知识库（通用知识库兼容） |
 | `images/` | 原始图片（431 张） |
 | `extract_*.py` | 提取脚本（可复现） |
 | `gen_html_*.py` | HTML 生成脚本（可复现） |

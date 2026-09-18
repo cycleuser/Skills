@@ -5,10 +5,13 @@ from collections import OrderedDict
 from lxml import etree
 from docx import Document
 
-SRC = '/Users/fred/Documents/GitHub/Current/课程学习/无人机/无人机驾驶员航空知识手册.docx'
-IMG_DIR = '/Users/fred/Documents/GitHub/cycleuser/GangDan/drone_images'
-OUT_JSON = '/Users/fred/Documents/GitHub/cycleuser/GangDan/knowledge/drone_handbook_final.json'
+# 按需修改或通过环境变量覆盖：源 docx、图片目录、JSON 输出路径
+BASE = os.environ.get("KB_BASE", os.path.expanduser("~/KnowledgeBase"))
+SRC = os.environ.get("KB_SRC", os.path.join(BASE, "input.docx"))
+IMG_DIR = os.path.join(BASE, "images")
+OUT_JSON = os.path.join(BASE, "knowledge", "handbook_final.json")
 os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
+os.makedirs(IMG_DIR, exist_ok=True)
 
 doc = Document(SRC)
 
@@ -17,7 +20,7 @@ img_map = {}
 for rel_id, rel in doc.part.rels.items():
     if "image" in rel.reltype:
         fname = os.path.basename(rel.target_ref)
-        img_map[rel_id] = f'images/drone/{fname}'
+        img_map[rel_id] = f'images/{fname}'
 
 # ---- 2. Extract content sequence ----
 body = doc.element.body
@@ -66,7 +69,7 @@ for child in body:
 caption_pat = re.compile(r'^(图|表)\s*\d+[\.\d]*\s+')
 bullet_pat = re.compile(r'^\(?\s*\d+\s*[\)）]')
 subtitle_pat = re.compile(r'^[（(]\s*[一二三四五六七八九十\d]+\s*[）)]')
-orphan_pat = re.compile(r'^无人机驾驶员航空知识手册$|^第\s*\d+\s*章\s*$')
+orphan_pat = re.compile(r'^第\s*\d+\s*章\s*$')
 skip_pat = re.compile(r'^(图书在版|ISBN|中国版本|CIP|责任编辑|版权所有|印张|开本|印数|定价|字数|版次|印次)')
 
 refined = []  # (type, data)
@@ -79,7 +82,7 @@ while i < len(content_seq):
         if i+1 < len(content_seq) and content_seq[i+1][0] == 'text':
             next_t = content_seq[i+1][1]
             if (caption_pat.match(next_t) or
-                len(next_t) < 40 and ('图' in next_t or '表' in next_t or next_t.startswith('无人机驾驶员'))) and len(next_t) < 60:
+                len(next_t) < 40 and ('图' in next_t or '表' in next_t)) and len(next_t) < 60:
                 # Merge: image + caption
                 fig_html = f'<figure><img src="{data}" style="max-width:100%;height:auto;display:block;margin:10px auto 4px;border-radius:4px" loading="lazy" alt="">'
                 fig_html += f'<figcaption style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:12px">{next_t}</figcaption></figure>'

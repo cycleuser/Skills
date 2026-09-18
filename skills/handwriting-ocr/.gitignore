@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+page_images/
+raw_ocr.json
+*.raw.txt
+*.raw.md
+*.refined.txt
+metrics.json
+score_report.md
+# 测试样本（评估时由用户放入；不要纳入版本控制）
+test_set/

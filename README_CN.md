@@ -32,6 +32,7 @@
 | **research-figure (科研画图)** | 草图→读图→网格SVG→校验0覆盖 | 科研流程图/架构图生成 |
 | **academic-guide (学术导览)** | 学科入门导览与引用验证 | 新领域探索 |
 | **doc-to-docx (Doc 转 Docx)** | 纯 Python 转换 .doc→.docx（不依赖 Word/LibreOffice） | 老版 Word 二进制文件转换 |
+| **you-ju (有据)** | 防幻觉严格转述：闭世界约束+三步一审计+句级溯源 | 知识库检索/网页搜索/文档整合的忠实转述 |
 
 ## 安装
 

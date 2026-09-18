@@ -90,7 +90,7 @@
 ## 输出文件位置
 所有数据文件位于：
 ```
-/Users/fred/Documents/GitHub/cycleuser/Skills/skills/bao-kao/data/*/rank_tables/
+~/Documents/GitHub/cycleuser/Skills/skills/bao-kao/data/*/rank_tables/
 ```
 
 汇总报告：

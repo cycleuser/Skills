@@ -1,0 +1,14 @@
+{
+  "$comment": "布阵 preset: 混合 — 强推理用 DeepSeek,快速探索用 opencode 免费模型省钱。用 scripts/apply_preset.py mixed 应用。",
+  "preset": "mixed",
+  "agents": {
+    "bz-orchestrator": { "model": "deepseek/deepseek-v4-pro", "temperature": 0.3 },
+    "bz-oracle": { "model": "deepseek/deepseek-reasoner", "temperature": 0.2 },
+    "bz-council": { "model": "deepseek/deepseek-reasoner", "temperature": 0.3 },
+    "bz-explorer": { "model": "opencode/nemotron-3.5-lightning-free", "temperature": 0.2 },
+    "bz-librarian": { "model": "opencode/nemotron-3.5-lightning-free", "temperature": 0.2 },
+    "bz-designer": { "model": "opencode/mimo-v2.5-free", "temperature": 0.3 },
+    "bz-fixer": { "model": "deepseek/deepseek-v4-flash", "temperature": 0.2 },
+    "bz-observer": { "model": "opencode/mimo-v2.5-free", "temperature": 0.2 }
+  }
+}

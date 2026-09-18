@@ -1,0 +1,15 @@
+# 注意：Python 3.13 下请固定 paddlepaddle==3.2.2；
+# 3.3.x 在 Windows 上有 oneDNN/PIR 转换 bug（ConvertPirAttribute2RuntimeAttribute）。
+#
+# 【CPU 版】pip install -r requirements.txt 即可。
+# 【GPU 版】（有 NVIDIA 显卡时，推荐，速度约 200 倍）：
+#   1) pip install paddlepaddle==3.2.2 （先装 CPU 版占位，再卸载也行）
+#   2) pip uninstall paddlepaddle -y
+#   3) pip install paddlepaddle-gpu==3.2.2 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+#       （cu126 对应 CUDA 12.6 驱动；其他驱动版本替换 cu126 为 cu118/cu123 等）
+#   脚本默认 --device auto，会自动检测并使用 GPU。
+paddlepaddle==3.2.2
+paddleocr>=3.0.0
+pymupdf>=1.23.0
+# 可选：中文分词，用于更准确的 WER 计算
+jieba>=0.42.1

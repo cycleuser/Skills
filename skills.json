@@ -475,6 +475,96 @@
         "evidence.md",
         "packing.md"
       ]
+    },
+    {
+      "name": "you-ju",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "有据 - Grounded Generation: anti-hallucination strict paraphrasing. Closed-world constraint on every generation step: every entity, number, and causal relation in output must be traceable to source text; no new entities, numbers, or logic. Per-step grounded audit with sentence-level citations [A:L12], mechanical leak detection (entity/number/citation-mismatch), violation demotion (rewrite -> declared-gap -> quoted excerpt), plus baseline-vs-controlled A/B experiment framework with closed-world corpus.",
+      "auto_load": false,
+      "priority": 15,
+      "rules": [
+        "grounding-rules.md",
+        "audit-protocol.md",
+        "ab-experiment.md",
+        "anti-aigc.md"
+      ]
+    },
+    {
+      "name": "bu-zhen",
+      "version": "1.2.0",
+      "status": "Beta",
+      "description": "布阵 - Multi-agent orchestration: ships 8 REAL opencode agents (bz-orchestrator primary + 7 subagents) with per-agent models, temperatures, and config-level permission enforcement. 3 presets (opencode-free/deepseek/mixed) switchable via scripts/apply_preset.py. Safety hardening enforced at opencode permission layer + prompt-layer rules (budget caps, doom-loop, stale-work, proto-pollution, model fallback, 9-type delegation errors). Inspired by code-yeongyu/oh-my-openagent (real original, SUL) and alvinunreal/oh-my-opencode-slim (MIT), all prompts/rules original Chinese rewrites.",
+      "auto_load": false,
+      "priority": 60,
+      "rules": [
+        "orchestrator-contract.md",
+        "specialist-prompts.md",
+        "safety-hardening.md",
+        "deepwork-protocol.md",
+        "codemap-workflow.md",
+        "verification-planning.md",
+        "reflect-workflow.md",
+        "retry-patterns.md",
+        "anti-aigc.md"
+      ]
+    },
+    {
+      "name": "global-rules",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "Global safety and operational rules for opencode sessions. Auto-loaded with highest priority on every session.",
+      "auto_load": true,
+      "rules": [
+        "bash-safety.md",
+        "bash-timeout.md",
+        "terminal-safety.md"
+      ],
+      "priority": -100
+    },
+    {
+      "name": "gong-zhong-hao",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "WeChat Official Account (公众号) full-archive scraper. Given a 公众号 name or",
+      "rules": [
+        "anti-aigc.md",
+        "enumeration.md",
+        "html-to-markdown.md",
+        "resume-dedup.md",
+        "workflow.md"
+      ]
+    },
+    {
+      "name": "handwriting-ocr",
+      "version": "0.1.0",
+      "status": "beta",
+      "description": "手写笔记 OCR 流水线：将纸本扫描图与平板 PDF 导出的手写笔记转成可检索的 Markdown。"
+    },
+    {
+      "name": "hui-shou",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "File-operation logging and safe-recovery skill. Intercepts destructive file",
+      "rules": [
+        "anti-aigc.md",
+        "guard-patterns.md",
+        "manifest-format.md",
+        "recovery.md",
+        "workflow.md"
+      ]
+    },
+    {
+      "name": "video-digest",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "将任意视频网站链接转换为高效率图文学习材料。"
+    },
+    {
+      "name": "video-extract",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "视频萃取：将任意视频链接转化为图文学习材料（逐字稿、关键帧、幻灯片、总结文章、网页）。"
     }
   ],
   "docx-to-knowledge": {

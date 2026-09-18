@@ -1,0 +1,14 @@
+{
+  "$comment": "布阵 preset: 全 DeepSeek 模型。用 scripts/apply_preset.py deepseek 应用。",
+  "preset": "deepseek",
+  "agents": {
+    "bz-orchestrator": { "model": "deepseek/deepseek-v4-pro", "temperature": 0.3 },
+    "bz-oracle": { "model": "deepseek/deepseek-reasoner", "temperature": 0.2 },
+    "bz-council": { "model": "deepseek/deepseek-reasoner", "temperature": 0.3 },
+    "bz-explorer": { "model": "deepseek/deepseek-v4-flash", "temperature": 0.2 },
+    "bz-librarian": { "model": "deepseek/deepseek-v4-flash", "temperature": 0.2 },
+    "bz-designer": { "model": "deepseek/deepseek-v4-pro", "temperature": 0.3 },
+    "bz-fixer": { "model": "deepseek/deepseek-v4-flash", "temperature": 0.2 },
+    "bz-observer": { "model": "deepseek/deepseek-v4-flash-vision-exp", "temperature": 0.2 }
+  }
+}

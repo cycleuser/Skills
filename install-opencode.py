@@ -50,6 +50,7 @@ SKILLS = [
     "project-rebuilder",
     "zi-kong",
     "shuang-chong",
+    "you-ju",
 ]
 
 COMMANDS = [
@@ -250,7 +251,35 @@ def install_from_local(source_dir: Path, install_dir: Path, skills: Optional[lis
             rules_dest.mkdir(exist_ok=True)
             for rule_file in rules_src.glob("*.md"):
                 shutil.copy(rule_file, rules_dest / rule_file.name)
-        
+
+        agents_src = source_skill / "agents"
+        if agents_src.exists():
+            agents_dest = dest_skill / "agents"
+            agents_dest.mkdir(exist_ok=True)
+            for agent_file in agents_src.glob("*.md"):
+                shutil.copy(agent_file, agents_dest / agent_file.name)
+
+        presets_src = source_skill / "presets"
+        if presets_src.exists():
+            presets_dest = dest_skill / "presets"
+            presets_dest.mkdir(exist_ok=True)
+            for preset_file in presets_src.glob("*.jsonc"):
+                shutil.copy(preset_file, presets_dest / preset_file.name)
+
+        scripts_src = source_skill / "scripts"
+        if scripts_src.exists():
+            scripts_dest = dest_skill / "scripts"
+            scripts_dest.mkdir(exist_ok=True)
+            for script_file in scripts_src.iterdir():
+                if script_file.is_file():
+                    shutil.copy(script_file, scripts_dest / script_file.name)
+                    if script_file.suffix == ".py":
+                        os.chmod(scripts_dest / script_file.name, 0o755)
+
+        tests_src = source_skill / "tests"
+        if tests_src.exists():
+            shutil.copytree(tests_src, dest_skill / "tests")
+
         installed.append(skill_name)
         print(f"  ✓ Installed: {skill_name}")
     
@@ -380,7 +409,33 @@ def install_from_github(install_dir: Path, skills: Optional[list] = None) -> boo
             rule_url = f"{RAW_URL}/skills/{skill_name}/rules/{rule}"
             rule_file = rules_dir / rule
             download_file(rule_url, rule_file)
-        
+
+        # Download skill-specific rules and scripts declared in skills.json
+        skill_rules = []
+        try:
+            skills_json_url = f"{RAW_URL}/skills.json"
+            temp_json = install_dir / "skills.json.tmp"
+            if download_file(skills_json_url, temp_json):
+                registry = json.loads(temp_json.read_text())
+                temp_json.unlink()
+                for entry in registry.get("skills", []):
+                    if entry.get("name") == skill_name:
+                        skill_rules = entry.get("rules", [])
+                        break
+        except (ValueError, OSError):
+            pass
+        for rule in skill_rules:
+            if (rules_dir / rule).exists():
+                continue
+            rule_url = f"{RAW_URL}/skills/{skill_name}/rules/{rule}"
+            download_file(rule_url, rules_dir / rule)
+
+        scripts_dir = skill_dir / "scripts"
+        scripts_dir.mkdir(exist_ok=True)
+        for script_name in ("ground_check.py", "common_chars.txt"):
+            script_url = f"{RAW_URL}/skills/{skill_name}/scripts/{script_name}"
+            download_file(script_url, scripts_dir / script_name)
+
         installed.append(skill_name)
         print(f"  ✓ Installed: {skill_name}")
     

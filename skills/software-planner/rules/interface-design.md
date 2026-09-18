@@ -34,7 +34,7 @@ parser.add_argument("-q", "--quiet", action="store_true",
                     help="Suppress non-essential output")
 ```
 
-### Subcommand Structure (GangDan Pattern)
+### Subcommand Structure (Standard Pattern)
 
 ```python
 def main():

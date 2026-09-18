@@ -35,7 +35,7 @@ status: Beta
 
 # Software Development Planner
 
-Complete workflow for planning and implementing Python software with CLI, GUI, and Web interfaces, following established project patterns from GangDan, Chou, Huan, LaPian, and NuoYi.
+Complete workflow for planning and implementing Python software with CLI, GUI, and Web interfaces, following established internal project patterns.
 
 ## Pre-Development Planning
 
@@ -89,7 +89,7 @@ Define each module with clear responsibilities and size targets. The `cli.py` mo
 
 ### CLI (Command-Line Interface)
 
-Follow unified flag conventions from GangDan:
+Follow unified flag conventions:
 
 ```python
 import argparse
@@ -125,7 +125,7 @@ def main():
     cli_parser.add_argument("input", help="Input file or data")
 ```
 
-Entry Points (following GangDan pattern): The software supports multiple entry points. The default invocation launches GUI or web based on context. Explicit GUI mode uses `softwarename gui`. Web server mode uses `softwarename web`. CLI mode uses `softwarename cli <args>`. Module invocation uses `python -m packagename`.
+Entry Points (following the standard pattern): The software supports multiple entry points. The default invocation launches GUI or web based on context. Explicit GUI mode uses `softwarename gui`. Web server mode uses `softwarename web`. CLI mode uses `softwarename cli <args>`. Module invocation uses `python -m packagename`.
 
 ### GUI (PySide6 Interface)
 

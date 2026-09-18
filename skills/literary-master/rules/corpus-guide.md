@@ -5,13 +5,13 @@
 ## 两个语料库
 
 ### 公有领域世界文学名著集（全文 txt）
-`/Users/fred/Documents/重点文献/公有领域世界文学名著集/`
+`~/Documents/重点文献/公有领域世界文学名著集/`
 - 180 位名家 / 559 部作品，多为 Gutenberg/Wikisource 全文
 - 目录命名：`作者名_英文名/作品名_英文名(en|de|fr|ru|it|es|la|el).txt`
 - `en` = 英文原著/译本；`de/fr/ru/...` = 母语原文
 
 ### 诺贝尔文学奖作品集（详细剧情 md + 部分原著）
-`/Users/fred/Documents/重点文献/诺贝尔文学奖作品集/`
+`~/Documents/重点文献/诺贝尔文学奖作品集/`
 - 122 位获奖者 / 292 部作品
 - 目录：`年份_获奖者中文名/作者简介.md` + `作品名.md`（详细剧情/人物/主题）+ 部分 `.txt` 原文
 - 总索引：`诺贝尔文学奖作品集总索引.md`
@@ -21,16 +21,16 @@
 
 ```bash
 # 看目录里有什么
-ls "/Users/fred/Documents/重点文献/公有领域世界文学名著集/福楼拜_Flaubert"
+ls "~/Documents/重点文献/公有领域世界文学名著集/福楼拜_Flaubert"
 
 # 读开头 150 行（把握声部、开篇装置）
-head -150 "/Users/fred/Documents/重点文献/公有领域世界文学名著集/福楼拜_Flaubert/包法利夫人_Madame_Bovary(en).txt"
+head -150 "~/Documents/重点文献/公有领域世界文学名著集/福楼拜_Flaubert/包法利夫人_Madame_Bovary(en).txt"
 
 # 读中段/关键场景（用 sed 抽行；offset 视文件大小而定）
-sed -n '1200,1350p' "/Users/fred/Documents/重点文献/公有领域世界文学名著集/陀思妥耶夫斯基_Dostoevsky/罪与罚_Crime_and_Punishment(en).txt"
+sed -n '1200,1350p' "~/Documents/重点文献/公有领域世界文学名著集/陀思妥耶夫斯基_Dostoevsky/罪与罚_Crime_and_Punishment(en).txt"
 
 # 抽读诺奖剧情 md（比读全文快）
-grep -A 60 "### 详细剧情" "/Users/fred/Documents/重点文献/诺贝尔文学奖作品集/2017_石黑一雄/长日将尽.md"
+grep -A 60 "### 详细剧情" "~/Documents/重点文献/诺贝尔文学奖作品集/2017_石黑一雄/长日将尽.md"
 ```
 
 ## 作家签名 → 原文索引（快速查找表）

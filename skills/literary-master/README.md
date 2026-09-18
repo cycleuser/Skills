@@ -33,7 +33,7 @@
 - 建议：长篇项目管理流程用文豪，文本工艺根基用文宗。
 
 ## 依赖
-- 语料库：`/Users/fred/Documents/重点文献/公有领域世界文学名著集/` 与 `/Users/fred/Documents/重点文献/诺贝尔文学奖作品集/`
+- 语料库：`~/Documents/重点文献/公有领域世界文学名著集/` 与 `~/Documents/重点文献/诺贝尔文学奖作品集/`
 - 依赖 _shared/core/safety-rules.md
 
 ## 参见
