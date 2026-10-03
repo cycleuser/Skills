@@ -477,6 +477,18 @@
       ]
     },
     {
+      "name": "you-jian",
+      "version": "1.0.0",
+      "status": "Beta",
+      "description": "邮箱管家 - Mail Center: connect pi/opencode to any number of mailboxes (IMAP+SMTP, pure stdlib, zero deps). Collect/read/search/archive/flag/delete emails, download attachments, send mail, and generate a categorized daily digest with urgent/todo/notification classification. Chinese MIME decoding (gbk/gb18030/big5), IMAP UTF-7 folder names, client-side non-ASCII search, read-only by default and DRY-RUN + --yes confirmation for all writes; credentials via macOS keychain/env var/0600 config.",
+      "auto_load": false,
+      "priority": 20,
+      "rules": [
+        "security.md",
+        "digest.md"
+      ]
+    },
+    {
       "name": "you-ju",
       "version": "1.0.0",
       "status": "Beta",

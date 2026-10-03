@@ -47,6 +47,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **inventory-report** | Inventory & cross-source verification | Achievement/literature/content/roster inventories |
 | **batch-file-pipeline** | Batch file pipeline (orient/rename/convert/dedupe/verify) | Scanning certs, media & document batch processing |
 | **application-bundle** | Form + narrative + evidence bundle assembly | 评优/职称/课题/验收 application materials |
+| **you-jian** | Multi-mailbox IMAP/SMTP client (pure stdlib) | Collect/read/search/archive/send emails + daily digest |
 
 ## Installation
 
