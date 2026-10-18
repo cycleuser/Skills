@@ -34,6 +34,7 @@
 | **doc-to-docx (Doc 转 Docx)** | 纯 Python 转换 .doc→.docx（不依赖 Word/LibreOffice） | 老版 Word 二进制文件转换 |
 | **you-ju (有据)** | 防幻觉严格转述：闭世界约束+三步一审计+句级溯源 | 知识库检索/网页搜索/文档整合的忠实转述 |
 | **you-jian (邮箱管家)** | 多邮箱 IMAP/SMTP 客户端（纯标准库零依赖） | 收/读/搜/归档/发邮件 + 每日摘要 |
+| **pai-ban (排版)** | 出版社级书籍排版：Markdown → PDF/DOCX，11 项硬门禁 | 书稿/教材排版与版面审计 |
 
 ## 安装
 

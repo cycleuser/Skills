@@ -1,6 +1,6 @@
 ---
 name: literary-ghostwriter
-version: "3.0.0"
+version: "3.1.0"
 description: |
   Literary ghostwriter skill that mimics the writing style of seven literary masters for creative writing.
   Extended with long-form novel project management, multi-role writing workflow, and consistency tracking.
@@ -11,6 +11,10 @@ description: |
   Commands:
   - /文豪 <作家> <选题> — Single-shot style imitation (7 authors)
   - /literary <author> <topic> — English single-shot style imitation
+  - /文豪 迁移 <源→目标> <文本> — Style transfer: re-voice existing text into another author's style
+  - /文豪 迁移 校核 <文本> <目标作家> — Verify a transfer against its source
+  - /文豪 迁移 矩阵 — Show the inter-author transfer matrix
+  - /literary transfer <src->target> <text> — English style transfer
   - /文豪 新建 <项目名> — Create novel project with world-building
   - /文豪 打开 <项目名> — Open existing project
   - /文豪 项目 — Show project status
@@ -27,7 +31,8 @@ description: |
   - /文豪 回收站 — Recycle bin for deleted content
 
   Capabilities: Deep analysis of author's spiritual core, providing concrete methods for authentic imitation,
-  bilingual Chinese-English creation, multiple genre support, long-form novel project management,
+  bilingual Chinese-English creation, multiple genre support, inter-author style transfer with four-layer
+  re-voicing and plot-preserving constraints, long-form novel project management,
   multi-role writing workflow (planner/character-dev/stylist/editor), consistency tracking,
   chapter-by-chapter smart continuation, foreshadowing management.
 author: cycleuser
@@ -74,6 +79,16 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 |---------|-------------|
 | `/文豪 <作家> <选题>` | 以指定作家风格进行中文创作 |
 | `/literary <author> <topic>` | Write in English with a master's style |
+
+### 风格迁移 / Style Transfer
+
+| Command | Description |
+|---------|-------------|
+| `/文豪 迁移 <源→目标> <文本>` | 把已有文本改成目标作家的声部，只换语言不改情节 |
+| `/文豪 迁移 <目标作家> <文本>` | 省略源作家，由系统判断并声明 |
+| `/文豪 迁移 校核 <文本> <目标作家>` | 逐句回对原文，检查情节是否走样并评分 |
+| `/文豪 迁移 矩阵` | 查看中文四家的互相迁移要点 |
+| `/literary transfer <src->target> <text>` | English style transfer |
 
 ### 长篇项目管理 / Novel Project Management
 
@@ -484,6 +499,42 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 
 ---
 
+## 风格迁移工作流 / Style Transfer Workflow
+
+把一段已有的文本改写成另一位作家的声部，只换语言，不动情节、人物、场景。与单次创作的区别在于：单次创作是自由发挥，迁移必须守住原文的信息。
+
+### 四层迁移法
+
+按「声部 → 句法 → 结构 → 标记」依次施工，上一层没定，下一层不动笔。
+
+| 层 | 做什么 | 关键项 |
+|----|--------|--------|
+| 声部 | 定叙述距离、温度、语体、介入度 | 贴身/旁观/介入；热/温/冷；口语/书面/文白 |
+| 句法 | 换节奏与虚词 | 句长分布、虚词替换、标点密度、打断排比 |
+| 结构 | 重切段落与信息节奏 | 段落长度方差、开场、收尾、议论位置 |
+| 标记 | 换意象域与比喻来源 | 意象域、比喻密度、感官偏好、禁用词表 |
+
+### 硬约束
+
+1. 事件与因果、人物与关系、场景与关键数字，一律不得增删。
+2. 目标文本长度与原文相当，允许上下浮动三成。
+3. 迁移完成后必须逐句回对原文，列出信息对照。
+
+### 执行步骤
+
+1. 读原文，抽出一份「信息清单」（谁、做了什么、结果）。
+2. 为目标作家写一份四层工艺档案。
+3. 动笔改写，边写边守信息清单。
+4. 回对原文，做节奏与去 AI 检查。
+5. 出具校核评分。
+
+### 分阶段路线
+
+作者间迁移（可复核，如古龙→老舍）→ AI 文本与人文本互迁 → 检测评估对照。
+详细的迁移矩阵、失败模式、可复现样例见 [rules/style-transfer.md](rules/style-transfer.md)。
+
+---
+
 ## Rules
 
 ### 西方作家:
@@ -500,6 +551,9 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 ### 通用:
 - [rules/vocabulary.md](rules/vocabulary.md) - 风格词汇库
 - [rules/anti-aigc.md](rules/anti-aigc.md) - 文学创作反AIGC检测规则
+
+### 风格迁移:
+- [rules/style-transfer.md](rules/style-transfer.md) - 风格迁移规范（四层迁移法、作者间迁移矩阵、可复现样例）
 
 ### 长篇创作:
 - [rules/novel-workflow.md](rules/novel-workflow.md) - 长篇创作工作流详解
@@ -530,6 +584,15 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 - Are the character voices consistent with the author's character archetypes?
 - Would a well-read fan of this author know it's an imitation within the first 3 paragraphs?
 
+### Style Transfer Check / 风格迁移检查
+- 情节、人物、场景、关键数字是否与原文一一对应，无增无删？
+- 段落长度是否有明显参差，还是被拉成一个节奏？
+- 是否残留源作家的句法或对仗排比？
+- 是否有为了贴目标作家标签而堆砌的意象？
+- 情感是否通过细节传达，而非直接宣告？
+- 目标作家的禁用词是否清干净？
+- 逐句回对原文后，迁移评分是否达到合格线（60 以上）？
+
 ### Long-Form Consistency Check / 长篇一致性检查
 - 人物性格在当前章节中是否与人物卡一致？（逐角色对照）
 - 人物关系演变是否有充足的章节铺垫？（至少3章）
@@ -543,6 +606,10 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 ## Edge Cases / 边界情况
 
 - **Multi-author mashup**: When combining two styles (e.g., Shakespeare + Lu Xun), clearly label which sections use which style
+- **Style transfer across languages**: 迁移到目标语言时保留语言的逻辑结构，把典故与俗语换成目标语言里对等的东西，不要直译
+- **Style transfer of copyrighted source**: 源文本若仍在版权保护期（如古龙 1985 年逝世），样例中只作短摘并注明，成篇发表前确认授权
+- **Style transfer with poetry source**: 诗歌迁移时优先保节奏与意象结构，允许信息密度适度重排，但要保留核心意象
+- **Style transfer to the same author**: 目标与源相同，退化为「润色」，走 `/文豪 润色`，不走迁移
 - **Modern topics in classical style**: Balance authenticity with readability; use footnotes for archaic terms when writing about contemporary subjects
 - **Poetry vs Prose**: Different verification criteria for verse (rhythm + rhyme + imagery) vs prose (voice + structure + pacing)
 - **Dialogue-heavy scenes**: Each character can have a different author style (e.g., Hamlet as Shakespeare, Horatio as Zweig)
@@ -568,6 +635,10 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 - **节奏拖沓**: 如连续3章无实质情节推进 → 用 `/文豪 网文` 检查爽点密度 → 合并或删减章节
 - **伏笔线断裂**: 如果伏笔回收时机错误 → 用 `/文豪 伏笔` 检查追踪器 → 调整回收计划
 - **项目文件丢失**: 项目目录下的文件如被误删 → 用 `/文豪 回收站` 查找备份 → 从审稿记录中重建草稿
+- **迁移变成照抄**: 若生成结果与原文措辞几乎一致 → 在指令里明确要求「措辞与句式都要换掉，绝不照抄」→ 重跑
+- **迁移后情节走样**: 若人物动作或结局被改动 → 用 `/文豪 迁移 校核` 逐句回对 → 回到信息清单重改
+- **迁移后节奏被拉平**: 若各段长短接近 → 手工打断长句，制造一处三字短句的断裂
+- **迁移出语法破碎或重复词**: 多出现在小参数量模型上（实测 8B 量级的文本扩散模型会产出「白银白银」「寒风像一把一样锋利的」）→ 换更强模型，或改由人执笔
 
 ---
 
@@ -581,6 +652,16 @@ echo '{"preferred_authors": ["鲁迅", "金庸"], "default_genre": "武侠"}' | 
 /literary shakespeare "The tempest raged against the castle walls"
 /literary calvino "The city unfolded like a page in an invisible book"
 /literary zweig "She walked through the crowded station, a stranger among thousands"
+```
+
+### 风格迁移 / Style Transfer
+```
+/文豪 迁移 古龙→老舍 "冷风如刀，以大地为砧板，视众生为鱼肉。"
+/文豪 迁移 老舍→鲁迅 src.md
+/文豪 迁移 鲁迅 "他说这话的时候，脸上没什么表情。"
+/文豪 迁移 校核 out.md 以鲁迅 原文 src.md
+/文豪 迁移 矩阵
+/literary transfer gulong->laoshe "The cold wind cut like a blade."
 ```
 
 ### 长篇创建 / Novel Project Creation
@@ -641,6 +722,7 @@ Key requirements per author:
 | 2.0.0 | 2026-04-01 | Expanded to 7 authors |
 | 2.1.0 | 2026-05-09 | Added safety rules, style verification, edge cases, troubleshooting, vocabulary.md |
 | 3.0.0 | 2026-07-14 | Major upgrade: long-form novel project management, multi-role writer system, planning-before-writing workflow, consistency management, foreshadowing tracker, smart continuation, editor review. 7-author system extended with long-form adaptation notes. Added 15 new commands, 6 new rules files. |
+| 3.1.0 | 2026-10-13 | 新增风格迁移功能：`/文豪 迁移` 支持作者间声部改写，含四层迁移法、作者间迁移矩阵、分阶段研究路线与两组可复现样例（新增 rules/style-transfer.md）。补齐 6 个此前被引用但缺失的长篇规则文件（novel-workflow / project-structure / character-consistency / foreshadowing / editor-review / web-novel）。修正 skills.json 的版本与规则清单。 |
 
 ---
 

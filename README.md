@@ -25,7 +25,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **patent-writer** | Patent writing assistant | Patent applications |
 | **official-document-writer** | Official document writing (GB/T 9704-2012) | Official documents |
 | **humanizer** | AI text humanization | Natural language processing |
-| **literary-ghostwriter** | Literary style imitation (7 masters) | Literary writing |
+| **literary-ghostwriter** | Literary style imitation & style transfer (7 masters) | Literary writing |
 | **brief-write** | User blog style imitation | Blog & technical writing |
 | **bao-kao** | Enrollment consultation (Zhang Xuefeng style) | Gaokao & postgraduate enrollment |
 | **skill-refiner** | Skill refinement and polishing | Skill improvement |
@@ -48,6 +48,7 @@ A collection of specialized skills for AI coding agents. These skills provide st
 | **batch-file-pipeline** | Batch file pipeline (orient/rename/convert/dedupe/verify) | Scanning certs, media & document batch processing |
 | **application-bundle** | Form + narrative + evidence bundle assembly | 评优/职称/课题/验收 application materials |
 | **you-jian** | Multi-mailbox IMAP/SMTP client (pure stdlib) | Collect/read/search/archive/send emails + daily digest |
+| **pai-ban** | Publication-grade book typesetting (Markdown → PDF/DOCX, 11 hard gates) | Book/textbook typesetting & layout audit |
 
 ## Installation
 
@@ -117,6 +118,7 @@ After installation, use these commands in OpenCode:
 | `/gongwen <task>` | Official document writing |
 | `/humanize <text>` | Humanize AI-generated text |
 | `/literary <author> <topic>` | Literary style writing |
+| `/literary transfer <src->target> <text>` | Style transfer between authors |
 | `/write <topic>` | Blog style writing |
 | `/enroll <query>` | Enrollment consultation |
 | `/refine <skill>` | Skill refinement |
@@ -175,6 +177,9 @@ After installation, use these commands in OpenCode:
 
 # Literary style writing
 /literary luxun 如何面对困境
+
+# Style transfer between authors
+/literary transfer gulong->laoshe "The cold wind cut like a blade."
 
 # Blog style writing
 /write 如何搭建本地AI编程环境

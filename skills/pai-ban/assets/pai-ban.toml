@@ -1,0 +1,76 @@
+# =====================================================================
+# pai-ban.toml —— 排版配置（由 `python3 scripts/init.py <book>` 复制到书稿目录）
+#
+# 所有版式数值都在 assets/preamble.tex 里实现；这里只放"这本书"的元信息
+# 与开本参数。改版式 = 改 preamble（并同步 rules/design-spec.md），
+# 改这本书 = 改这里。
+#
+# 规格：rules/design-spec.md §1（画布）、§2（字体）、§3（色彩）
+# =====================================================================
+
+[book]
+# 书名（用于标题页、偶数页页眉、PDF 元数据）
+title = "大语言模型：智能体视角"
+subtitle = "第二版修订版"
+author = "CycleUser"
+date = "2026-10-18"
+
+# zh = 中文书（宋体正文 / 黑体标题 / 段首缩进 2em / 目录名「目录」）
+# en = 英文书（Times 正文 / Times Bold 标题 / 段首 1.5em / 「Contents」）
+lang = "zh"
+
+# 章节目录（相对书稿根目录）与文件模式
+chapters_dir = "CN"
+chapter_glob = "chapter-*.md"
+
+# 从文件名里取章号：chapter-02-llm-api.md → 2
+# （--chapters 0,2,14 就是按这个号筛）
+chapter_number_regex = "chapter-(\\d+)"
+
+# 永远追加在最后的文件（参考文献等在章节目录里但不符合 chapter-* ）
+extra_files = ["references.md"]
+
+# 图片根目录（相对 chapters_dir）；源文写 figures/svg/x.svg，
+# 构建期改指 figures/pdf/x.pdf（矢量）。
+figures_dir = "figures"
+
+# 书稿目录里的资源副本位置（init.py 生成；不存在则用技能自带 assets/）
+assets_dir = "pai-ban-assets"
+
+[layout]
+# §1 画布与版心：A5 148×210，双面，内 18 / 外 15 / 上 16 / 下 19
+# → 版心 115×175mm（preamble 里有断言，偏差 >1mm 直接报错）
+paper = "a5paper"
+documentclass = "book"
+fontsize = "11pt"
+twoside = true
+inner = "18mm"
+outer = "15mm"
+top = "16mm"
+bottom = "19mm"
+headsep = "5mm"
+footskip = "7mm"
+headheight = "12pt"
+
+[fonts]
+# §2.1 字体族
+main = "Times New Roman"      # 西文正文
+mono = "Menlo"                # 代码（须覆盖 ░ █ ─ ├ └ │）
+cjk = "Songti SC"             # 中文正文（也是代码里的中文注释回退）
+head = "PingFang SC"          # 中文标题（BoldFont 用 PingFang SC Semibold）
+symbol = "Apple Symbols"      # ⚠ U+26A0 的兜底字形
+
+[output]
+# 正式产物（相对书稿根目录）；{lang} 与 {title} 会被替换
+pdf = "build/pai-ban/{lang}/{title}.pdf"
+docx = "build/pai-ban/{lang}/{title}.docx"
+# 中间目录
+workdir = "build/pai-ban/{lang}"
+# --preview 的产物目录（PDF + pages/*.png）
+preview_dir = "typeset-sample"
+
+[build]
+passes = 3      # xelatex 最多跑几遍（目录/书签收敛）
+dpi = 150       # 预览 PNG 分辨率
+docx = true     # 是否同时出 DOCX（辅产物，样式对齐预排版）
+verify = true   # 构建后自动跑 scripts/verify.py；不通过则退出码 1

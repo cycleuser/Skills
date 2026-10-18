@@ -1,0 +1,736 @@
+%% =====================================================================
+%% pai-ban / assets/preamble.tex   —  版式实现（唯一权威规格：rules/design-spec.md）
+%%
+%% 用法：pandoc -H preamble.tex（由 scripts/build.py 复制到工作目录，
+%%       替换 @...@ 占位符后使用）。pandoc 的默认模板已经把 xcolor /
+%%       amsmath / unicode-math / microtype / longtable+booktabs+array /
+%%       caption / calc / etoolbox / hyperref / xeCJK 全部加载完毕，
+%%       本文件位于 header-includes（模板最末），只做"改"，不重复 load。
+%%
+%% 硬约束（实测 TeX Live 2026basic）：不得使用 titlesec / tocloft /
+%%       tcolorbox / fvextra / framed / enumitem / adjustbox / mdframed /
+%%       needspace（均不在 basic 里）。本文件用到的每个宏包见下，
+%%       全部 kpsewhich 可查到。
+%%
+%% 占位符（build.py 替换；残留 @...@ 会让 build.py 直接报错）：
+%%   @BOOKTITLE@   书名（偶数页页眉）
+%%   @MAINFONT@    西文正文（Times New Roman）
+%%   @MONOFONT@    等宽（Menlo，须覆盖 ░ █ ─ ├ └ │）
+%%   @CJKFONT@     中文正文（Songti SC）
+%%   @HEADFONT@    中文标题（PingFang SC）
+%%   @SYMBOLFONT@  符号回退（Apple Symbols，⚠ U+26A0）
+%%   @TOCNAME@     目录标题（目录 / Contents）
+%%   @PARINDENT@   段首缩进（中文 2em / 西文 1.5em）
+%%   @BOOKLANG@    语言开关：zh | en（影响引号与中西文间距策略）
+%% =====================================================================
+
+\usepackage{fancyhdr}      % 页眉页脚（§6）
+\usepackage{ragged2e}      % \RaggedRight，避免 \raggedright 的坏断行
+\usepackage{etoolbox}      % \AtBeginEnvironment / \patchcmd（§8 §10）
+\usepackage{xstring}       % 字符串工具（未用，保留以备审计扩展）
+\usepackage{setspace}      % 备用；正文行距由字号阶梯直接给定（§2.2）
+\usepackage{graphicx}      % 图（§9）。pandoc 只在"文档里有图"时才自动加载
+                           % graphicx，而本技能的图被 figure-caption.lua 转成
+                           % raw LaTeX 后 pandoc 统计不到 → 必须自己加载
+\usepackage[figuresright]{rotating}  % §9 第三级：整页横向页（sidewaysfigure）。
+                           % 实测 figuresright = 图顶朝纸张左缘、题注落在右侧，
+                           % 即读者顺时针转书即可阅读；全书方向一致（不随奇偶
+                           % 页翻转，否则同一本书要左转一次右转一次）。
+\usepackage{floatpag}      % \thisfloatpagestyle：旋转页必须"无页眉、页码正常"
+                           % （§6/§9）。\thispagestyle 对浮动页无效，实测页眉
+                           % 仍会印出书名/章名。
+\usepackage{listings}      % 代码块（§7）
+\usepackage{booktabs}      % 三线表（§8）
+\usepackage{longtable}     % 跨页长表（§8）
+\usepackage{tabularx}      % 后备表格
+\usepackage{array}         % 列格式 >{}
+\usepackage{calc}          % p{} 列宽算式
+\usepackage{colortbl}      % 表头底色（§8，默认不用）
+\usepackage{caption}       % 题注格式（§8 §9）
+\usepackage{bookmark}      % PDF 书签层级（§5）
+
+%% ---------------------------------------------------------------------
+%% spec §3 色彩：全书只有一种强调色 + 灰阶（颜色种类 ≤ 6）
+%%   灰度换算（用于 §3 的黑白打印验收）：
+%%     ink    #1A1A1A → 10%   accent #0B3D91 → 24%
+%%     两者差 14%，但强调色只用于章号/链接/关键字等**非正文**元素，
+%%     正文与强调色的亮度差在 25% 以上的是 muted→ink 与 rule→ink 两对。
+%% ---------------------------------------------------------------------
+\definecolor{ink}{HTML}{1A1A1A}        % 正文
+\definecolor{accent}{HTML}{0B3D91}     % 章号 / 链接 / 代码关键字
+\definecolor{accent30}{HTML}{B6C5DE}   % accent 30% + 白 70%（章号大字）
+\definecolor{rule}{HTML}{D0D4DA}       % 分隔线 / 页眉线
+\definecolor{muted}{HTML}{6E7781}      % 页码 / 代码行号 / 注释 / 代码标签
+\definecolor{codebg}{HTML}{F7F8FA}     % 代码块底色
+\definecolor{strgreen}{HTML}{1B7F3B}   % 代码字符串（§7，不计入"书籍色彩"）
+\definecolor{numrust}{HTML}{8A3B12}    % 代码数字（§7）
+%% 注意：strgreen / numrust 是 §7 明文规定的代码语法色，属于印刷惯例而非
+%% 版面色。§3 的"颜色 ≤ 6"验收只统计版面语义色（ink/accent/rule/muted/
+%% codebg/tablehead），verify.py 按这 6 个统计。
+
+%% ---------------------------------------------------------------------
+%% spec §2.1 字体族
+%%   * 正文西文由 pandoc 的 -V mainfont 设好（Times New Roman）；
+%%   * 中文正文由 -V CJKmainfont 设好（Songti SC）；
+%%   * 这里补：中文标题族（PingFang SC Semibold）、等宽中文字形回退、
+%%     符号回退字体。
+%% ---------------------------------------------------------------------
+\newfontfamily\symbolfallback{@SYMBOLFONT@}
+%% ⚠ (U+26A0)：Times / Songti 均无字形 → 走 Apple Symbols（§12 第 1 步的
+%% 缺字形替换把它变成 `\warn`{=latex}，见 scripts/build.py）
+\newcommand{\warn}{{\symbolfallback\char"26A0\relax}}
+
+%% 中文标题族：PingFang SC 的 Bold 面在 macOS 上叫 Semibold，
+%% 不显式指定 BoldFont 会触发 fontspec 的 "Font shape undefined" 警告
+%% （不会报错，但标题会掉回 Regular，字重不够）。
+\setCJKfamilyfont{heiti}[BoldFont={PingFang SC Semibold},Scale=1]{@HEADFONT@}
+\providecommand{\heiti}{\CJKfamily{heiti}}
+
+\makeatletter
+\@ifpackageloaded{xeCJK}{%
+  %% 代码块里的中文注释（§7）：\ttfamily 下的 CJK 走 CJKmonofont
+  \setCJKmonofont{@CJKFONT@}%
+  \setCJKsansfont{@CJKFONT@}%
+  %% 圈码 ①-⑮（U+2460-246F）落在 xeCJK 默认 CJK 范围之外，
+  %% 不声明就会掉到 Times → Missing character
+  \xeCJKDeclareCharClass{CJK}{"2460 -> "246F}%
+  %% 制表符 / 方块元素（░ █ ─ ├ └ │）：Menlo 有字形，但它们不是 CJK，
+  %% 落在主字体里就会缺字。把几何图形区（U+2500-25FF 制表符）声明为
+  %% "Default" 以外的类没有意义——正确做法是用 \newfontfamily 包一层，
+  %% 见下方 \paibangeo。
+}{}
+\makeatother
+
+%% 制表符 / 方块元素回退（正文里出现时用；代码块内由 Menlo 直接覆盖）
+\newfontfamily\geofont{@MONOFONT@}
+\newcommand{\paibangeo}[1]{{\geofont #1}}
+
+%% ---------------------------------------------------------------------
+%% spec §2.2 字号阶梯（严格 1.25 模数）
+%%   章标题 22/26 Bold      节 14/17 Bold      小节 11.5/14 Bold
+%%   三级 11/13.5 BoldItal  正文 11/15.2       表格 9/11.5
+%%   图题 9/11.5            代码 8.5/10.5      引文 9.5/13
+%%   脚注 8/10              页眉页脚 8
+%%   实现方式：直接重定义字号宏，让每一级都落在阶梯上（不靠 linespread
+%%   的连乘——11pt 类的 \baselineskip 是 13.6pt，linespread 1.12 得
+%%   15.23pt 是"差不多"，而 §0 原则 1 要求精确）。
+%% ---------------------------------------------------------------------
+\makeatletter
+\renewcommand\normalsize{\@setfontsize\normalsize{11}{15.2}}   % 正文
+\renewcommand\small{\@setfontsize\small{9}{11.5}}              % 表格 / 题注
+\renewcommand\footnotesize{\@setfontsize\footnotesize{8}{10}}  % 脚注 / 页眉
+\renewcommand\scriptsize{\@setfontsize\scriptsize{7}{8.5}}     % 代码行号
+\renewcommand\large{\@setfontsize\large{11.5}{14}}             % 小节
+\renewcommand\Large{\@setfontsize\Large{14}{17}}               % 节
+\renewcommand\LARGE{\@setfontsize\LARGE{22}{26}}               % 章
+\renewcommand\Huge{\@setfontsize\Huge{48}{52}}                 % 章号（§4）
+\makeatother
+
+%% ---------------------------------------------------------------------
+%% spec §0 原则 1 / §2.2 正文：段首缩进、段间 0、基线与行距
+%%   pandoc 默认可能加载 parskip.sty（会把 \parindent 清零），这里必须在
+%%   它之后重新压回来。
+%% ---------------------------------------------------------------------
+\setlength{\parindent}{@PARINDENT@}
+\setlength{\parskip}{0pt}
+\setlength{\topskip}{11pt}           % 每页首行基线 = 版心顶 + 11pt
+\clubpenalty=10000                   % 不留孤行（§0 原则 6）
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\setlength{\emergencystretch}{6em}   % 长 URL 的最后一道闸（§7/§11；4em 时
+                                     % modelcontextprotocol.io 那一行仍溢出 15.8pt，
+                                     % 6em 是实测能压住的最小值）
+\raggedbottom                        % 双面书：宁可底部留白，不撑散行距
+
+%% ---------------------------------------------------------------------
+%% spec §1 画布与版心
+%%   A5 148×210，双面；内 18 / 外 15 / 上 16（含页眉区）/ 下 19；
+%%   headsep 5mm，footskip 7mm。
+%%   geometry 由 build.py 用 -V geometry=... 传入，这里只做校验性断言：
+%%   版心必须是 115×175mm（±0.5mm），否则报错退出（宁可停，不出错版）。
+%% ---------------------------------------------------------------------
+\makeatletter
+\newlength{\paiban@textw}\setlength{\paiban@textw}{\textwidth}
+\newlength{\paiban@texth}\setlength{\paiban@texth}{\textheight}
+\AtBeginDocument{%
+  \ifdim\paiban@textw<324pt \errmessage{pai-ban: text width < 114mm, check geometry}\fi
+  \ifdim\paiban@textw>329pt \errmessage{pai-ban: text width > 116mm, check geometry}\fi
+  \ifdim\paiban@texth<494pt \errmessage{pai-ban: text height < 174mm, check geometry}\fi
+  \ifdim\paiban@texth>498pt \errmessage{pai-ban: text height > 176mm, check geometry}\fi
+}
+\makeatother
+
+%% ---------------------------------------------------------------------
+%% spec §4 章首页（签名元素）
+%%   起于奇数页（\cleardoublepage）→ 24mm 空白 → 章号 48pt（accent 30%）
+%%   → 6pt → 0.8pt accent 短线 24mm → 8pt → 章标题 22/26 Bold
+%%   → 18mm → 正文。章首页 plain（无页眉，页码居中页脚）。
+%%   编号与标题由 chapter-split.lua 拆开传入：\paibanchapter{2}{标题}
+%%   无编号章节：\paibanchapter*{前言}
+%% ---------------------------------------------------------------------
+
+%% 空白页也要有页码（§6：空白页 plain，不排页眉），否则读者会以为漏印
+\makeatletter
+\renewcommand{\cleardoublepage}{%
+  \clearpage
+  \if@twoside
+    \ifodd\c@page\else
+      \hbox{}\thispagestyle{plain}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \fi}
+
+%% pandoc 的 book 模板会无条件在正文前插入 \mainmatter（阿拉伯页码从 1 起）。
+%% 我们需要「前言/目录 = 罗马数字，第一章 = 阿拉伯数字 1」，所以把模板那次
+%% \mainmatter 变成空操作，改由 chapter-split.lua 在**第一个编号章**前
+%% 发出 \paibanmainmatter。
+\let\paiban@realmainmatter\mainmatter
+\renewcommand{\mainmatter}{\relax}
+\newcommand{\paibanmainmatter}{\paiban@realmainmatter}
+
+\newcommand{\paiban@chapmark}{}
+\newcommand{\paibanbooktitle}{@BOOKTITLE@}
+
+%% 章首页版式：#1 = 章号（可空），#2 = 标题（已是 LaTeX 片段）
+\newcommand{\paiban@opener}[2]{%
+  \vspace*{24mm}%
+  \if\relax\detokenize{#1}\relax\else
+    {\fontsize{48}{52}\selectfont\color{accent30}\bfseries #1\par}%
+    \vspace{6pt}%
+    {\color{accent}\rule{24mm}{0.8pt}\par}%
+    \vspace{8pt}%
+  \fi
+  {\RaggedRight\fontsize{22}{26}\selectfont\heiti\bfseries\color{ink}%
+   #2\par}%
+  \vspace{18mm}%
+}
+
+%% 编号章
+\providecommand{\paibannumlabel}[1]{@CHAPNUMBEFORE@#1@CHAPNUMAFTER@}%  目录条目的章号样式（zh: 第N章 / en: Chapter N:）
+\newcommand{\paiban@chapnum}[2]{%
+  \cleardoublepage
+  \thispagestyle{plain}%          §6 章首页 plain
+  \global\@topnum\z@
+  \phantomsection                 % hyperref 锚点（否则目录链接跳到上一章）
+  \addcontentsline{toc}{chapter}{\paibannumlabel{#1}\hspace*{0.75em}#2}%
+  \markboth{#2}{#2}%              §6 奇数页页眉 = 当前章标题
+  \gdef\paiban@chapmark{#2}%
+  \paiban@opener{#1}{#2}%
+}
+
+%% 无编号章（前言 / 参考文献 / 附录）：无章号、无短线，标题 22pt
+\newcommand{\paiban@chapstar}[1]{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \global\@topnum\z@
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}%
+  \markboth{#1}{#1}%
+  \gdef\paiban@chapmark{#1}%
+  \paiban@opener{}{#1}%
+}
+
+\newcommand{\paibanchapter}{\@ifstar{\paiban@chapstar}{\paiban@chapnum}}
+
+%% ---------------------------------------------------------------------
+%% spec §2.2 节 / 小节 / 三级标题
+%%   用 \@startsection 重定义（不用 titlesec）。正文里节号（"2.1"）是源文
+%%   自带的文本，所以这里不排自动编号（secnumdepth 已被 pandoc 设为
+%%   负无穷），目录条目手工 \addcontentsline。
+%%   beforeskip 取正值 → 标题后首段仍缩进（中文书惯例）。
+%% ---------------------------------------------------------------------
+\newcommand{\paiban@sectionstyle}{%
+  \fontsize{14}{17}\selectfont\heiti\bfseries\color{ink}}
+\newcommand{\paiban@subsectionstyle}{%
+  \fontsize{11.5}{14}\selectfont\heiti\bfseries\color{ink}}
+\newcommand{\paiban@subsubsectionstyle}{%
+  \fontsize{11}{13.5}\selectfont\heiti\bfseries\itshape\color{ink}}
+
+%% 两个必须注意的地方（都踩过）：
+%%   1. 标题必须用 `{#1}` 传，不能写成 `#1`。\@startsection 的第 7 个参数
+%%      由 \@dblarg 读取，它只看**下一个 token**：`#1` 展开后不带花括号，
+%%      于是只吃到 "2.1" 里的 "2"，标题后半截掉进正文（实测 TOC 里出现
+%%      孤立条目「2」、标题排成 ".1 用Ollama…"）。
+%%   2. **不要**自己 \addcontentsline。LaTeX 内核的 \@sect 已经按
+%%      \c@tocdepth 写好目录条目；再写一次就是两条（一条正确、一条截断）。
+%%      \phantomsection 仍要保留：它给内核那条目录条目提供 hyperref 锚点。
+\newcommand{\paibansection}[1]{%
+  \phantomsection
+  \@startsection{section}{1}{\z@}{14pt}{6pt}{\paiban@sectionstyle}{#1}}
+\newcommand{\paibansubsection}[1]{%
+  \phantomsection
+  \@startsection{subsection}{2}{\z@}{11pt}{4pt}{\paiban@subsectionstyle}{#1}}
+\newcommand{\paibansubsubsection}[1]{%
+  \phantomsection
+  \@startsection{subsubsection}{3}{\z@}{9pt}{3pt}{\paiban@subsubsectionstyle}{#1}}
+
+%% 章标题在页眉里不能带 LaTeX 命令；\markboth 收到的是干净的文本片段
+%% （chapter-split.lua 用 pandoc.write 渲染，标题里若有 \texttt 会原样出现，
+%% 这在 8pt 页眉里是可接受的）。
+
+%% ---------------------------------------------------------------------
+%% spec §5 目录
+%%   * 只收 chapter / section（pandoc 的 toc-depth=2）
+%%   * 章条目 11pt Bold，段前 6pt，引导点，页码右对齐
+%%   * 节条目 9.5pt，左缩进 1.4em，引导点，页码右对齐
+%%   * 目录页无页眉，罗马数字（\frontmatter 由 pandoc 模板发出）
+%%   不用 tocloft：直接重写 \l@chapter / \l@section。
+%% ---------------------------------------------------------------------
+\renewcommand*{\l@chapter}[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip 6pt \@plus 2pt \@minus 2pt
+    \begingroup
+      \leftskip\z@ \rightskip\@pnumwidth \parfillskip-\@pnumwidth
+      \noindent\fontsize{11}{15.2}\selectfont\bfseries\color{ink}%
+      #1\nobreak\leaders\hbox{$\m@th\mkern\@dotsep mu\hbox{.}\mkern\@dotsep mu$}%
+        \hfill\nobreak
+      \hb@xt@\@pnumwidth{\hss\fontsize{9.5}{11.5}\selectfont\color{muted}#2}%
+      \par
+    \endgroup
+    \penalty\@highpenalty
+  \fi}
+\renewcommand*{\l@section}[2]{%
+  \ifnum \c@tocdepth >\z@
+    \vskip 2pt
+    \begingroup
+      \leftskip1.4em \rightskip\@pnumwidth \parfillskip-\@pnumwidth
+      \noindent\fontsize{9.5}{12}\selectfont\color{ink}%
+      #1\nobreak\leaders\hbox{$\m@th\mkern\@dotsep mu\hbox{.}\mkern\@dotsep mu$}%
+        \hfill\nobreak
+      \hb@xt@\@pnumwidth{\hss\color{muted}#2}%
+      \par
+    \endgroup
+  \fi}
+
+%% 目录页：与章首页同一套骨架（24mm 顶空 + 22pt 标题 + 10mm），
+%% 但不排页眉、页码居中（§5 §6）
+\renewcommand{\tableofcontents}{%
+  \cleardoublepage
+  \thispagestyle{plain}%
+  \phantomsection
+  \pdfbookmark[0]{\contentsname}{toc}%
+  \vspace*{24mm}%
+  {\RaggedRight\fontsize{22}{26}\selectfont\heiti\bfseries\color{ink}\contentsname\par}%
+  \vspace{10mm}%
+  {\pagestyle{plain}\@starttoc{toc}}%   目录独占 plain（后续页也不排页眉，§5）
+}
+\makeatother
+
+%% ---------------------------------------------------------------------
+%% spec §6 页眉与页码
+%%   双面：偶数页（verso）页眉 = 书名（居外 = 左），
+%%         奇数页（recto）页眉 = 当前章标题（居外 = 右）
+%%   8pt muted，字距 +0.05em（\textls[50] = 50/1000 em），
+%%   页眉下 0.4pt rule 细线，长度 = 版心宽；
+%%   页码全书统一放页脚居中（§6 只能选一种）。
+%% ---------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\fontsize{8}{10}\selectfont\color{muted}\textls[50]{\paibanbooktitle}}
+\fancyhead[RO]{\fontsize{8}{10}\selectfont\color{muted}\textls[50]{\leftmark}}
+\fancyfoot[C]{\fontsize{8}{10}\selectfont\color{muted}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+%% fancyhdr 的 \headrule 用当前颜色画线 → 单独重画成 rule 色
+\renewcommand{\headrule}{\color{rule}%
+  \hrule width\headwidth height\headrulewidth\relax
+  \vskip-\headrulewidth}
+%% plain：章首页 / 目录页 / 空白页（无页眉、无页眉线、页码居中）
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\fontsize{8}{10}\selectfont\color{muted}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\headrule}{}%
+}
+%% 浮动体页（图/表独占页）沿用 fancy，但也要页眉线 —— 默认继承，无需处理
+
+%% ---------------------------------------------------------------------
+%% spec §7 代码块（listings；禁止 minted / tcolorbox / fvextra）
+%%   浅灰底 codebg + 左侧 2pt accent 竖线 + 内边距 4pt + 无外框；
+%%   Menlo 8.5/10.5；行号仅源文有 linenums 时出现（左侧 muted 7pt）；
+%%   breaklines 折行，续行前缀 ↪（muted）；
+%%   语法四色：关键字 accent / 字符串墨绿 / 注释 muted 斜体 / 数字赭石。
+%% ---------------------------------------------------------------------
+%% 把 pandoc 的 language=<name> 映射到 listings 认识的方言。
+%% listings 没有 bash 方言（有 sh），没有 console/plaintext；不 alias 的话
+%% 会 "Couldn't load requested language" 而把整块代码排成纯文本。
+\lstalias{bash}{sh}
+\lstalias{console}{sh}
+\lstalias{shell}{sh}
+\lstalias{zsh}{sh}
+\lstalias{text}{}
+\lstalias{txt}{}
+\lstalias{plaintext}{}
+
+\lstdefinestyle{paiban}{%
+  backgroundcolor=\color{codebg},%      §7 浅灰底
+  frame=l, %                             只画左边一条
+  framerule=2pt,%                        2pt 强调色竖线
+  rulecolor=\color{accent},%
+  framesep=4pt,%                         §7 内边距 4pt
+  xleftmargin=20pt,%                     整体右移：给行号留出内侧空档
+  xrightmargin=2pt,%
+  framexleftmargin=12pt,%                竖线左移 12pt，把行号包进灰底内
+  %% 为什么是 20/12：行号右端在 xleftmargin−numbersep=14pt，三位数在
+  %% Menlo 7pt 下宽 10.5pt → 左端距版心 3.5pt（实测 p.8「130」= 46.01 /
+  %% verso 42.52），仍在版心内（§1 左边界）。
+  %% 早期 xleftmargin=10/framexleftmargin=0 时行号挂在竖线**左边**、
+  %% 两位数就伸进外白边 2.9pt，三位数必然越界（实测 p.28/p.42/p.48）。
+  basicstyle=\fontsize{8.5}{10.5}\selectfont\ttfamily\color{ink},%   §2.2 代码 8.5/10.5
+  keywordstyle=\color{accent}\bfseries,%
+  stringstyle=\color{strgreen},%
+  commentstyle=\color{muted}\itshape,%
+  numberstyle=\fontsize{7}{8.5}\selectfont\color{muted},%
+  numbers=none,%                         默认不显示；pandoc 传 numbers=left 时才显示
+  numbersep=6pt,%
+  breaklines=true,%                      §7 折行
+  breakatwhitespace=false,%              中文注释行没有空格，必须允许任意位置断
+  breakindent=0pt,%
+  postbreak=\mbox{\textcolor{muted}{\scriptsize$\hookrightarrow$}\space},%
+  columns=fullflexible,%
+  keepspaces=true,%                      保留缩进（代码的可读性全靠它）
+  showstringspaces=false,%
+  tabsize=4,%
+  extendedchars=true,%
+  upquote=true,%
+  aboveskip=8pt,%                        §2.2 块上下 8pt
+  belowskip=8pt,%
+  captionpos=t,%
+  escapeinside={},%
+}
+\lstset{style=paiban}   % 全局生效：所有 lstlisting 都走 §7 的版式
+
+%% listings 在 XeLaTeX 下处理 CJK 时会丢失"字符间可断行"的信息，
+%% 这里显式把 CJK 标点与汉字之间的断点交回 xeCJK（保持默认即可），
+%% 只需确保 extendedchars 打开、basicstyle 里已有 CJK 回退（CJKmonofont）。
+
+%% --listings 会把行内代码变成 \passthrough{\lstinline!…!}。全局
+%% breaklines=true 且 postbreak 里含 \mbox 时，一旦 TeX 正好在行内代码
+%% 边界换行，\lst@@discretionary 里的 \mbox 会触发
+%% "Improper discretionary list" 并中止编译（实测 chapter-02）。
+%% 行内代码需要的只是"可断行"（否则 search_product(query, category)
+%% 这种长串在 115mm 栏宽里必然 Overfull），不需要 ↪ 前缀。
+%% 因此在 \passthrough 的局部组里保留 breaklines、清空 postbreak。
+\renewcommand{\passthrough}[1]{{\lstset{breaklines=true,postbreak={}}#1}}
+
+%% 代码块上方的文件标签（§7：title 属性 → 8.5pt muted 单行标签，不加框）
+\newcommand{\paibancodecaption}[1]{%
+  \par\addvspace{6pt}\noindent
+  {\fontsize{8.5}{10.5}\selectfont\color{muted}\ttfamily #1\par}%
+  \nobreak\vspace{-2pt}\nobreak}
+
+%% ---------------------------------------------------------------------
+%% spec §8 表格：booktabs 三线表，顶/底 0.8pt，栏目线 0.4pt，禁止竖线；
+%%   9pt/11.5pt，tabcolsep 4pt；题注在表上方，"表 2.1" 加粗 + 空格 + 标题。
+%% ---------------------------------------------------------------------
+\setlength{\heavyrulewidth}{0.8pt}
+\setlength{\lightrulewidth}{0.4pt}
+\setlength{\cmidrulewidth}{0.4pt}
+\setlength{\arrayrulewidth}{0.4pt}
+\renewcommand{\arraystretch}{1.0}
+
+\AtBeginEnvironment{longtable}{%
+  \fontsize{9}{11.5}\selectfont
+  \setlength{\tabcolsep}{4pt}%
+  \renewcommand{\arraystretch}{1.0}%
+}
+\AtBeginEnvironment{tabular}{%
+  \fontsize{9}{11.5}\selectfont
+  \setlength{\tabcolsep}{4pt}%
+}
+
+%% 题注：pandoc 默认 "表 2.1: 标题"（冒号 + 正体标签）；
+%% §8 要求 "表 2.1  标题"（加粗标签 + 空格，无冒号）。
+\captionsetup[table]{%
+  name=表,%
+  labelsep=quad,%            加粗标签与标题之间一个 quad 的空格
+  labelfont={bf,color=ink},%
+  textfont={color=ink},%
+  font={footnotesize},%      9/11.5
+  position=top,%
+  skip=4pt,%
+  justification=raggedright,%
+  singlelinecheck=false,%
+  belowskip=6pt,%
+}
+\captionsetup[figure]{%
+  name=图,%
+  labelsep=quad,%
+  labelfont={bf,color=ink},%
+  textfont={color=ink},%
+  font={footnotesize},%
+  position=bottom,%
+  skip=4pt,%
+  justification=raggedright,%
+  singlelinecheck=false,%
+}
+
+%% §8 表题注：table-caption.lua 把源文里「表14.1：…」的斜体段搬到表格
+%% 上方，交给这个宏排版：#1 = 「表 14.1」（加粗），#2 = 标题。
+%% 9pt / 11.5，与表间距 4pt；\nopagebreak 保证题注不会单独留在页尾。
+\newcommand{\paibantablecaption}[2]{%
+  \par\addvspace{6pt}%
+  \noindent{\fontsize{9}{11.5}\selectfont
+    {\bfseries\color{ink}#1\quad}#2\par}%
+  \nopagebreak[4]\vspace{4pt}\nobreak}
+
+%% 表头不单独留在页尾（§8）：longtable 的 \endhead 之后插一个惩罚，
+%% 让"表头 + 至少一行"成为不可分块。
+\AtBeginEnvironment{longtable}{\nopagebreak[3]}
+
+%% ---------------------------------------------------------------------
+%% spec §9 图：三级放置策略（策略与量测都在 scripts/figure_fit.py）
+%%
+%%   1) inline   裁边（trim+clip）后放进版心宽 115mm
+%%   2) wide     裁边后仍 < 4.5pt → 加宽到 125mm（两侧各侵入白边 5mm，
+%%               距纸边仍 ≥ 10mm；见 §9 与 verify.py 的门禁 2/3 例外）
+%%   3) rotated  仍 < 4.5pt → 整页横向页（sidewaysfigure，可用宽 = 版心高 175mm）
+%%
+%% 谁决定用哪一级：build.py 调 figure_fit.py 量图（画布/墨迹 bbox/图内字号），
+%% 逐图算出「成书后实际字号 = 图内字号 × 缩放比」，写进工作目录的
+%% figure-fit.tex：
+%%     \paibanfigdef{图路径}{inline|wide|rotated}{裁边 l b r t}{宽}{高}
+%% 这里只负责查表执行。查不到（没有图清单）就退回第一版行为：不裁边、
+%% 限宽限高——宁可少裁边，也不能因为清单丢了而不出书。
+%%
+%% 题注在图下方，9pt；图与题注必须同页：
+%%   * inline/wide：不可分页的 minipage（图 + 题注 + 来源行）
+%%   * rotated：sidewaysfigure 是浮动体，图与题注在同一个旋转盒里，
+%%     题注跟着图一起转（这是"题注与图分离"的唯一可靠解法）
+%% ---------------------------------------------------------------------
+\newsavebox{\paibanfigbox}   % 也在 §10 里给 quote 量高度用
+\newsavebox{\paibanpibox}
+\newlength{\paibanpiw}
+\newlength{\paibanpih}
+\newlength{\paibanpiwmax}
+\newlength{\paibanpihmax}
+
+%% 放一张图：#1 = 图片路径。宽度上限 = 版心宽，高度上限 = 0.72 版心高，
+%% 且**永不放大**超过原始尺寸（graphicx 同时给 width/height + keepaspectratio
+%% 时按"装进这个盒子"缩放，所以 w_max = min(自然宽, 版心宽) 就够了）。
+\newcommand{\paibaninclude}[1]{%
+  \sbox{\paibanpibox}{\includegraphics{#1}}%
+  \setlength{\paibanpiw}{\wd\paibanpibox}%
+  \setlength{\paibanpih}{\dimexpr\ht\paibanpibox+\dp\paibanpibox\relax}%
+  \setlength{\paibanpiwmax}{\linewidth}%
+  \ifdim\paibanpiw<\paibanpiwmax \setlength{\paibanpiwmax}{\paibanpiw}\fi%
+  \setlength{\paibanpihmax}{\dimexpr0.72\textheight\relax}%
+  \includegraphics[width=\paibanpiwmax,height=\paibanpihmax,keepaspectratio]{#1}%
+}
+
+%% 单张图 + 题注的容器：#1 = 图片 LaTeX，#2 = 题注 LaTeX（已含"图 2.1"）
+%% 用不可分页的 minipage 保证「图与题注同页」（§9），并让整块在换页时
+%% 整体下移，绝不出现"图在页尾、题注在下一页"。
+\newcommand{\paibanfigure}[2]{%
+  \par\addvspace{10pt}%
+  \noindent\begin{minipage}{\linewidth}%
+    \centering
+    #1\par
+    \vspace{4pt}%                       §9 图与题注间距 4pt
+    {\RaggedRight\fontsize{9}{11.5}\selectfont\color{ink}#2\par}%
+  \end{minipage}%
+  \par\addvspace{10pt}%
+}
+
+%% --- 放置表（build.py 生成）------------------------------------------
+%% \paibanfigdef{路径}{方式}{裁边}{宽}{高} → 存成 \pbfig@<路径>（一个
+%% 单参宏，参数是题注）。用路径做宏名：同一张图在书里出现两次时查同一行，
+%% 不会因为题注不同而各放一次。
+\newcommand{\paibanfigdef}[5]{%
+  \expandafter\def\csname pbfig@#1\endcsname##1{%
+    \csname paibanfig#2\endcsname{#1}{#3}{#4}{#5}{##1}}}
+\InputIfFileExists{figure-fit.tex}{}{}
+
+%% inline：图宽已由清单给定（≤ 版心宽），高度上限同时给，防长图撑爆页面
+\newcommand{\paibanfiginline}[5]{% 路径 裁边 宽 高 题注
+  \par\addvspace{10pt}%
+  \noindent\begin{minipage}{\linewidth}%
+    \centering
+    \includegraphics[trim={#2},clip=true,width=#3,height=#4,keepaspectratio]{#1}\par
+    \vspace{4pt}%
+    {\RaggedRight\fontsize{9}{11.5}\selectfont\color{ink}#5\par}%
+  \end{minipage}%
+  \par\addvspace{10pt}%
+}
+
+%% wide：125mm 比版心宽 10mm，两侧各侵入 5mm。
+%% 用 \makebox[0pt][c] 让"超出版心的部分"对称溢出，且不产生 Overfull
+%% \hbox 警告（0pt 盒里的 \hss 吸收，§7/§8 的 Overfull 门禁不会误报）。
+\newcommand{\paibanfigwide}[5]{%
+  \par\addvspace{10pt}%
+  \noindent\begin{minipage}{\linewidth}%
+    \centering
+    \makebox[0pt][c]{\includegraphics[trim={#2},clip=true,width=#3,height=#4,keepaspectratio]{#1}}\par
+    \vspace{4pt}%
+    {\RaggedRight\fontsize{9}{11.5}\selectfont\color{ink}#5\par}%
+  \end{minipage}%
+  \par\addvspace{10pt}%
+}
+
+%% rotated：整页横向页。
+%%   * 图 + 题注在同一个旋转盒内 → 题注随图转，不可能分离；
+%%   * \thisfloatpagestyle{plain} → 该页无页眉、页脚仍有页码（§6/§9）；
+%%   * 紧跟 \clearpage → 浮动页立刻出，不会攒到章末（[p] 单独使用时
+%%     LaTeX 只会在 \clearpage 时吐浮动页，攒到章末就是"图全在章尾"）。
+\newcommand{\paibanfigrotated}[5]{%
+  \par
+  \begin{sidewaysfigure}[p]%
+    \thisfloatpagestyle{plain}%
+    \centering
+    \includegraphics[trim={#2},clip=true,width=#3,height=#4,keepaspectratio]{#1}\par
+    \vspace{4pt}%
+    {\RaggedRight\fontsize{9}{11.5}\selectfont\color{ink}#5\par}%
+  \end{sidewaysfigure}%
+  \clearpage}
+
+%% 过滤器调用入口：\paibanplaced{路径}{题注}
+\newcommand{\paibanplaced}[2]{%
+  \ifcsname pbfig@#1\endcsname
+    \csname pbfig@#1\endcsname{#2}%
+  \else
+    \paibanfigure{\paibaninclude{#1}}{#2}%
+  \fi}
+
+%% 无题注的图（源文只放了图、没写斜体题注段）
+\newcommand{\paibanplacedonly}[1]{%
+  \ifcsname pbfig@#1\endcsname
+    \begin{center}\csname pbfig@#1\endcsname{}\end{center}%
+  \else
+    \begin{center}\paibaninclude{#1}\end{center}%
+  \fi}
+
+
+%% 图题里"图 2.1"四个字加粗（§9）
+\newcommand{\paibanfiglabel}[1]{{\bfseries #1}\hspace{0.6em}}
+
+%% 图片来源行（> 数据来源：…）—— 8.5pt muted 斜体，紧跟题注
+\newcommand{\paibansource}[1]{%
+  \par\nobreak\vspace{2pt}%
+  {\RaggedRight\fontsize{8.5}{10.5}\selectfont\color{muted}\itshape #1\par}}
+
+%% pandoc 的 \pandocbounded：原先只做"限宽限高"，不居中。
+%% 我们的 \paibanfigure 已把它放进 \centering 的 minipage，无需再包。
+\makeatletter
+\@ifundefined{pandocbounded}{}{%
+  \let\paiban@pandocbounded\pandocbounded
+  \renewcommand*\pandocbounded[1]{%
+    {\centering\paiban@pandocbounded{#1}\par}}%
+}
+\makeatother
+
+%% ---------------------------------------------------------------------
+%% spec §10 引文 / 提示 / 列表
+%%   引文块：左侧 2pt rule 竖线，左右缩进 1em，9.5/13，ink 80%
+%%   提示块（> **注意**）：竖线用 accent
+%%   实现：pandoc 的 blockquote → quote 环境；用 minipage 包一层拿"整块
+%%   高度"来画竖线（不可分页——本技能面向的书稿里引文块都是 1–4 行的
+%%   来源说明，宁可整块移到下一页，也不让竖线断成两截）。
+%% ---------------------------------------------------------------------
+%% 竖线：用 \vrule 撑满 minipage 的高度不可行（高度未知），
+%% 改用 lrbox 量高度再画 \rule。**几何必须是"内容缩进 > 0"**：
+%%   规格 §10 要求左右各缩进 1em，且 §1 要求内容不得侵入订口。
+%%   早期实现用 \llap 把竖线挂在版心左缘之外（内容从版心 0 缩进开始，
+%%   竖线落到订口里 9.8pt），被 §1 左边界门禁抓出来（12 页）。
+%%   现在：整块右移 1em → 竖线落在 1em 处 → 0.8em 空隙 → 内容盒，
+%%   内容盒宽 = 版心 − 1em(左) − (2pt + 0.8em) − 1em(右)，右缘仍留 1em。
+%% \rule 只向上长，用 \raisebox[-\dp][0pt][0pt] 下移 dp，竖线才盖住
+%% 最后一行降部；[0pt][0pt] 保证不影响行距。
+\renewenvironment{quote}{%
+  \par\addvspace{8pt}%
+  \begin{lrbox}{\paibanfigbox}%
+    \begin{minipage}{\dimexpr\linewidth-2.8em-2pt\relax}%
+      \fontsize{9.5}{13}\selectfont\color{ink}%
+      \setlength{\parindent}{0pt}%
+      \RaggedRight
+}{%
+    \end{minipage}%
+  \end{lrbox}%
+  \noindent\hspace*{1em}%
+  \raisebox{-\dp\paibanfigbox}[0pt][0pt]{%
+    \textcolor{rule}{\rule{2pt}{\dimexpr\ht\paibanfigbox+\dp\paibanfigbox\relax}}}%
+  \hspace{0.8em}%
+  \usebox{\paibanfigbox}%
+  \par\addvspace{8pt}%
+}
+
+%% 列表（§10）：项目间距 2pt，整体上下 4pt，缩进 1.5em；嵌套 1.2em
+%% 注意（已知且刻意）：标签是右对齐到"体缩进 − \labelsep"，两位数
+%% （参考文献的 19.）比一位数宽 5.5pt，会外挂约 2.8pt 进白边。
+%% §10 规定 1.5em，§1 允许 3pt 容差，两者正好相容；三位数（100.）
+%% 会外挂 8pt 并让 verify 的门禁 3 失败 —— 届时要么拆表要么改规格。
+\providecommand{\tightlist}{}
+\renewcommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{itemize}{%
+  \setlength{\itemsep}{2pt}\setlength{\parsep}{0pt}%
+  \setlength{\topsep}{4pt}\setlength{\partopsep}{0pt}}
+\AtBeginEnvironment{enumerate}{%
+  \setlength{\itemsep}{2pt}\setlength{\parsep}{0pt}%
+  \setlength{\topsep}{4pt}\setlength{\partopsep}{0pt}}
+\AtBeginEnvironment{description}{%
+  \setlength{\itemsep}{2pt}\setlength{\parsep}{0pt}%
+  \setlength{\topsep}{4pt}\setlength{\partopsep}{0pt}}
+\setlength{\leftmargini}{1.5em}
+\setlength{\leftmarginii}{1.2em}
+\setlength{\leftmarginiii}{1.2em}
+
+%% ---------------------------------------------------------------------
+%% spec §11 硬约束的辅助：脚注（8/10）
+%% ---------------------------------------------------------------------
+\setlength{\footnotesep}{8pt}
+\renewcommand{\footnoterule}{%
+  \kern-3pt{\color{rule}\hrule width 0.4\columnwidth height 0.4pt}\kern2.6pt}
+
+%% ---------------------------------------------------------------------
+%% 链接：§3 accent 用于链接；PDF 书签层级 = 章 + 节
+%% ---------------------------------------------------------------------
+\AtBeginDocument{%
+  \hypersetup{%
+    colorlinks=true,%
+    linkcolor=accent,%
+    urlcolor=accent,%
+    citecolor=accent,%
+    filecolor=accent,%
+    linktoc=page,%
+    bookmarksnumbered=false,%
+    bookmarksopen=true,%
+    bookmarksopenlevel=0,%
+    bookmarksdepth=1,%       章=0 节=1，§5 只收两级
+    pdftitle={@BOOKTITLE@},%
+    pdfborder={0 0 0},%
+  }%
+  %% §3 正文墨色（不用纯黑）。放在 AtBeginDocument 里，避免影响
+  %% 宏包内部用色（caption 等已各自声明颜色）。
+  \color{ink}%
+  \Urlmuskip=0mu plus 1mu\relax
+}
+
+%% ---------------------------------------------------------------------
+%% 标题页（规格未规定，最小实现：书名 22pt / 副题 14pt / 作者 / 日期）
+%%   不抢版面：没有装饰线，靠留白。
+%% ---------------------------------------------------------------------
+\renewcommand{\maketitle}{%
+  \begin{titlepage}%
+    \thispagestyle{empty}%
+    \null\vspace*{40mm}%
+    \begin{flushleft}%
+      {\fontsize{22}{28}\selectfont\heiti\bfseries\color{ink}@TITLE@\par}%
+      \vspace{8pt}%
+      {\fontsize{14}{18}\selectfont\color{muted}@SUBTITLE@\par}%
+      \vspace{10mm}%
+      {\color{accent}\rule{24mm}{0.8pt}\par}%
+      \vspace{10mm}%
+      {\fontsize{11}{15.2}\selectfont\color{muted}@AUTHOR@\par}%
+      \vspace{2pt}%
+      {\fontsize{9.5}{13}\selectfont\color{muted}@DATE@\par}%
+    \end{flushleft}%
+  \end{titlepage}%
+}
+
+%% ---------------------------------------------------------------------
+%% 兼容层：pandoc 不同版本对 \pandocbounded / \tightlist / \subtitle 的处理
+%% 不一致，这里统一兜底，避免 Undefined control sequence。
+%% ---------------------------------------------------------------------
+\providecommand{\subtitle}[1]{}
+\providecommand{\pandocbounded}[1]{#1}

@@ -170,9 +170,9 @@
     },
     {
       "name": "literary-ghostwriter",
-      "version": "2.0.0",
+      "version": "3.1.0",
       "status": "Beta",
-      "description": "Literary ghostwriter - write in 7 masters' styles (Shakespeare/Zweig/Calvino/Luxun/Laoshe/Jinyong/Gulong)",
+      "description": "Literary ghostwriter - write in 7 masters' styles and transfer text between their voices (Shakespeare/Zweig/Calvino/Luxun/Laoshe/Jinyong/Gulong)",
       "auto_load": false,
       "priority": 15,
       "rules": [
@@ -183,7 +183,15 @@
         "laoshe-style.md",
         "jinyong-style.md",
         "gulong-style.md",
-        "vocabulary.md"
+        "vocabulary.md",
+        "anti-aigc.md",
+        "style-transfer.md",
+        "novel-workflow.md",
+        "project-structure.md",
+        "character-consistency.md",
+        "foreshadowing.md",
+        "editor-review.md",
+        "web-novel.md"
       ]
     },
     {
@@ -577,6 +585,19 @@
       "version": "1.0.0",
       "status": "Beta",
       "description": "视频萃取：将任意视频链接转化为图文学习材料（逐字稿、关键帧、幻灯片、总结文章、网页）。"
+    },
+    {
+      "name": "pai-ban",
+      "version": "1.1.0",
+      "status": "Beta",
+      "description": "排版 - Publication-grade typesetting for Markdown books: declarative pai-ban.toml config + fixed pipeline (pandoc + XeLaTeX) + 11 hard quality gates (zero overflow/missing glyphs/LaTeX errors, odd-page chapter openers, three-line tables, single accent colour). PDF is the authoritative artifact, DOCX is the editable copy.",
+      "auto_load": false,
+      "priority": 50,
+      "rules": [
+        "design-spec.md",
+        "workflow.md",
+        "verification.md"
+      ]
     }
   ],
   "docx-to-knowledge": {

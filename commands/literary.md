@@ -26,6 +26,25 @@ Load the literary-ghostwriter skill and create a work in the specified author's 
 /literary gulong Write about a lonely blade warrior
 ```
 
+## Style Transfer
+
+Re-voice existing text into another author's style. Only the language changes; plot, characters and scene stay the same.
+
+| Command | Description |
+|---------|-------------|
+| `/literary transfer <src->target> <text>` | Specify source and target author, e.g. `gulong->laoshe` |
+| `/literary transfer <target> <text>` | Omit source; the system detects and states it |
+| `/literary transfer verify <text> <target>` | Line-by-line compare against the source, score fidelity |
+| `/literary transfer matrix` | Show the inter-author transfer matrix |
+
+```bash
+/literary transfer gulong->laoshe "The cold wind cut like a blade."
+/literary transfer laoshe->luxun src.md
+/literary transfer luxun "He said it without any expression on his face."
+```
+
+The four-layer re-voicing method and reproducible samples live in `rules/style-transfer.md`.
+
 ## Writing Requirements
 
 1. **Authentic Style**: Accurately capture the author's characteristic style
