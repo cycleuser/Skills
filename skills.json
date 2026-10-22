@@ -155,7 +155,7 @@
     },
     {
       "name": "humanizer",
-      "version": "1.1.0",
+      "version": "1.8.0",
       "status": "Stable",
       "description": "AI text humanization - convert AI-generated text into natural human language",
       "auto_load": false,

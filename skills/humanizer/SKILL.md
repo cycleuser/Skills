@@ -1,23 +1,11 @@
 ---
 name: humanizer
-version: "1.4.0"
-description: |
-  AI text humanizer that rewrites AI-generated content into natural human language based on AIGC detection countermeasures.
-
-  Triggers when: Needing to reduce AIGC detection rates, rewriting AI-generated content into natural language, optimizing text to sound more human-written, or performing humanization polish on AI text.
-
-  Commands:
-  - /人话 <文本> - Humanize text
-  - /人话 --style formal <文本> - Humanize in formal style
-  - /人话 --style casual <文本> - Humanize in casual style
-  - /humanize <text> - Humanize AI-generated text (English)
-  - /detect <文本> - Detect AIGC features in text
-  - /demo - Generate high-AIGC example and demonstrate processing
-
-  Capabilities: AIGC detection countermeasures, identifying AI-typical patterns, multi-round iterative AIGC rate reduction, preserving original meaning and logic, supporting both casual and formal styles, bilingual Chinese-English text processing
-author: cycleuser
+description: AI text humanizer that rewrites AI-generated content into natural human language based on AIGC detection countermeasures. Triggers when: Needing to reduce AIGC detection rates, rewriting AI-generated content into natural language, optimizing text to sound more human-written, or performing humanization polish on AI text. Commands: - /人话 <文本> - Humanize text - /人话 --style formal <文本> - Humanize in formal style - /人话 --style casual <文本> - Humanize in casual style - /humanize <text> - Humanize AI-generated text (English) - /detect <文本> - Detect AIGC features in text - /demo - Generate high-AIGC example and demonstrate processing Capabilities: AIGC detection countermeasures, identifying AI-typical patterns, multi-round iterative AIGC rate reduction, preserving original meaning and logic, supporting both casual and formal styles, bilingual Chinese-English text processing
 license: MIT
-status: Stable
+compatibility: opencode
+metadata:
+  version: 1.7.0
+  author: cycleuser
 ---
 
 ## Safety Rules
@@ -211,6 +199,100 @@ AI典型写法示例：
 
 AI的发展前景值得期待，但风险同样不可忽视。关键在于如何在创新和风险之间找到平衡——这不是技术问题，而是治理问题。
 
+#### 模式5：寒暄式开头
+
+AI典型写法示例：
+
+最近老有人问，Agent Skills 到底是个啥，今天就来聊聊。
+
+人化处理后：
+
+Agent Skills 是 Anthropic 放在 GitHub 上的一套技能示例仓库。
+
+#### 模式6：泛人称代词滥用
+
+AI典型写法示例：
+
+我们来看看这个技能，大家可能会觉得它挺复杂。
+
+人化处理后：
+
+这个技能的结构并不复杂。
+
+#### 模式7：装懂口播腔 / 土味带货词
+
+禁用词：说白了、唬人、翻了一圈才明白、一口气、一次说清、捋顺、掰正、定死、有几个坑、踩坑、避坑、干货、手把手、保姆级、划重点。
+
+AI典型写法示例：
+
+说白了，有两个坑要提前讲清楚。
+
+人化处理后：
+
+有两处需要留意。
+
+#### 模式8：中英混杂
+
+可翻译的术语一律中文化；首次写「中文（English）」，之后只写中文。专有名词、文件名、代码、URL 除外。
+
+AI典型写法示例：
+
+智能体先扫一遍所有技能的 description。
+
+人化处理后：
+
+智能体先扫描一遍所有技能的描述（description）。
+
+#### 模式9：段首短判断句
+
+段落不要以 3–12 字的孤立短句起头再解释，段首第一句要直接进入完整信息。
+
+AI典型写法示例：
+
+使用顺序有讲究。智能体先扫描一遍所有技能的描述。
+
+人化处理后：
+
+智能体调用技能时，先扫描一遍所有技能的描述。
+
+#### 模式10：否定-转折抖机灵 / 空话套话
+
+禁止「X不难，难的是Y」「不是A，而是B」「不在于A，在于B」「真正的X在于Y」，也禁止「写得明明白白」「想商用先把许可看清楚」这类空话，直接说结论。
+
+AI典型写法示例：
+
+机制不难，难的是有没有一件值得沉淀的事。
+
+人化处理后：
+
+剩下的就是找一件值得反复做的事。
+
+#### 模式11：动作隐喻 / 拟人（技术文重灾区）
+
+给硬件、文件、进程安上人的动作或物理暴力。判定口诀：动词换成平实词（放、装、存、读、占、不够）意思不变的，就是AI味。
+
+禁用与替换对照：钉在/钉死/焊死→常驻、固定；躺（躺NVMe）→存放；塞/塞下→容纳；喂/投喂→传入；吞/吐→读写；扛/硬扛→承载；榨干/压榨→充分利用；吃满/打满/拉满/跑满→占满、到上限；腾→释放；垫（底下垫着）→基于；撑/撑起→支持；支棱/立起来→建立；安家/住进/扎根→驻留；搬运/追着搬→换页、调入调出。拟人主语同禁：「模型知道」「调度器决定」「显卡会饿」。例外：冷热专家（hot/cold expert）、换入换出等译名/OS本行术语保留。
+
+AI典型写法示例：
+
+把最常用的专家钉在显卡，次热的放内存，其余躺 NVMe。
+
+人化处理后：
+
+常访问的专家常驻显存，次一级的放内存，其余存在 NVMe 上按需调入。
+
+#### 模式12：版面痕迹（markdown 拐杖）
+
+加粗成瘾（每段必有一处）、表格化一切、列表必三点且各项等长、破折号「——」做插入语、「」现场造词、小标题后必跟表格或列表。成因：markdown 饱和训练语料泄漏进散文（arXiv 2603.27006），这类用法 ChatGPT 后全网激增（Pew 2026-08）。散文体的量化红线（对博客/公众号/书稿）：加粗>3处/千字、——>1.5/千字、「」非书名用法>1/千字、列表行占比>15%，超线即改写。聊天回复中确为矩阵数据的表格不算。
+
+AI典型写法示例：
+
+**机制**：把专家钉在显卡、次热的放内存、其余躺 NVMe，边聊边换入换出——本质是分层缓存。
+
+人化处理后：
+
+机制是分层缓存：常访问的专家常驻显存，次一级的放内存，其余存在 NVMe，按需调入。
+
 ## 处理流程
 
 输入文本 → "一眼AI"检测 → 风格判断 → 策略选择 → 迭代优化 → 输出结果+报告
@@ -344,6 +426,10 @@ language：auto，语言选择，可选 auto/zh/en
 |------|------|------|
 | 1.0.0 | 2026-04-01 | 初始版本，AIGC检测和基础人化处理 |
 | 1.4.0 | 2026-05-09 | 添加安全规则，集成，性能管理，示例，排查，边界情况，6个rule文件 |
+| 1.5.0 | 2026-10-04 | 新增4类"一眼AI"模式：寒暄式开头、泛人称代词、装懂口播/土味词、中英混杂 |
+| 1.6.0 | 2026-10-04 | 新增"段首短判断句"模式（使用顺序有讲究。/好处很直接。等） |
+| 1.7.0 | 2026-10-04 | 新增"否定-转折抖机灵/空话套话"模式（X不难难的是Y／写得明明白白 等） |
+| 1.8.0 | 2026-10-22 | 新增"动作隐喻/拟人"与"版面痕迹（markdown 拐杖）"两类模式，阈值来自 90 篇语料三尺实测（见 研究内容/AIGC/研究报告.md） |
 
 ## See Also / 相关技能
 
