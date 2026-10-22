@@ -29,6 +29,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -542,6 +543,7 @@ def build_pdf(ctx: dict) -> dict:
     total, runs = 0.0, 0
     stats: dict = {}
     logs: list[Path] = []
+    prev_sig: str | None = None
     for i in range(max(2, cfg["build"]["passes"])):
         log_i = workdir / f"xelatex-{i + 1}.log"
         logs.append(log_i)
@@ -554,8 +556,17 @@ def build_pdf(ctx: dict) -> dict:
             return {"ok": False, "stage": f"xelatex pass {i + 1}", "log": log_i,
                     "elapsed": f"{total:.1f}s", "runs": runs, "tex": tex,
                     "tex_stats": stats}
-        if i >= 1 and not stats["rerun"]:
+        # 收敛判定不能只信 LaTeX 的 rerun 警告：模板的 rerunfilecheck 对
+        # "行数不变、仅页码值变"的 .toc 更新不报警（实测前言条目 v→xi 被漏，
+        # 成书目录比页脚少 6 页）。以 .toc/.aux 字节哈希为准。
+        sig = hashlib.sha256()
+        for f in (workdir / "book.toc", workdir / "book.aux"):
+            if f.exists():
+                sig.update(f.read_bytes())
+        sig = sig.hexdigest()
+        if i >= 1 and not stats["rerun"] and sig == prev_sig:
             break
+        prev_sig = sig
     return {"ok": True, "stage": "done", "log": logs[-1], "logs": logs,
             "longtable_cont": n_cont,
             "elapsed": f"{total:.1f}s", "runs": runs, "tex": tex,

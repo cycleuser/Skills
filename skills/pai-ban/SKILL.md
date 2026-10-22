@@ -1,6 +1,6 @@
 ---
 name: pai-ban
-version: "1.1.0"
+version: "1.1.1"
 description: |
   Publication-grade typesetting for Markdown books and long documents — journal-level typographic discipline on a book canvas (baseline grid, restrained palette, chapter openers, running heads, code highlighting, three-line tables), compiled to PDF/DOCX and verified against hard quality gates.
 

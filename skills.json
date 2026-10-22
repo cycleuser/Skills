@@ -588,7 +588,7 @@
     },
     {
       "name": "pai-ban",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "status": "Beta",
       "description": "排版 - Publication-grade typesetting for Markdown books: declarative pai-ban.toml config + fixed pipeline (pandoc + XeLaTeX) + 11 hard quality gates (zero overflow/missing glyphs/LaTeX errors, odd-page chapter openers, three-line tables, single accent colour). PDF is the authoritative artifact, DOCX is the editable copy.",
       "auto_load": false,
