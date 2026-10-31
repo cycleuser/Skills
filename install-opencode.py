@@ -118,6 +118,7 @@ def convert_skill_to_opencode(content: str) -> str:
     i = 0
     while i < len(lines):
         line = lines[i]
+        stripped = line.strip()
         
         if line.startswith("name:"):
             name = line.split(":", 1)[1].strip().strip('"')
@@ -140,17 +141,17 @@ def convert_skill_to_opencode(content: str) -> str:
         elif line.startswith("license:"):
             license_val = line.split(":", 1)[1].strip().strip('"')
         
-        elif line.startswith("version:"):
-            metadata["version"] = line.split(":", 1)[1].strip().strip('"')
+        elif stripped.startswith("version:"):
+            metadata["version"] = stripped.split(":", 1)[1].strip().strip('"')
         
-        elif line.startswith("author:"):
-            metadata["author"] = line.split(":", 1)[1].strip().strip('"')
+        elif stripped.startswith("author:"):
+            metadata["author"] = stripped.split(":", 1)[1].strip().strip('"')
         
-        elif line.startswith("priority:"):
-            metadata["priority"] = line.split(":", 1)[1].strip()
+        elif stripped.startswith("priority:"):
+            metadata["priority"] = stripped.split(":", 1)[1].strip()
         
-        elif line.startswith("auto_load:"):
-            metadata["auto_load"] = line.split(":", 1)[1].strip()
+        elif stripped.startswith("auto_load:"):
+            metadata["auto_load"] = stripped.split(":", 1)[1].strip()
         
         i += 1
     
@@ -158,7 +159,9 @@ def convert_skill_to_opencode(content: str) -> str:
     if len(description) > 1024:
         description = description[:1021] + "..."
     
-    new_frontmatter.append(f'description: {description}')
+    # description 里常含 "Triggers when:" 这类「冒号+空格」，裸标量会让 YAML 解析失败；
+    # 用 JSON 转义成双引号标量（JSON 是 YAML 1.2 的子集），换行与引号都能安全保留。
+    new_frontmatter.append("description: " + json.dumps(description, ensure_ascii=False))
     new_frontmatter.append(f'license: {license_val}')
     new_frontmatter.append('compatibility: opencode')
     
@@ -279,6 +282,10 @@ def install_from_local(source_dir: Path, install_dir: Path, skills: Optional[lis
         tests_src = source_skill / "tests"
         if tests_src.exists():
             shutil.copytree(tests_src, dest_skill / "tests")
+
+        references_src = source_skill / "references"
+        if references_src.exists():
+            shutil.copytree(references_src, dest_skill / "references")
 
         installed.append(skill_name)
         print(f"  ✓ Installed: {skill_name}")

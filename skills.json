@@ -155,17 +155,29 @@
     },
     {
       "name": "humanizer",
-      "version": "1.8.0",
+      "version": "2.0.0",
       "status": "Stable",
-      "description": "AI text humanization - convert AI-generated text into natural human language",
+      "description": "AI text humanizer (zh/en) - measurable AI-trait lint, bilingual pattern libraries (Z01-Z29 / E01-E25), five-pass rewrite protocol",
       "auto_load": false,
       "priority": 25,
       "rules": [
         "ai-features.md",
+        "zh-patterns.md",
+        "en-patterns.md",
+        "metrics.md",
+        "rewrite-protocol.md",
         "humanization.md",
         "formal-humanization.md",
         "iteration.md",
-        "examples.md"
+        "examples.md",
+        "detection-methods.md",
+        "anti-aigc.md"
+      ],
+      "scripts": [
+        "scripts/humanize_lint.py"
+      ],
+      "references": [
+        "references/ai-text-features-research.md"
       ]
     },
     {

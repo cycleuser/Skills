@@ -1,10 +1,26 @@
 ---
 name: humanizer
-description: AI text humanizer that rewrites AI-generated content into natural human language based on AIGC detection countermeasures. Triggers when: Needing to reduce AIGC detection rates, rewriting AI-generated content into natural language, optimizing text to sound more human-written, or performing humanization polish on AI text. Commands: - /人话 <文本> - Humanize text - /人话 --style formal <文本> - Humanize in formal style - /人话 --style casual <文本> - Humanize in casual style - /humanize <text> - Humanize AI-generated text (English) - /detect <文本> - Detect AIGC features in text - /demo - Generate high-AIGC example and demonstrate processing Capabilities: AIGC detection countermeasures, identifying AI-typical patterns, multi-round iterative AIGC rate reduction, preserving original meaning and logic, supporting both casual and formal styles, bilingual Chinese-English text processing
+description: |
+  AI text humanizer that turns machine-generated prose into writing that reads like a person wrote it — in Chinese and English, with measurable checks instead of guesswork.
+
+  Triggers when: 需要去掉 AI 味 / 去 AIGC 痕迹 / 把生成的内容改得像人写的 / 润色公众号、博客、公文、论文、技术文档使其自然 / 中文或英文文本被指"一眼AI" / 需要量化检查文本的 AI 特征密度。
+
+  Commands:
+  - /人话 <文本> — 人化改写（自动判语言与文体）
+  - /人话 --style casual|formal <文本> — 指定口语/书面
+  - /人话 --mode light|full <文本> — 润色或重写
+  - /人话 --lang zh|en <文本> — 强制语言
+  - /人话 check <文件|文本> — 只体检不改写
+  - /人话 diff <改写前> <改写后> — 改写前后指标对比
+  - /humanize <text> — English alias
+  - /detect <文本> — 特征体检摘要
+  - /demo — 用样例演示前后差异
+
+  Capabilities: 双语 AI 特征库（中文 Z01–Z29 / 英文 E01–E25）、量化阈值（句长方差、名词化、AI 词密度、版面痕迹）、五遍改写协议、可执行体检脚本 humanize_lint.py（含自测）、保留原意与术语的硬约束。
 license: MIT
 compatibility: opencode
 metadata:
-  version: 1.7.0
+  version: 2.0.0
   author: cycleuser
 ---
 
@@ -14,426 +30,229 @@ metadata:
 
 # 人话 (Humanizer)
 
-AI文本人化处理技能，基于AIGC检测原理，将AI生成文本转化为自然人类语言。
+把 AI 生成的文字改得像人写的。核心不是换同义词，而是**先量化、再破结构、再改句法、最后清版面**，并且全程守住原意。
+
+## 它做什么，不做什么
+
+做：把人写的骨架装回去——删空话、破三段论、造长短句、拆名词化、清掉 markdown 痕迹、补一处真实判断。
+
+不做：不改事实，不编细节，不承诺"降低检测率到 X%"。检测器本身不可靠（改写一轮就能大幅波动），以分数为唯一目标是错的。
+
+一句话：**目标是"读起来像人"，不是"骗过机器"。**
 
 ## Quick Commands
 
-| Command | Description |
-|---------|-------------|
-| `/人话 <文本>` | Humanize text |
-| `/人话 --style formal <文本>` | Humanize in formal style |
-| `/人话 --style casual <文本>` | Humanize in casual style |
-| `/humanize <text>` | Humanize AI-generated text (English) |
-| `/detect <文本>` | Detect AIGC features in text |
-| `/demo` | Generate high-AIGC example and demonstrate processing |
-
-## AIGC检测原理与反检测策略
-
-### 主流检测方法
-
-AIGC检测器主要基于以下原理工作：
-
-困惑度 (Perplexity)：AI倾向于选择概率最高的词，困惑度低。人类写作困惑度高，会使用意外的词汇。AI文本困惑度低，用词"安全"、"正确"。
-
-突发性 (Burstiness)：人类写作的句子长度和复杂度变化大。人类写作长短句穿插，节奏跳跃。AI文本句子长度均匀，节奏平稳。
-
-词汇分布 (Token Distribution)：AI偏好常见词，人类会用更丰富的词汇。人类写作词汇多样，有生僻词、口语词。AI文本词汇集中在高频区域。
-
-句式模式 (Sentence Pattern)：AI句式结构更规整、对称。人类写作句式多变，有倒装、省略、插入语。AI文本句式工整，主谓宾结构稳定。
-
-过渡词频率 (Transition Words)：AI过度使用正式过渡词。人类写作过渡自然，少用"首先其次"。AI文本过度依赖"首先、其次、综上所述"。
-
-内容深度 (Content Depth)：AI内容停留在概念层面。人类写作有具体案例、数据、个人经历。AI文本概念罗列，缺乏具体细节。
-
-### 反检测策略总表
-
-检测维度：AI特征 → 反检测策略
-
-困惑度：用词安全、常见 → 使用意外的词汇、生僻词、口语词
-突发性：句子长度均匀 → 长短句穿插，制造节奏变化
-词汇分布：高频词为主 → 引入低频词、专业术语、俚语
-句式模式：结构规整对称 → 打破对称，用倒装、省略、插入语
-过渡词频率：高频使用 → 删除或替换为自然过渡
-内容深度：概念空洞 → 加入具体数据、案例、细节
-
-## 反检测详细策略
-
-### 策略1：提高困惑度
-
-原理：AI倾向于选择最可能的词汇，困惑度低。人类会使用"意外"的词汇。
-
-操作方法：用具体词汇替换抽象词汇、用口语词替换书面词、用意外表达替换"正确"表达、加入个人感受和判断。
-
-困惑度提升词汇表示例：
-
-AI常用词 → 人化替换词
-实现 → 搞定、弄成、跑通
-进行 → 干、做、弄
-具有 → 有、带着、有着
-能够 → 可以、能、搞得定
-提供 → 给、贡献、递过来
-需要 → 得、必须、少不了
-
-### 策略2：增加突发性
-
-原理：AI句子长度均匀，人类长短句穿插。
-
-操作方法：合并短句成长句、拆分长句成短句、加入极短的判断句（3-8字）、制造节奏变化。
-
-突发性增强模式：
-
-模式1：长句 + 短判断
-...（30字以上的长句）。这就是问题所在。
-...（复杂论述）。很难。
-
-模式2：短句 + 解释
-为什么？因为...
-核心是什么？是...
-
-模式3：多短句连击
-这事不简单。涉及面广。利益盘根错节。
-
-### 策略3：丰富词汇分布
-
-原理：AI词汇集中，人类词汇多样。
-
-操作方法：引入专业术语、引入口语词/俚语、引入方言或网络用语、避免重复用词。
-
-### 策略4：打破句式模式
-
-原理：AI句式工整，人类句式多变。
-
-操作方法：使用倒装句、使用省略句、加入插入语、使用问句。
-
-句式变换模式：
-
-原句：A具有B的特点
-
-变换1（倒装）：B，这是A的典型特征
-变换2（省略）：A？B是肯定的
-变换3（插入）：A，在我看来，具有B的特点
-变换4（问句）：A有什么特点？B
-
-### 策略5：删除/替换过渡词
-
-原理：AI过度使用正式过渡词。
-
-AI过渡词： 首先，...其次，...最后，... 一方面，...另一方面，... 综上所述，...
-
-人化过渡：（删除"首先"，直接开始）再说一点：...还有个问题是...说到底，...关键在于，...
-
-过渡词替换表：
-
-AI过渡词 → 人化替代
-首先 → （删除）
-其次 → 再说一点、另外
-最后 → 最后一点、补充一句
-综上所述 → 说到底、归根结底
-一方面...另一方面 → 先说...再说...、...但...
-
-### 策略6：增加内容深度
-
-原理：AI内容空洞，人类内容具体。
-
-操作方法：加入具体数字、加入具体案例、加入具体时间/地点、加入个人观察。
-
-深度增强检查清单：
-
-是否有具体数字？
-是否有具体案例？
-是否有对比数据？
-是否有个人判断？
-是否有反面观点？
-
-## "一眼AI"特征库
-
-### 最典型的"一眼AI"模式
-
-这些模式几乎100%表明是AI生成：
-
-#### 模式1：加粗标题+冒号+相似句式
-
-AI典型写法示例：
-
-**其一，信息来源分散。** 用户在多个网站、APP之间反复切换，时间成本高企。
-
-**其二，语言障碍突出。** 小语种信息的获取与理解，对普通用户而言几乎不可能。
-
-**其三，处理能力有限。** 海量信息涌入后，提炼核心观点需要大量时间。
-
-问题分析：加粗格式过于整齐、"其一、其二、其三"机械过渡、每句结构高度相似、冒号后的句子长度相近。
-
-人化处理后：
-
-用户面临的第一个问题是信息来源分散——在不同网站和APP之间来回切换，时间成本相当高。语言障碍也不容忽视，小语种信息普通人根本看不懂。至于处理能力，海量信息涌入后想提炼核心观点，确实需要花不少时间。
-
-#### 模式2："首先...其次...最后..."机械三段论
-
-AI典型写法示例：
-
-首先，从技术角度来看，人工智能具有强大的数据处理能力。
-其次，从应用层面分析，AI已经渗透到各行各业。
-最后，从发展趋势预测，人工智能将成为未来的核心技术。
-
-人化处理后：
-
-人工智能最核心的优势是数据处理能力。这一点在各行各业的应用中已经得到验证——医疗、金融、制造，几乎没有AI涉足不到的领域。更值得期待的是其发展潜力，AI很可能成为下一轮技术革命的核心引擎。
-
-#### 模式3："一方面...另一方面..."对称结构
-
-AI典型写法示例：
-
-一方面，区块链技术具有去中心化、不可篡改等优势；另一方面，其扩展性和性能问题仍是亟待解决的挑战。
-
-人化处理后：
-
-区块链的去中心化和不可篡改性确实是其核心优势。但问题也很明显——扩展性和性能瓶颈一直没解决。
-
-#### 模式4："综上所述/总而言之"总结句
-
-AI典型写法示例：
-
-综上所述，人工智能技术的发展前景广阔，但同时也面临诸多挑战。我们需要在推动技术创新的同时，关注其潜在风险。
-
-人化处理后：
-
-AI的发展前景值得期待，但风险同样不可忽视。关键在于如何在创新和风险之间找到平衡——这不是技术问题，而是治理问题。
-
-#### 模式5：寒暄式开头
-
-AI典型写法示例：
-
-最近老有人问，Agent Skills 到底是个啥，今天就来聊聊。
-
-人化处理后：
-
-Agent Skills 是 Anthropic 放在 GitHub 上的一套技能示例仓库。
-
-#### 模式6：泛人称代词滥用
-
-AI典型写法示例：
-
-我们来看看这个技能，大家可能会觉得它挺复杂。
-
-人化处理后：
-
-这个技能的结构并不复杂。
-
-#### 模式7：装懂口播腔 / 土味带货词
-
-禁用词：说白了、唬人、翻了一圈才明白、一口气、一次说清、捋顺、掰正、定死、有几个坑、踩坑、避坑、干货、手把手、保姆级、划重点。
-
-AI典型写法示例：
-
-说白了，有两个坑要提前讲清楚。
-
-人化处理后：
-
-有两处需要留意。
-
-#### 模式8：中英混杂
-
-可翻译的术语一律中文化；首次写「中文（English）」，之后只写中文。专有名词、文件名、代码、URL 除外。
-
-AI典型写法示例：
-
-智能体先扫一遍所有技能的 description。
-
-人化处理后：
-
-智能体先扫描一遍所有技能的描述（description）。
-
-#### 模式9：段首短判断句
-
-段落不要以 3–12 字的孤立短句起头再解释，段首第一句要直接进入完整信息。
-
-AI典型写法示例：
-
-使用顺序有讲究。智能体先扫描一遍所有技能的描述。
-
-人化处理后：
-
-智能体调用技能时，先扫描一遍所有技能的描述。
-
-#### 模式10：否定-转折抖机灵 / 空话套话
-
-禁止「X不难，难的是Y」「不是A，而是B」「不在于A，在于B」「真正的X在于Y」，也禁止「写得明明白白」「想商用先把许可看清楚」这类空话，直接说结论。
-
-AI典型写法示例：
-
-机制不难，难的是有没有一件值得沉淀的事。
-
-人化处理后：
-
-剩下的就是找一件值得反复做的事。
-
-#### 模式11：动作隐喻 / 拟人（技术文重灾区）
-
-给硬件、文件、进程安上人的动作或物理暴力。判定口诀：动词换成平实词（放、装、存、读、占、不够）意思不变的，就是AI味。
-
-禁用与替换对照：钉在/钉死/焊死→常驻、固定；躺（躺NVMe）→存放；塞/塞下→容纳；喂/投喂→传入；吞/吐→读写；扛/硬扛→承载；榨干/压榨→充分利用；吃满/打满/拉满/跑满→占满、到上限；腾→释放；垫（底下垫着）→基于；撑/撑起→支持；支棱/立起来→建立；安家/住进/扎根→驻留；搬运/追着搬→换页、调入调出。拟人主语同禁：「模型知道」「调度器决定」「显卡会饿」。例外：冷热专家（hot/cold expert）、换入换出等译名/OS本行术语保留。
-
-AI典型写法示例：
-
-把最常用的专家钉在显卡，次热的放内存，其余躺 NVMe。
-
-人化处理后：
-
-常访问的专家常驻显存，次一级的放内存，其余存在 NVMe 上按需调入。
-
-#### 模式12：版面痕迹（markdown 拐杖）
-
-加粗成瘾（每段必有一处）、表格化一切、列表必三点且各项等长、破折号「——」做插入语、「」现场造词、小标题后必跟表格或列表。成因：markdown 饱和训练语料泄漏进散文（arXiv 2603.27006），这类用法 ChatGPT 后全网激增（Pew 2026-08）。散文体的量化红线（对博客/公众号/书稿）：加粗>3处/千字、——>1.5/千字、「」非书名用法>1/千字、列表行占比>15%，超线即改写。聊天回复中确为矩阵数据的表格不算。
-
-AI典型写法示例：
-
-**机制**：把专家钉在显卡、次热的放内存、其余躺 NVMe，边聊边换入换出——本质是分层缓存。
-
-人化处理后：
-
-机制是分层缓存：常访问的专家常驻显存，次一级的放内存，其余存在 NVMe，按需调入。
-
-## 处理流程
-
-输入文本 → "一眼AI"检测 → 风格判断 → 策略选择 → 迭代优化 → 输出结果+报告
-
-"一眼AI"检测：检测加粗标题+冒号、其一其二其三、首先其次最后、句式重复度等特征。
-
-风格判断：确定口语化还是书面化。
-
-策略选择：根据检测结果和风格选择改写策略。
-
-迭代优化：多轮迭代直到达到目标AIGC率。
-
-输出结果：展示改写前后对比和详细报告。
+| Command | 说明 |
+|---------|------|
+| `/人话 <文本>` | 人化改写，自动判语言与文体 |
+| `/人话 --style casual <文本>` | 口语体（博客、公众号、帖子） |
+| `/人话 --style formal <文本>` | 书面体（论文、公文、报告） |
+| `/人话 --mode light <文本>` | 只润色，保留原结构 |
+| `/人话 --mode full <文本>` | 重写，五遍全做 |
+| `/人话 --lang zh\|en <文本>` | 强制语言（中英混排时用） |
+| `/人话 check <文件\|文本>` | 只体检，不改写 |
+| `/人话 diff <改写前> <改写后>` | 改写前后指标对比 |
+| `/humanize <text>` | English alias |
+| `/detect <文本>` | 体检摘要 |
+| `/demo` | 样例演示 |
+
+## 工作流
+
+```
+① 判语言/文体 → ② 跑体检 → ③ 定模式 → ④ 五遍改写 → ⑤ 复测 → ⑥ 交付（稿+摘要+指标）
+```
+
+**① 判语言与文体**
+
+| 文体 | 判据 | profile |
+|------|------|---------|
+| 散文/博客/公众号 | 面向普通读者，有叙述 | `prose` |
+| 技术文档/README/说明 | 面向使用者，有步骤参数 | `tech` |
+| 论文/报告/公文 | 面向评审或上级，有引用规范 | `academic` |
+
+中英混排时按主体语言判；代码块、公式、引用不计入统计。
+
+**② 跑体检**（有文件时必跑，纯聊天输入可心算）
+
+```bash
+python3 scripts/humanize_lint.py check draft.md --lang zh --profile prose
+python3 scripts/humanize_lint.py check draft.md --json          # 机器可读
+cat draft.md | python3 scripts/humanize_lint.py score - --lang en
+```
+
+脚本只读、纯标准库、有自测（`python3 tests/test_lint.py`，23 项）。改写完成后用它对比前后：
+
+```bash
+python3 scripts/humanize_lint.py diff before.md after.md
+```
+
+输出分数变化、九项关键指标的前后值与方向、被清除和残留的检测项。没有脚本环境时，按 `rules/metrics.md` 的表手工抽三项：句长 CV、AI 词密度、加粗/破折号密度。
+
+**③ 定模式**：分数 <15 不动或轻润；15–40 用 `light`；>40 用 `full`。
+
+**④ 五遍改写**：P0 保全 → P1 骨架 → P2 句法 → P3 词汇 → P4 证据 → P5 版面。详见 `rules/rewrite-protocol.md`。
+
+**⑤ 复测**：重跑体检，分数未达 profile 阈值就回到对应那一遍，最多 3 轮。只处理分项里最难的那一维（分数最高者），不要全文重写。
+
+**⑥ 交付**：改写稿 + 3–6 条改动摘要 + 前后指标 + 一句限定（"启发式体检，不是检测结论"）。没有真实数据的地方标 `（待补：……）`。
+
+## 核心规则（十二条硬约束）
+
+1. **原意优先**。数字、术语、引用、代码、直接引语逐字不动；条件与强度不许改大改小。
+2. **不编细节**。原文没有的数据、案例、经历一律不补；需要补就标待补。
+3. **先删后换**。套话能删就删，不要换成同义词。
+4. **先结构后词汇**。三段论、三项并列、对称段没破，换词是白费。
+5. **句长要方差**。全短句也是 AI 特征；每 3–5 句放一个短句，每段留一个长句。
+6. **中文拆修饰**。修饰语密、句子重、互动少，是中文 AI 文的核心差异；方向是拆句、还原动词、加一点对话感。
+7. **英文拆名词化与 -ing 尾巴**。不要为降分硬加被动（AI 的无施事被动本来就比人少）。
+8. **版面清零**。散文里不留加粗、列表、表格、emoji、markdown 残留。
+9. **词表按密度用**。单个词不构成证据；破折号在 Gemini 上甚至低于人类。
+10. **留一处人味**。一个不确定、一个判断、一句没说完的话。
+11. **不越改越糟**。术语口语化、过度语气词、同义词轮换、编造细节，都比 AI 味更糟。
+12. **分数是体温计**。到阈值就停；为过 lint 而改坏内容是失败。
+
+## 特征库
+
+| 文件 | 内容 | 什么时候看 |
+|------|------|-----------|
+| `rules/zh-patterns.md` | 中文 Z01–Z29：空话拔高、三段论、否定平行、四字格、名词化、口播腔、拟人、版面痕迹、伪具体化 | 改中文 |
+| `rules/en-patterns.md` | 英文 E01–E25：significance inflation、copula avoidance、AI 词簇、-ing 尾巴、否定平行、三的法则、助手残留、伪引用 | 改英文 |
+| `rules/metrics.md` | 双语阈值表、三套 profile、分数解读、调阈值方法 | 判断"改到什么程度" |
+| `rules/rewrite-protocol.md` | 五遍法、保全白名单、自检 10 条、常见误改 | 动手改 |
+| `references/ai-text-features-research.md` | 证据与数字：PNAS、Science Advances、维基编者清单、中文对照研究、叙事层研究 | 想知道"为什么" |
+
+## 阈值速查
+
+完整表见 `rules/metrics.md`。下面是常用的几条（prose 档）：
+
+| 指标 | 中文（prose） | 英文（prose） |
+|------|---------------|---------------|
+| 平均句长 | >38 字考虑拆句（仅提示） | >24 词考虑拆句（仅提示） |
+| 句长 CV | ≤0.32 满分，≥0.55 免罚 | 同左 |
+| 空话 / 官腔 / AI 词 | 3→15 / 千字 | 3→15 / 千词 |
+| 名词化 | 8→18 / 千字 | 4.5%→10% |
+| 三项并列 | 0.4→1.2 / 千字 | 0.8→2.2 / 千词 |
+| 否定平行 | 0.3→1.5 / 千字 | 0.3→1.5 / 千词 |
+| 连接词开场句 | 10%→35% | 10%→35% |
+| 加粗 | 允许 1 处，之后 1→3 / 千字 | 允许 1 处，之后 1→3 / 千词 |
+| 破折号 | 允许 1 处，之后 1→3 / 千字 | 允许 1 处，之后 1→3 / 千词 |
+| 通过分数 | ≤45 | ≤45 |
+
+`a→b` 表示测值 ≤a 不计分、≥b 满分。
+
+技术文档与学术文本的阈值更松，务必切 `--profile`，否则会把必要的列表和术语删掉。
 
 ## 处理示例
 
-### 示例1：打破"其一其二其三"
+### 示例一：中文，典型"报告体"
 
-输入（AI率98%）：**其一，信息来源分散。** 用户在多个网站、APP之间反复切换，时间成本高企。**其二，语言障碍突出。** 小语种信息的获取与理解，对普通用户而言几乎不可能。**其三，处理能力有限。** 海量信息涌入后，提炼核心观点需要大量时间。
+原文（节选，体检 33 分）：
 
-处理步骤：删除加粗和"其一其二其三"、打散句式结构、用口语化表达、有详有略。
+> 人工智能技术的快速发展正在深刻改变我们的生活方式。首先，从技术层面来看……其次，从应用层面分析……最后，从发展趋势预测……综上所述，我们需要在推动技术创新的同时，关注其潜在风险。
 
-输出（AI率25%）：用户面临的第一个问题是信息来源分散——在不同网站和APP之间来回切换，时间成本相当高。语言障碍也不容忽视，小语种信息普通人根本看不懂。至于处理能力，海量信息涌入后想提炼核心观点，确实需要花不少时间。
+改写（同样内容，体检 2 分。两组文本见 `tests/samples/example_zh_before.md` 与 `example_zh_after.md`，数值可直接复现）：
 
-### 示例2：打破"首先其次最后"
+> 医院是最先感到变化的地方。影像科的初筛从四十分钟压到十五分钟，但放射科医生并没有少，多出来的时间用来复核。银行和工厂的采购周期也短了，代价是采购部门多了一道“模型版本确认”的流程。
+>
+> 至于三年后会怎样，现在下结论太早。
 
-输入（AI率95%）：首先，从技术角度来看，人工智能具有强大的数据处理能力。其次，从应用层面分析，AI已经渗透到各行各业。最后，从发展趋势预测，人工智能将成为未来的核心技术。
+改动：删首段空话与三段论；把“效率提升”落到具体科室与分钟数；删“综上所述”；结尾留一处不确定。注意改写里没有用破折号——原文的“——”是刻意清掉的。
 
-输出（AI率22%）：人工智能最核心的优势是数据处理能力。这一点在各行各业的应用中已经得到验证——医疗、金融、制造，几乎没有AI涉足不到的领域。更值得期待的是其发展潜力，AI很可能成为下一轮技术革命的核心引擎。
+### 示例二：英文，典型助手腔
 
-### 示例3：删除"综上所述"
+原文（节选，体检 62 分）：
 
-输入（AI率92%）：综上所述，人工智能技术的发展前景广阔，但同时也面临诸多挑战。我们需要在推动技术创新的同时，关注其潜在风险。
+> In today's fast-paced digital world, AI stands as a testament to human ingenuity. It is not just a technological advancement, but a pivotal shift… Moreover… Experts argue… Despite these challenges, the future of AI looks promising.
 
-输出（AI率20%）：AI的发展前景值得期待，但风险同样不可忽视。关键在于如何在创新和风险之间找到平衡——这不是技术问题，而是治理问题。
+改写（体检 3 分，样本同上目录的 `example_en_*.md`）：
 
-### 示例4：替换空洞套话
+> Two things changed at work this year. The first is boring: search got good enough that people stopped asking me where the docs live. The second is not: our support team handles 40% more tickets with the same headcount, and nobody has decided whether that's a win.
+>
+> I don't know where this goes. I do know the "AI strategy" deck hasn't been opened since March.
 
-输入（AI率89%）：数字经济的发展对传统产业转型具有深远意义。它不仅提供了新的技术手段，也推动了商业模式的创新。
+改动：删套话开场与展望公式；拆掉 `not just X but Y`；把 `experts argue` 换成具体观察；用短句与一处自嘲造节奏；不再给结论。
 
-输出（AI率18%）：数字经济正在重塑传统产业。这不是简单的技术升级，而是商业模式的根本变革。那些还在观望的企业，恐怕很快就会发现已经掉队了。
+## 迭代与收敛
 
-## 书面化人化五原则
+- 每轮只处理体检报告里权重最高的 1–2 类，不做全文重写。
+- 收敛条件：分数 ≤ 阈值，且自检 10 条中 ≥8 条通过。
+- 连续两轮分数下降 <2 分，停止并报告残余问题（通常是叙事层，机器改不动）。
+- 最多 3 轮。第四轮开始通常是过度修改，会把文字改坏。
 
-1. 有取舍：不追求全面，聚焦核心问题
-2. 有立场：敢于表达判断，有明确观点
-3. 有分析：提出问题，剖析本质
-4. 有证据：引用具体数据、案例、研究
-5. 有痕迹：展现推理过程，承认不确定性
+## 与其他技能集成
 
-## Integration with Other Skills / 与其他技能集成
+- `/简写`（brief-write）：先人化再去 AI 腔，顺序反了会丢掉作者语气。
+- `/gongwen check`（official-document-writer）：公文先用 `--style formal --profile academic`，再过 GB/T 9704 格式检查。
+- `/paper review`（academic-writer）：论文只做 P1/P3/P5，P2 句法改动要谨慎，避免破坏学术语域。
+- `/patent disclosure`（patent-writer）：专利文本只清空话与版面，术语与权利要求的措辞不动。
+- `/有据`（you-ju）：人化不能新增事实；如果原文本身有幻觉，先过有据审计再润色。
 
-- Use `/paper new <topic>` and `/paper cite` from **academic-writer** when humanizing academic content. Feed academic drafts through `/humanize` to remove AI patterns while preserving scholarly tone.
-- Use `/简写 <text>` from **brief-write** for complementary style-aware writing. After humanization with `/人话`, pipe to `/简写` for the user's concise, direct blog style.
-- Use `/gongwen check <document>` from **official-document-writer** for official document humanization. Review 公文 with `/gongwen check`, then apply `/人话 --style formal` to reduce AIGC markers while maintaining GB/T 9704-2012 compliance.
-- Use `/patent disclosure <invention>` from **patent-writer** for patent-related text humanization. Run `/detect` on patent drafts to identify AI patterns, then `/人话` to humanize while preserving technical precision.
+## 配置项
 
-## Rules
+| 参数 | 默认 | 说明 |
+|------|------|------|
+| `style` | auto | auto / casual / formal |
+| `mode` | auto | auto / light / full |
+| `lang` | auto | auto / zh / en |
+| `profile` | prose | prose / tech / academic |
+| `target_score` | 45 | 收敛目标（按 profile 覆盖） |
+| `max_passes` | 3 | 最大改写轮次 |
+| `preserve_meaning` | true | 严格保留术语与数字 |
+| `allow_placeholders` | true | 允许 `（待补：…）` 标记 |
 
-- [rules/ai-features.md](rules/ai-features.md) - AI文本特征识别规则（核心反AIGC检测规则）
-- [rules/anti-aigc.md](rules/anti-aigc.md) - AIGC检测核心规则入口（→ ai-features.md）
-- [rules/humanization.md](rules/humanization.md) - 口语化人化策略
-- [rules/formal-humanization.md](rules/formal-humanization.md) - 书面化人化策略
-- [rules/iteration.md](rules/iteration.md) - 迭代优化流程
-- [rules/examples.md](rules/examples.md) - 更多示例和案例
-- [rules/detection-methods.md](rules/detection-methods.md) - AIGC检测方法总结
+## 边界情况
 
-## 配置选项
+- **代码块、公式、front matter**：原样保留，不参与改写，也不计入统计。
+- **直接引语**：一字不动；引语外的叙述可以改。
+- **多语言混排**：分段处理，按各段主体语言选特征库。
+- **短文本（<180 字）**：句长与段长统计不可靠，只看词表与版面；报告里会提示。
+- **已是人写**：分数 <15 直接返回原文并说明"无需修改"，不要为了交差硬改。
+- **敏感领域**（医疗、法律、金融）：只改表达，不动限定语与免责声明。
+- **检测器分数**：不作为验收标准，也不写入交付结论。
 
-参数默认值说明：
-
-target_rate：30，目标AIGC率(%)
-style：auto，风格选择，可选 auto/formal/casual
-max_iterations：10，最大迭代次数
-preserve_meaning：true，保留原文语义
-language：auto，语言选择，可选 auto/zh/en
-
-## 性能与资源管理
-
-### 批量处理优化
-- **分段处理**：对于长文本，分段进行人化处理而不是一次性处理整个文档
-- **批量大小**：每次处理500-1000字符的段落，平衡效率和质量
-- **缓存利用**：对于相同或相似文本段落，缓存已处理结果
-
-### 迭代效率
-- **早期停止**：当AIGC率改善低于1%时提前停止迭代
-- **增量改进**：每次迭代专注于解决最主要的AI特征，而不是全面重写
-- **智能重试**：如果某段文本多次迭代仍无法降低AIGC率，则跳过并标记
-
-### 资源管理
-- **内存优化**：处理大文档时，及时释放中间结果的内存
-- **超时控制**：每个文本段落的处理设置最大时间限制
-- **并发控制**：批量处理时限制并发数量，避免资源竞争
-
-## 使用示例 / Usage Examples
+## 文件结构
 
 ```
-/人话 "人工智能技术正在深刻改变我们的生活方式，从智能家居到自动驾驶，AI 的应用无处不在。"
-/humanize "The implementation of machine learning algorithms has significantly improved the efficiency of data processing pipelines."
-/人话 --style formal "本文提出了一种基于深度学习的新型图像识别方法，在多个基准数据集上取得了最优性能。"
-/detect "Furthermore, it is noteworthy that the aforementioned methodology demonstrates considerable efficacy."
-/demo
+skills/humanizer/
+├── SKILL.md
+├── README.md
+├── rules/
+│   ├── zh-patterns.md          # 中文特征库 Z01–Z29
+│   ├── en-patterns.md          # 英文特征库 E01–E25
+│   ├── metrics.md              # 阈值与体检说明
+│   ├── rewrite-protocol.md     # 五遍法 + 自检清单
+│   ├── ai-features.md          # 检测模型与评分（索引）
+│   ├── humanization.md         # 口语化策略
+│   ├── formal-humanization.md  # 书面化策略
+│   ├── iteration.md            # 迭代流程
+│   ├── examples.md             # 更多前后对照
+│   ├── detection-methods.md    # 检测器原理与局限
+│   └── anti-aigc.md            # 薄索引（兼容旧引用）
+├── scripts/
+│   └── humanize_lint.py        # 双语体检器（纯标准库）
+├── tests/
+│   ├── test_lint.py            # 23 项自测
+│   └── samples/                # 中英 AI/人类对照样本
+└── references/
+    └── ai-text-features-research.md
 ```
 
-## 常见问题与排查 / Troubleshooting
-
-### AIGC率不降反升 / AIGC rate increases after humanization
-- **症状/Symptom**: 人化处理后检测率反而升高 / Detection rate rises after humanization
-- **解决/Fix**: 过度修改可能引入新的AI模式；减少 `max_iterations` 至3轮；使用 `--style casual` 增加变化幅度；检查是否替换成了另一个AI模型的特征词
-
-### 语义被改变 / Original meaning altered
-- **症状/Symptom**: 人化后技术内容不准确 / Technical content inaccurate after humanization
-- **解决/Fix**: 设置 `preserve_meaning: strict` 严格保留关键术语；技术类段落使用 `--style formal` 减少改动幅度；使用 `/detect` 逐段检查而非全文
-
-### 长文本处理超时 / Long text processing timeout
-- **症状/Symptom**: 超过5000字的文本人化处理超时 / Text >5000 chars times out
-- **解决/Fix**: 分段处理，每段500-1000字；使用 `/人话 --batch` 批处理模式；增加 `max_iterations: 5` 减少迭代次数
-
-## 边界情况 / Edge Cases
-
-- **代码块处理**: 代码块完全保留原样，不执行任何人化处理
-- **数学公式**: LaTeX公式保留原样，仅人化周围说明文字
-- **多语言混合文本**: 中英混合文本分别用两种策略处理；标注语言边界
-- **引用/对话**: 直接引语和对话保持原样，不改变引用内容
-- **敏感内容**: 医疗、法律、金融专业术语保持不动，仅调整表达方式
-- **最大保留模式**: 如果文本本身AIGC率低于 `target_rate`，不执行任何修改并标注"已达目标"
-
-## 版本历史 / Version History
+## 版本历史
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| 1.0.0 | 2026-04-01 | 初始版本，AIGC检测和基础人化处理 |
-| 1.4.0 | 2026-05-09 | 添加安全规则，集成，性能管理，示例，排查，边界情况，6个rule文件 |
-| 1.5.0 | 2026-10-04 | 新增4类"一眼AI"模式：寒暄式开头、泛人称代词、装懂口播/土味词、中英混杂 |
-| 1.6.0 | 2026-10-04 | 新增"段首短判断句"模式（使用顺序有讲究。/好处很直接。等） |
-| 1.7.0 | 2026-10-04 | 新增"否定-转折抖机灵/空话套话"模式（X不难难的是Y／写得明明白白 等） |
-| 1.8.0 | 2026-10-22 | 新增"动作隐喻/拟人"与"版面痕迹（markdown 拐杖）"两类模式，阈值来自 90 篇语料三尺实测（见 研究内容/AIGC/研究报告.md） |
+| 1.0.0 | 2026-04-01 | 初版：AIGC 检测原理 + 六种反检测策略 |
+| 1.4.0 | 2026-05-09 | 加安全规则、集成、性能、排查、边界情况 |
+| 1.5.0 | 2026-10-04 | 新增寒暄开头、泛人称、口播腔、中英混杂四类 |
+| 1.6.0 | 2026-10-04 | 新增段首短判断句 |
+| 1.7.0 | 2026-10-04 | 新增否定-转折抖机灵/空话套话 |
+| 1.8.0 | 2026-10-22 | 新增动作隐喻与版面痕迹，阈值来自 90 篇语料实测 |
+| 2.0.0 | 2026-10-29 | 重构：中英双特征库（Z01–Z29 / E01–E25）、量化阈值与三套 profile、五遍改写协议、可执行体检脚本与 23 项自测、研究底稿；加入误杀边界与"不编细节"硬约束 |
 
-## See Also / 相关技能
+## See Also
 
-- `/简写` from **brief-write** — 带反AI模式的博客风格写作 / Blog-style writing with anti-AI patterns
-- `/paper review` from **academic-writer** — 学术语境中的 AIGC 检测 / AIGC detection in academic context
-- `/gongwen check` from **official-document-writer** — 人化处理公文文本 / Humanize official documents
-- `/patent disclosure` from **patent-writer** — 人化处理专利描述 / Humanize patent descriptions
+- `/简写`（brief-write）— 用户博客口吻的写作规范
+- `/paper review`（academic-writer）— 学术语境的表达检查
+- `/gongwen check`（official-document-writer）— 公文格式合规
+- `/patent disclosure`（patent-writer）— 专利文本处理
+- `/有据`（you-ju）— 防幻觉的事实审计，人化之前先做
